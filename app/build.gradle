@@ -3,10 +3,7 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'KomaxEngineer'
-            keyPassword '@cfCs#420Qk'
-            storeFile file('D:/Android Software/KeyStore/KomaxEngineer/KomaxEngineer.jks')
-            storePassword 'Cfcs@502#89kQ'
+        
         }
     }
     compileSdkVersion 27
