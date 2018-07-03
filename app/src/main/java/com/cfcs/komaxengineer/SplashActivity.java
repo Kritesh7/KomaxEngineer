@@ -29,6 +29,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+// created by kritesh
+
 public class SplashActivity extends Activity {
 
 
