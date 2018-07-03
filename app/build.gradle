@@ -1,0 +1,53 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        config {
+            keyAlias 'KomaxEngineer'
+            keyPassword '@cfCs#420Qk'
+            storeFile file('D:/Android Software/KeyStore/KomaxEngineer/KomaxEngineer.jks')
+            storePassword 'Cfcs@502#89kQ'
+        }
+    }
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.cfcs.komaxengineer"
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable true
+            signingConfig signingConfigs.config
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:support-v4:27.1.1'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    implementation 'com.google.code.gson:gson:2.2.4'
+    implementation 'com.android.volley:volley:1.0.0'
+    implementation files('libs/ksoap2-android-assembly-2.5.8-jar-with-dependencies.jar')
+    implementation files('libs/httpclient-4.2.1.jar')
+    implementation 'com.google.android.gms:play-services-ads:11.6.0'
+    implementation 'com.android.support:multidex:1.0.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'org.jsoup:jsoup:1.8.3'
+    implementation project(':kriteshspinnerserachlib')
+    implementation project(':kriteshsignaturepad')
+    implementation project(':kriteshfilepicker')
+}

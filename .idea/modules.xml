@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/KomaxEngineer.iml" filepath="$PROJECT_DIR$/KomaxEngineer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kriteshfilepicker/kriteshfilepicker.iml" filepath="$PROJECT_DIR$/kriteshfilepicker/kriteshfilepicker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kriteshsignaturepad/kriteshsignaturepad.iml" filepath="$PROJECT_DIR$/kriteshsignaturepad/kriteshsignaturepad.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kriteshspinnerserachlib/kriteshspinnerserachlib.iml" filepath="$PROJECT_DIR$/kriteshspinnerserachlib/kriteshspinnerserachlib.iml" />
+    </modules>
+  </component>
+</project>
