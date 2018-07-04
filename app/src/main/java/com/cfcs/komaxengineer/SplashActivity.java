@@ -29,7 +29,6 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-// created by kritesh
 
 public class SplashActivity extends Activity {
 
@@ -43,7 +42,6 @@ public class SplashActivity extends Activity {
     private static int SPLASH_TIME_OUT = 1500;
 
     ImageView imageView;
-
 
     String currentVersion = null;
 
@@ -64,9 +62,16 @@ public class SplashActivity extends Activity {
             e.printStackTrace();
         }
 
+        Config_Engg.isOnline(SplashActivity.this);
+        if (Config_Engg.internetStatus == true) {
 
+            new GetVersionCode().execute();
 
-        new GetVersionCode().execute();
+        } else {
+            Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", SplashActivity.this);
+            finish();
+        }
+
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -81,7 +86,6 @@ public class SplashActivity extends Activity {
                     Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", SplashActivity.this);
                     finish();
                 }
-
 
             }
         }, SPLASH_TIME_OUT);
@@ -121,7 +125,7 @@ public class SplashActivity extends Activity {
 
     }
 
-    public void showForceUpdateDialog(){
+    public void showForceUpdateDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(SplashActivity.this,
                 R.style.LibAppTheme));
 
