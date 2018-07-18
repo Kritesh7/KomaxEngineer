@@ -48,7 +48,6 @@ public class MachineListAdapter extends RecyclerView.Adapter<MachineListAdapter.
 
         ImageView action_dots;
 
-
         public MyViewHolder(View view) {
             super(view);
             card_view_machine = view.findViewById(R.id.card_view_machine);
@@ -65,7 +64,6 @@ public class MachineListAdapter extends RecyclerView.Adapter<MachineListAdapter.
 
         }
     }
-
 
     public MachineListAdapter(Context context) {
         this.context = context;
@@ -201,7 +199,6 @@ public class MachineListAdapter extends RecyclerView.Adapter<MachineListAdapter.
                 default:
             }
 
-
             return false;
         }
     }
@@ -215,6 +212,5 @@ public class MachineListAdapter extends RecyclerView.Adapter<MachineListAdapter.
 
         return MachineList.get(position);
     }
-
 
 }

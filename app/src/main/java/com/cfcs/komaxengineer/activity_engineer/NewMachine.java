@@ -118,7 +118,6 @@ public class NewMachine extends AppCompatActivity {
     ArrayAdapter<String> spinneradapterEngg;
     ArrayAdapter<String> spinneradapterEnggS;
 
-
     Spinner spinner_customer_name, spinner_plant, spinner_warranty_amc, spinner_installation_region, spinner_installation_area,
             spinner_principal, spinner_machine_model, spinner_primary_respon, spinner_secondary_respon;
 
@@ -143,7 +142,13 @@ public class NewMachine extends AppCompatActivity {
 
     LinearLayout maincontainer;
 
-    TextView tv_customer_name,tv_plant,tv_installation_region,tv_installation_area,tv_warrantyAMC,tv_machine_mode,tv_machine_serial;
+    TextView tv_customer_name, tv_plant, tv_installation_region, tv_installation_area, tv_warrantyAMC, tv_machine_mode, tv_machine_serial;
+
+    int mYear;
+    int mMonth;
+    int mDay;
+    int dateTimeStatus;
+    Calendar c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,39 +170,38 @@ public class NewMachine extends AppCompatActivity {
 
         SimpleSpanBuilder ssbCustomer = new SimpleSpanBuilder();
         ssbCustomer.appendWithSpace("Customer Name");
-        ssbCustomer.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbCustomer.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_customer_name.setText(ssbCustomer.build());
 
         SimpleSpanBuilder ssbPlant = new SimpleSpanBuilder();
         ssbPlant.appendWithSpace("Plant");
-        ssbPlant.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbPlant.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_plant.setText(ssbPlant.build());
 
         SimpleSpanBuilder ssbInstallRegion = new SimpleSpanBuilder();
         ssbInstallRegion.appendWithSpace("Installation Region");
-        ssbInstallRegion.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbInstallRegion.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_installation_region.setText(ssbInstallRegion.build());
 
         SimpleSpanBuilder ssbInstallArea = new SimpleSpanBuilder();
         ssbInstallArea.appendWithSpace("Installation Area");
-        ssbInstallArea.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbInstallArea.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_installation_area.setText(ssbInstallArea.build());
 
         SimpleSpanBuilder ssbwarranty = new SimpleSpanBuilder();
         ssbwarranty.appendWithSpace("Warranty Amc Status");
-        ssbwarranty.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbwarranty.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_warrantyAMC.setText(ssbwarranty.build());
 
         SimpleSpanBuilder ssbMachineModel = new SimpleSpanBuilder();
         ssbMachineModel.appendWithSpace("Machine Model");
-        ssbMachineModel.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbMachineModel.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_machine_mode.setText(ssbMachineModel.build());
 
         SimpleSpanBuilder ssbMachineSerial = new SimpleSpanBuilder();
         ssbMachineSerial.appendWithSpace("Machine Sr. No.");
-        ssbMachineSerial.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbMachineSerial.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_machine_serial.setText(ssbMachineSerial.build());
-
 
         spinner_customer_name = findViewById(R.id.spinner_customer_name);
         spinner_plant = findViewById(R.id.spinner_plant);
@@ -223,7 +227,6 @@ public class NewMachine extends AppCompatActivity {
         txt_amc_file_no = findViewById(R.id.txt_amc_file_no);
         txt_comment = findViewById(R.id.txt_comment);
 
-
         maincontainer = findViewById(R.id.maincontainer);
 
         btn_submit = findViewById(R.id.btn_submit);
@@ -232,14 +235,12 @@ public class NewMachine extends AppCompatActivity {
 
         spinner_customer_name.requestFocus();
 
-
         warranty_llout_hideShow.setVisibility(View.GONE);
         amc_llout_hideShow.setVisibility(View.GONE);
 
         btn_update.setVisibility(View.GONE);
 
         saleID = "00000000-0000-0000-0000-000000000000";
-
 
         Config_Engg.isOnline(NewMachine.this);
         if (Config_Engg.internetStatus == true) {
@@ -267,7 +268,6 @@ public class NewMachine extends AppCompatActivity {
             new FillMachineData().execute();
 
         }
-
 
         txt_date_of_supply.setOnClickListener(new View.OnClickListener() {
             int DateTimeStatus = 1;
@@ -388,7 +388,6 @@ public class NewMachine extends AppCompatActivity {
                         areaName = new ArrayList<String>();
                         areaName.add(0, "Select");
 
-
                         ArrayAdapter<String> spinneradapterArea = new ArrayAdapter<String>(NewMachine.this,
                                 android.R.layout.simple_spinner_item, areaName);
                         spinneradapterArea.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -428,7 +427,6 @@ public class NewMachine extends AppCompatActivity {
                         modelName = new ArrayList<String>();
                         modelName.add(0, "Select");
 
-
                         ArrayAdapter<String> spinneradapterModel = new ArrayAdapter<String>(NewMachine.this,
                                 android.R.layout.simple_spinner_item, modelName);
                         spinneradapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -462,13 +460,12 @@ public class NewMachine extends AppCompatActivity {
                         warranty_llout_hideShow.setVisibility(View.GONE);
                         amc_llout_hideShow.setVisibility(View.GONE);
 
-
                     } else if (SelectedWarrantyAmc == 1) {
 
                         warranty_llout_hideShow.setVisibility(View.VISIBLE);
                         amc_llout_hideShow.setVisibility(View.VISIBLE);
 
-                        if(!txt_date_install.getText().toString().equalsIgnoreCase("")){
+                        if (!txt_date_install.getText().toString().equalsIgnoreCase("")) {
                             txt_warranty_s_date.setText(txt_date_install.getText().toString());
 
                         }
@@ -478,7 +475,7 @@ public class NewMachine extends AppCompatActivity {
                         warranty_llout_hideShow.setVisibility(View.VISIBLE);
                         amc_llout_hideShow.setVisibility(View.GONE);
 
-                        if(!txt_date_install.getText().toString().equalsIgnoreCase("")){
+                        if (!txt_date_install.getText().toString().equalsIgnoreCase("")) {
                             txt_warranty_s_date.setText(txt_date_install.getText().toString());
                         }
 
@@ -509,14 +506,12 @@ public class NewMachine extends AppCompatActivity {
                 Config_Engg.isOnline(NewMachine.this);
                 if (Config_Engg.internetStatus == true) {
 
-
                     int customerPos = spinner_customer_name.getSelectedItemPosition();
                     int plantPos = spinner_plant.getSelectedItemPosition();
                     int regionPos = spinner_installation_region.getSelectedItemPosition();
                     int areaPos = spinner_installation_area.getSelectedItemPosition();
                     int modelPos = spinner_machine_model.getSelectedItemPosition();
                     int workAMCPos = spinner_warranty_amc.getSelectedItemPosition();
-
 
                     if (transactionIDList.size() > 0) {
 
@@ -555,7 +550,6 @@ public class NewMachine extends AppCompatActivity {
                         }
 
                     }
-
 
                     if (customerPos == 0) {
                         Config_Engg.alertBox("Please Select Your Customer Name ", NewMachine.this);
@@ -599,7 +593,6 @@ public class NewMachine extends AppCompatActivity {
                         long SelectedArea = spinner_installation_area.getSelectedItemId();
                         SelectedAreaID = areaID.get((int) SelectedArea);
 
-
                         dateOfSupply = txt_date_of_supply.getText().toString();
                         dateOfInstallation = txt_date_install.getText().toString();
                         warrantyStartDate = txt_warranty_s_date.getText().toString();
@@ -612,7 +605,6 @@ public class NewMachine extends AppCompatActivity {
                         fileNo = txt_office_file_no.getText().toString();
                         AMCFileNo = txt_amc_file_no.getText().toString();
                         comments = txt_comment.getText().toString();
-
 
                         new AddMachine().execute();
 
@@ -633,14 +625,12 @@ public class NewMachine extends AppCompatActivity {
                 Config_Engg.isOnline(NewMachine.this);
                 if (Config_Engg.internetStatus == true) {
 
-
                     int customerPos = spinner_customer_name.getSelectedItemPosition();
                     int plantPos = spinner_plant.getSelectedItemPosition();
                     int regionPos = spinner_installation_region.getSelectedItemPosition();
                     int areaPos = spinner_installation_area.getSelectedItemPosition();
                     int modelPos = spinner_machine_model.getSelectedItemPosition();
                     int workAMCPos = spinner_warranty_amc.getSelectedItemPosition();
-
 
                     if (transactionIDList.size() > 0) {
 
@@ -679,7 +669,6 @@ public class NewMachine extends AppCompatActivity {
                         }
 
                     }
-
 
                     if (customerPos == 0) {
                         Config_Engg.alertBox("Please Select Your Customer Name ", NewMachine.this);
@@ -723,7 +712,6 @@ public class NewMachine extends AppCompatActivity {
                         long SelectedArea = spinner_installation_area.getSelectedItemId();
                         SelectedAreaID = areaID.get((int) SelectedArea);
 
-
                         dateOfSupply = txt_date_of_supply.getText().toString();
                         dateOfInstallation = txt_date_install.getText().toString();
                         warrantyStartDate = txt_warranty_s_date.getText().toString();
@@ -740,7 +728,6 @@ public class NewMachine extends AppCompatActivity {
                         new AddMachine().execute();
 
                     }
-
 
                 } else {
                     Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", NewMachine.this);
@@ -775,18 +762,11 @@ public class NewMachine extends AppCompatActivity {
                 txt_comment.setText("");
                 spinner_customer_name.requestFocus();
 
-
             }
         });
 
 
     }
-
-    int mYear;
-    int mMonth;
-    int mDay;
-    int dateTimeStatus;
-    Calendar c;
 
     //date time picker
     public void datePicker(final int DateTimeStatus) {
@@ -799,10 +779,8 @@ public class NewMachine extends AppCompatActivity {
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        final DatePickerDialog datePickerDialog = new DatePickerDialog(this,android.R.style.Theme_Holo_Dialog,
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Dialog,
                 new DatePickerDialog.OnDateSetListener() {
-
-
 
 
                     @Override
@@ -810,11 +788,9 @@ public class NewMachine extends AppCompatActivity {
 
                         // date_time = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
 
-
                         c.set(Calendar.YEAR, year);
                         c.set(Calendar.MONTH, monthOfYear);
                         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
 
                         Date date1 = new Date(String.valueOf(c.getTime()));
                         String date_time = DateFormat.getDateInstance().format(date1);
@@ -859,11 +835,9 @@ public class NewMachine extends AppCompatActivity {
                     }
                 });
 
-
         datePickerDialog.setTitle("Select Date");
         datePickerDialog.show();
     }
-
 
     private class AddInitialData extends AsyncTask<String, String, String> {
 
@@ -871,7 +845,6 @@ public class NewMachine extends AppCompatActivity {
         String msgstatus;
         String initialData, customerList, transactionList, engWorkStatusList;
         ProgressDialog progressDialog;
-
         String LoginStatus;
         String invalid = "LoginFailed";
 
@@ -933,7 +906,6 @@ public class NewMachine extends AppCompatActivity {
 
                     }
 
-
                 } else {
                     JSONArray jsonArray = new JSONArray(initialData);
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
@@ -946,7 +918,6 @@ public class NewMachine extends AppCompatActivity {
             }
             return null;
         }
-
 
         @Override
         protected void onPostExecute(String complain_detail_value) {
@@ -967,7 +938,6 @@ public class NewMachine extends AppCompatActivity {
                         JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
                         String CustomerID = jsonObject2.getString("CustomerID");
                         String CustomerName = jsonObject2.getString("CustomerName");
-
 
                         customerIDList.add(i + 1, CustomerID);
                         //siteNameList.add(SiteName);
@@ -1009,7 +979,6 @@ public class NewMachine extends AppCompatActivity {
                     //Log.e("Error is here", e.toString());
                 }
 
-
                 //  fillListDialog.dismiss();
             } else if (flag == 3) {
                 Config_Engg.toastShow("No Response", NewMachine.this);
@@ -1022,7 +991,7 @@ public class NewMachine extends AppCompatActivity {
                     Config_Engg.logout(NewMachine.this);
                     Config_Engg.putSharedPreferences(NewMachine.this, "checklogin", "status", "2");
                     finish();
-                }else if(flag == 5){
+                } else if (flag == 5) {
 
                     ScanckBar();
                     btn_update.setEnabled(false);
@@ -1030,7 +999,6 @@ public class NewMachine extends AppCompatActivity {
                     btn_clear.setEnabled(false);
                     progressDialog.dismiss();
                 }
-
 
             }
             progressDialog.dismiss();
@@ -1059,7 +1027,6 @@ public class NewMachine extends AppCompatActivity {
                             Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", NewMachine.this);
                         }
 
-
                         if (isEditDelete.compareTo("true") == 0) {
                             btn_submit.setVisibility(View.GONE);
                             btn_update.setVisibility(View.VISIBLE);
@@ -1077,7 +1044,6 @@ public class NewMachine extends AppCompatActivity {
 
         // Changing message text color
         snackbar.setActionTextColor(Color.RED);
-
         snackbar.show();
 
     }
@@ -1087,12 +1053,9 @@ public class NewMachine extends AppCompatActivity {
         int flag;
         String msgstatus;
         String plant_detail, plant_list;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
         ProgressDialog progressDialog;
-
         int count = 0;
 
         @Override
@@ -1177,7 +1140,6 @@ public class NewMachine extends AppCompatActivity {
                     spinneradapterPlant.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner_plant.setAdapter(spinneradapterPlant);
 
-
                     int index = -1;
                     for (int i = 0; i < plantID.size(); i++) {
                         if (plantID.get(i).equals(PlantIdUpdate)) {
@@ -1198,7 +1160,6 @@ public class NewMachine extends AppCompatActivity {
                         spinner_plant.setSelection(1);
                     }
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //Log.e("Error is here", e.toString());
@@ -1214,7 +1175,7 @@ public class NewMachine extends AppCompatActivity {
                 Config_Engg.logout(NewMachine.this);
                 Config_Engg.putSharedPreferences(NewMachine.this, "checklogin", "status", "2");
                 finish();
-            }else if(flag ==5){
+            } else if (flag == 5) {
 
                 ScanckBar();
                 btn_update.setEnabled(false);
@@ -1222,7 +1183,6 @@ public class NewMachine extends AppCompatActivity {
                 btn_clear.setEnabled(false);
                 progressDialog.dismiss();
             }
-
             progressDialog.dismiss();
         }
     }
@@ -1231,12 +1191,9 @@ public class NewMachine extends AppCompatActivity {
 
         int flag;
         String msgstatus;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
         ProgressDialog progressDialog;
-
         String RegionPrincipalAppStatus, principal, zone;
 
         @Override
@@ -1299,7 +1256,6 @@ public class NewMachine extends AppCompatActivity {
 
                     }
 
-
                 } else {
                     JSONArray jsonArray = new JSONArray(RegionPrincipalAppStatus);
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
@@ -1329,12 +1285,10 @@ public class NewMachine extends AppCompatActivity {
                     principalNameList = new ArrayList<String>();
                     principalNameList.add(0, "Select");
 
-
                     for (int i = 0; i < jsonArray2.length(); i++) {
                         JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
                         String PrincipleID = jsonObject2.getString("PrincipleID");
                         String PrincipleName = jsonObject2.getString("PrincipleName");
-
 
                         principalIDList.add(i + 1, PrincipleID);
                         //siteNameList.add(SiteName);
@@ -1370,12 +1324,10 @@ public class NewMachine extends AppCompatActivity {
                     spinneradapterZone.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner_installation_region.setAdapter(spinneradapterZone);
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //Log.e("Error is here", e.toString());
                 }
-
 
                 //  fillListDialog.dismiss();
             } else if (flag == 3) {
@@ -1389,14 +1341,13 @@ public class NewMachine extends AppCompatActivity {
                     Config_Engg.logout(NewMachine.this);
                     Config_Engg.putSharedPreferences(NewMachine.this, "checklogin", "status", "2");
                     finish();
-                }else if(flag == 5){
+                } else if (flag == 5) {
 
                     ScanckBar();
                     btn_update.setEnabled(false);
                     btn_submit.setEnabled(false);
                     btn_clear.setEnabled(false);
                 }
-
 
             }
             progressDialog.dismiss();
@@ -1412,7 +1363,6 @@ public class NewMachine extends AppCompatActivity {
         ProgressDialog progressDialog;
         String LoginStatus;
         String invalid = "LoginFailed";
-
         int count = 0;
 
         @Override
@@ -1498,7 +1448,6 @@ public class NewMachine extends AppCompatActivity {
                     spinneradapterArea.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner_installation_area.setAdapter(spinneradapterArea);
 
-
                     int index = -1;
                     for (int i = 0; i < areaID.size(); i++) {
                         if (areaID.get(i).equals(AreaIDUpdate)) {
@@ -1535,7 +1484,7 @@ public class NewMachine extends AppCompatActivity {
                 Config_Engg.logout(NewMachine.this);
                 Config_Engg.putSharedPreferences(NewMachine.this, "checklogin", "status", "2");
                 finish();
-            }else if(flag == 5){
+            } else if (flag == 5) {
                 ScanckBar();
                 btn_update.setEnabled(false);
                 btn_submit.setEnabled(false);
@@ -1551,11 +1500,9 @@ public class NewMachine extends AppCompatActivity {
 
         String msgstatus;
         int flag = 0;
-
         String model_detail, model_list;
         ProgressDialog progressDialog;
         int count = 0;
-
         String LoginStatus;
         String invalid = "LoginFailed";
 
@@ -1676,7 +1623,7 @@ public class NewMachine extends AppCompatActivity {
                 Config_Engg.logout(NewMachine.this);
                 Config_Engg.putSharedPreferences(NewMachine.this, "checklogin", "status", "2");
                 finish();
-            }else if(flag == 5){
+            } else if (flag == 5) {
                 ScanckBar();
                 btn_update.setEnabled(false);
                 btn_submit.setEnabled(false);
@@ -1693,11 +1640,9 @@ public class NewMachine extends AppCompatActivity {
         String msgstatus;
         String engg_detail, engg_list;
         int flag = 0;
-
         String EngineerID;
         ProgressDialog progressDialog;
         int count = 0;
-
         String LoginStatus;
         String invalid = "LoginFailed";
 
@@ -1750,7 +1695,6 @@ public class NewMachine extends AppCompatActivity {
                 e.printStackTrace();
                 flag = 5;
             }
-
 
             return null;
         }
@@ -1859,7 +1803,7 @@ public class NewMachine extends AppCompatActivity {
                 Config_Engg.logout(NewMachine.this);
                 Config_Engg.putSharedPreferences(NewMachine.this, "checklogin", "status", "2");
                 finish();
-            }else if(flag == 5){
+            } else if (flag == 5) {
                 ScanckBar();
                 btn_update.setEnabled(false);
                 btn_submit.setEnabled(false);
@@ -1947,7 +1891,6 @@ public class NewMachine extends AppCompatActivity {
                 flag = 5;
             }
 
-
             return null;
         }
 
@@ -1970,7 +1913,7 @@ public class NewMachine extends AppCompatActivity {
                     Config_Engg.logout(NewMachine.this);
                     Config_Engg.putSharedPreferences(NewMachine.this, "checklogin", "status", "2");
                     finish();
-                }else if(flag ==5){
+                } else if (flag == 5) {
                     ScanckBar();
                     btn_update.setEnabled(false);
                     btn_submit.setEnabled(false);
@@ -1982,7 +1925,6 @@ public class NewMachine extends AppCompatActivity {
 
         }
     }
-
 
     private class FillMachineData extends AsyncTask<String, String, String> {
 
@@ -1996,8 +1938,6 @@ public class NewMachine extends AppCompatActivity {
         String machine_detail_value;
         ProgressDialog progressDialog;
         String MachineDetail;
-
-
         String LoginStatus;
         String invalid = "LoginFailed";
 
@@ -2068,7 +2008,7 @@ public class NewMachine extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                flag =5;
+                flag = 5;
             }
             return machine_detail_value;
         }
@@ -2083,7 +2023,6 @@ public class NewMachine extends AppCompatActivity {
                     JSONArray jsonArray = new JSONArray(MachineDetail);
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-
                     String CustomerIDUpdate = jsonObject.getString("ParentCustomerID").toString();
 
                     int index = -1;
@@ -2094,7 +2033,6 @@ public class NewMachine extends AppCompatActivity {
                         }
                     }
 
-
                     if (index > 0) {
 
                         String customerString = customerNameList.get((int) index);
@@ -2104,7 +2042,6 @@ public class NewMachine extends AppCompatActivity {
                             spinner_customer_name.setSelection(spinnerpos);
                         }
                     }
-
 
                     PlantIdUpdate = jsonObject.getString("CustomerID").toString();
 
@@ -2118,7 +2055,6 @@ public class NewMachine extends AppCompatActivity {
                         }
                     }
 
-
                     if (indexZone > 0) {
 
                         String ZoneString = zoneNameList.get((int) indexZone);
@@ -2128,7 +2064,6 @@ public class NewMachine extends AppCompatActivity {
                             spinner_installation_region.setSelection(spinnerpos);
                         }
                     }
-
 
                     AreaIDUpdate = jsonObject.getString("AreaID").toString();
 
@@ -2142,7 +2077,6 @@ public class NewMachine extends AppCompatActivity {
                         }
                     }
 
-
                     if (indexPrincipal > 0) {
 
                         String PrinicipalString = principalNameList.get((int) indexPrincipal);
@@ -2153,9 +2087,7 @@ public class NewMachine extends AppCompatActivity {
                         }
                     }
 
-
                     ModelIDUpdate = jsonObject.getString("ModelID").toString();
-
 
                     String TransactionTypeIDUpdate = jsonObject.getString("TransactionType").toString();
 
@@ -2166,7 +2098,6 @@ public class NewMachine extends AppCompatActivity {
                             break;
                         }
                     }
-
 
                     if (indexTrans > 0) {
 
@@ -2188,7 +2119,6 @@ public class NewMachine extends AppCompatActivity {
                         }
                     }
 
-
                     if (indexEngg > 0) {
 
                         String EnggString = enggSecondaryName.get((int) indexEngg);
@@ -2199,13 +2129,11 @@ public class NewMachine extends AppCompatActivity {
                         }
                     }
 
-
                     String SerialNo = jsonObject.getString("SerialNo").toString();
                     txt_machine_serial.setText(SerialNo);
 
                     String SWVersion = jsonObject.getString("SWVersion").toString();
                     txt_sw_version.setText(SWVersion);
-
 
                     String ProductKey = jsonObject.getString("ProductKey").toString();
                     txt_product_key.setText(ProductKey);
@@ -2222,7 +2150,6 @@ public class NewMachine extends AppCompatActivity {
                     String DateOfInstallation = jsonObject.getString("DateOfInstallation").toString();
                     txt_date_install.setText(DateOfInstallation);
 
-
                     String Comments = jsonObject.getString("Comments").toString();
                     txt_comment.setText(Comments);
 
@@ -2238,7 +2165,6 @@ public class NewMachine extends AppCompatActivity {
                     String AMCEndDate = jsonObject.getString("AMCEndDate").toString();
                     txt_amc_end_date.setText(AMCEndDate);
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -2252,7 +2178,7 @@ public class NewMachine extends AppCompatActivity {
                 Config_Engg.putSharedPreferences(NewMachine.this, "checklogin", "status", "2");
                 finish();
 
-            }else if(flag == 5){
+            } else if (flag == 5) {
                 ScanckBar();
                 btn_update.setEnabled(false);
                 btn_submit.setEnabled(false);
@@ -2261,7 +2187,6 @@ public class NewMachine extends AppCompatActivity {
             progressDialog.dismiss();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -2278,10 +2203,9 @@ public class NewMachine extends AppCompatActivity {
                 intent = new Intent(NewMachine.this, ChangePassword.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
-            case R.id.logout:
 
+            case R.id.logout:
                 Config_Engg.logout(NewMachine.this);
                 finish();
                 Config_Engg.putSharedPreferences(this, "checklogin", "status", "2");
@@ -2291,18 +2215,20 @@ public class NewMachine extends AppCompatActivity {
                 intent = new Intent(NewMachine.this, DashboardActivity.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
+
             case R.id.profile:
                 intent = new Intent(NewMachine.this, ProfileUpdate.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_raise:
                 intent = new Intent(NewMachine.this, RaiseComplaintActivity.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_complain:
                 intent = new Intent(NewMachine.this, ManageComplaint.class);
                 startActivity(intent);
@@ -2313,6 +2239,7 @@ public class NewMachine extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_contact:
                 intent = new Intent(NewMachine.this, ManageContact.class);
                 startActivity(intent);

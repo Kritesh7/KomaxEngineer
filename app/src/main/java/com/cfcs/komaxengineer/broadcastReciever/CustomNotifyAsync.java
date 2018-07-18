@@ -31,7 +31,6 @@ public class CustomNotifyAsync extends AsyncTask<String, Integer, String> {
     private static String METHOD_NAME1 = "AppEngineerSyncData";
     private static String URL = Config_Engg.BASE_URL + "Engineer/WebApi/EngineerWebService.asmx?";
 
-
     int flag;
     String jsonValue;
     String status = "", notifyStatus;
@@ -43,17 +42,14 @@ public class CustomNotifyAsync extends AsyncTask<String, Integer, String> {
         this.context = context;
     }
 
-
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-
 
     }
 
     @Override
     protected String doInBackground(String... params) {
-
 
         EngineerID = Config_Engg.getSharedPreferences(context, "pref_Engg", "EngineerID", "");
         AuthCode = Config_Engg.getSharedPreferences(context, "pref_Engg", "AuthCode", "");

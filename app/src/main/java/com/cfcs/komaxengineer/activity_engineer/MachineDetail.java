@@ -72,7 +72,6 @@ public class MachineDetail extends AppCompatActivity {
 
         maincontainer = findViewById(R.id.maincontainer);
 
-
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             saleID = getIntent().getExtras().getString("SaleID");
@@ -88,9 +87,7 @@ public class MachineDetail extends AppCompatActivity {
             Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", MachineDetail.this);
         }
 
-
     }
-
 
     private class MachineDetailAsy extends AsyncTask<String, String, String> {
         int flag;
@@ -98,15 +95,10 @@ public class MachineDetail extends AppCompatActivity {
         String machine_detail_value;
         ProgressDialog progressDialog;
         String MachineDetail;
-
         JSONArray complainSub;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
-
         TextView txt_sub_engineer_name;
-
         int count = 0;
 
         @Override
@@ -192,7 +184,6 @@ public class MachineDetail extends AppCompatActivity {
                     JSONArray jsonArray = new JSONArray(MachineDetail);
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-
                     String CustomerName = jsonObject.getString("CustomerName").toString();
                     txt_customer.setText(CustomerName);
 
@@ -205,13 +196,11 @@ public class MachineDetail extends AppCompatActivity {
                     String ModelName = jsonObject.getString("ModelName").toString();
                     txt_product_model.setText(ModelName);
 
-
                     String SerialNo = jsonObject.getString("SerialNo").toString();
                     txt_product_serial_no.setText(SerialNo);
 
                     String SWVersion = jsonObject.getString("SWVersion").toString();
                     txt_sw_version.setText(SWVersion);
-
 
                     String ProductKey = jsonObject.getString("ProductKey").toString();
                     txt_product_key.setText(ProductKey);
@@ -261,7 +250,7 @@ public class MachineDetail extends AppCompatActivity {
                 Config_Engg.putSharedPreferences(MachineDetail.this, "checklogin", "status", "2");
                 finish();
 
-            }else if(flag == 5){
+            } else if (flag == 5) {
 
                 ScanckBar();
                 progressDialog.dismiss();
@@ -310,10 +299,9 @@ public class MachineDetail extends AppCompatActivity {
                 intent = new Intent(MachineDetail.this, ChangePassword.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
-            case R.id.logout:
 
+            case R.id.logout:
                 Config_Engg.logout(MachineDetail.this);
                 finish();
                 Config_Engg.putSharedPreferences(this, "checklogin", "status", "2");
@@ -323,28 +311,32 @@ public class MachineDetail extends AppCompatActivity {
                 intent = new Intent(MachineDetail.this, DashboardActivity.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
+
             case R.id.profile:
                 intent = new Intent(MachineDetail.this, ProfileUpdate.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_raise:
                 intent = new Intent(MachineDetail.this, RaiseComplaintActivity.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_complain:
                 intent = new Intent(MachineDetail.this, ManageComplaint.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_machines:
                 intent = new Intent(MachineDetail.this, ManageMachines.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_contact:
                 intent = new Intent(MachineDetail.this, ManageContact.class);
                 startActivity(intent);
@@ -359,7 +351,6 @@ public class MachineDetail extends AppCompatActivity {
         }
         return (super.onOptionsItemSelected(item));
     }
-
 
     @Override
     public void onBackPressed() {

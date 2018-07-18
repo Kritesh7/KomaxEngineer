@@ -23,7 +23,6 @@ public class AutoNofity extends Service {
         CustomerBroadcastReciever.startAlarm(getBaseContext());
         CustomerBroadcastReciever.enableBroadcastReceiver(getBaseContext());
 
-
         return Service.START_STICKY;
     }
 
@@ -31,7 +30,7 @@ public class AutoNofity extends Service {
     public void onDestroy() {
 
         super.onDestroy();
-      //  Toast.makeText(this, "Service Destroy", Toast.LENGTH_LONG).show();
+        //  Toast.makeText(this, "Service Destroy", Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -2,35 +2,20 @@ package com.cfcs.komaxengineer.model;
 
 public class ComplaintDataModel {
     private String SiteAddress;
-
     private String PriorityName;
-
     private String StatusText;
-
     private String ComplainNo;
-
     private String IsEditDelete;
-
     private String IsServiceReportFill;
-
     private String ComplainByName;
-
     private String CustomerName;
-
     private String TransactionTypeName;
-
     private String EscalationShortCode;
-
     private String WorkStatusName;
-
     private String ModelName;
-
     private String LoggedBy;
-
     private String ShortCode;
-
     private String ComplaintTitle;
-
     private String ComplainDateTimeText;
 
     public ComplaintDataModel(String SiteAddress, String PriorityName, String StatusText, String ComplainNo, String IsEditDelete, String IsServiceReportFill,

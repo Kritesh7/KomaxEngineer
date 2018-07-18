@@ -51,6 +51,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -60,6 +62,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -104,6 +107,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import in.co.cfcs.kriteshfilepicker.FilePickerBuilder;
 import in.co.cfcs.kriteshfilepicker.FilePickerConst;
@@ -121,100 +125,81 @@ public class AddDailyReport extends AppCompatActivity {
     String SOAP_ACTION2 = "http://cfcs.co.in/AppEngineerDailyReportdetails";
     String METHOD_NAME2 = "AppEngineerDailyReportdetails";
 
+    private static String SOAP_ACTION3 = "http://cfcs.co.in/AppEngineerContactChange";
+    private static String METHOD_NAME3 = "AppEngineerContactChange";
+
+    private static String SOAP_ACTION4 = "http://cfcs.co.in/ddlCustomerContactPersonByComplainNo";
+    private static String METHOD_NAME4 = "ddlCustomerContactPersonByComplainNo";
 
     String complainno;
-
-    TextView txt_complaint_no,txt_header,txt_image_show;
-
+    TextView txt_complaint_no, txt_header, txt_image_show;
     EditText txt_next_follow_up, txt_service, txt_travel, txt_work_done_plant, txt_work_detail, txt_suggestion,
-            txt_reason_close,txt_add_service_charge, txt_engg_travel_cost, txt_engg_other_exp,txt_add_customer_remark, txt_engg_exp_detail, txt_sign_by_name, txt_sign_by_mobile, txt_sign_by_email;
-
-    Button btn_spare_search, btn_add_sign, btn_add_daily_report, btn_update_daily_report, btn_clear,btn_attachment;
-
+            txt_reason_close, txt_country_code, txt_add_service_charge, txt_engg_travel_cost, txt_engg_other_exp, txt_add_customer_remark, txt_engg_exp_detail, txt_sign_by_name, txt_sign_by_mobile, txt_sign_by_email;
+    Button btn_spare_search, btn_add_sign, btn_add_daily_report, btn_update_daily_report, btn_clear, btn_attachment;
     ListView listView_sparePart;
-
     String searchSparePart;
-
     LinearLayout llSparePartsLayout;
-
     private LinearLayout llSpareParts;
-
     //    HashMap<String, String> addedPart = new HashMap<String, String>();
     ArrayList<SparePartListDataModel> addedPart = new ArrayList<SparePartListDataModel>();
-
     ArrayList<String> editTextQty;
 
     private SignaturePad mSignaturePad;
-
     private PopupWindow pwindo;
 
     File file;
 
     String ImgExtension = "", ImgString = "", pathtodeletesign = "";
-
     InputFilter timeFilter, timeFilterTravel;
     private String LOG_TAG = "hELLO";
     private boolean doneOnce = false;
 
     String WorkDonePlant, WorkDetails, Suggestion, Causeoffailure, NextFollowUp = "", ReasonForNotClose, ServiceTime, TravelTime,
-            EngieerOtherExpense, EngieerExpenseDetails, SignByName, SignByMobileNo, SignByE_mailid,CustomerRemark;
-
+            EngieerOtherExpense, EngieerExpenseDetails, SignByName, SignByMobileNo, SignByE_mailid, CustomerRemark, CountryCode;
     String EngieerTravelCost = "00";
-    String ServiceCharge ="00";
-
+    String ServiceCharge = "00";
     String NextFollowUpDate, NextFollowUpTime;
 
-    ImageView btn_attach,btn_gallery,btn_camera;
+    ImageView btn_attach, btn_gallery, btn_camera;
 
     int currentapiVersion = 0;
-
     EditText edQuantity;
-
     String[] edtQytArray;
-
     String sparePartJson = "";
-
     String date_time1;
+
     int mYear;
     int mMonth;
     int mDay;
-
     int mHour;
     int mMinute;
-
     Calendar c;
 
     List<EditText> allEds;
 
     String ReportNo = "0";
-
     String reportMode = "";
 
     LinearLayout maincontainer;
 
     BottomSheetBehavior sheetBehavior;
-
     LinearLayout layoutBottomSheet;
 
     //Pdf request code
     private int PICK_PDF_REQUEST = 2;
-
     private final int PICK_IMAGE_MULTIPLE = 1;
-
     Uri mCapturedImageURI;
-
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 0;
 
     ArrayList<String> imagesPathList;
     ArrayList<String> totalImage;
     ArrayList<String> totalFile;
+    String imageJson = "";
 
     String[] imagesPath;
-    String [] filePath;
+    String[] filePath;
 
     File myFile;
-
-
 
     public static final int RC_PHOTO_PICKER_PERM = 123;
     public static final int RC_FILE_PICKER_PERM = 321;
@@ -226,8 +211,37 @@ public class AddDailyReport extends AppCompatActivity {
 
     private Bitmap imgbitmap;
 
-    TextView tv_observation,tv_action,tv_service_time,tv_travel_time,tv_sign_by_name;
+    TextView tv_observation, tv_action, tv_service_time, tv_travel_time, tv_sign_by_name;
 
+    Spinner spinner_existing_customer_contacts;
+
+
+    List<String> contactIDList;
+    List<String> contactNameList;
+
+    ArrayAdapter<String> spinneradapterContact;
+
+    int checkConatct = 0;
+
+    String SelectedContactID;
+
+    String SignByContactIDUpdate = "";
+
+    String SignByNameUpdate = "";
+
+    String SignByMobileUpdate = "";
+
+    String SignByMailIDUpdate = "";
+
+    String CustomerRemarkUpdate = "";
+
+    String CountryCodeUpdate = "";
+
+    String ComplainByContactID = "00000000-0000-0000-0000-000000000000";
+
+    String SelectedSignByContactID;
+
+    boolean changing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -255,32 +269,32 @@ public class AddDailyReport extends AppCompatActivity {
         tv_service_time = findViewById(R.id.tv_service_time);
         tv_travel_time = findViewById(R.id.tv_travel_time);
         tv_sign_by_name = findViewById(R.id.tv_sign_by_name);
+        spinner_existing_customer_contacts = findViewById(R.id.spinner_existing_customer_contacts);
 
         SimpleSpanBuilder ssbObservation = new SimpleSpanBuilder();
         ssbObservation.appendWithSpace("Observation");
-        ssbObservation.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbObservation.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_observation.setText(ssbObservation.build());
 
         SimpleSpanBuilder ssbAction = new SimpleSpanBuilder();
         ssbAction.appendWithSpace("Action Taken");
-        ssbAction.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbAction.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_action.setText(ssbAction.build());
 
         SimpleSpanBuilder ssbServiceTime = new SimpleSpanBuilder();
         ssbServiceTime.appendWithSpace("Service Time");
-        ssbServiceTime.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbServiceTime.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_service_time.setText(ssbServiceTime.build());
 
         SimpleSpanBuilder ssbTravelTime = new SimpleSpanBuilder();
         ssbTravelTime.appendWithSpace("Travel Time");
-        ssbTravelTime.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbTravelTime.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_travel_time.setText(ssbTravelTime.build());
 
         SimpleSpanBuilder ssbSignByName = new SimpleSpanBuilder();
         ssbSignByName.appendWithSpace("Sign By Name");
-        ssbSignByName.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbSignByName.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_sign_by_name.setText(ssbSignByName.build());
-
 
 
         txt_complaint_no = findViewById(R.id.txt_complaint_no);
@@ -305,6 +319,7 @@ public class AddDailyReport extends AppCompatActivity {
         txt_header = findViewById(R.id.txt_header);
         txt_add_service_charge = findViewById(R.id.txt_add_service_charge);
         txt_add_customer_remark = findViewById(R.id.txt_add_customer_remark);
+        txt_country_code = findViewById(R.id.txt_country_code);
         btn_update_daily_report = findViewById(R.id.btn_update_daily_report);
 
         btn_attach = findViewById(R.id.btn_attach);
@@ -344,6 +359,39 @@ public class AddDailyReport extends AppCompatActivity {
             txt_header.setText("Update Daily Report");
             new DailyReportDetailAsy().execute();
         }
+
+        Config_Engg.isOnline(AddDailyReport.this);
+        if (Config_Engg.internetStatus == true) {
+
+            new AddContactPersonDropDown().execute();
+
+        } else {
+            Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", AddDailyReport.this);
+        }
+
+
+        txt_country_code.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!changing && txt_country_code.getText().toString().startsWith("0")) {
+                    changing = true;
+                    txt_country_code.setText(txt_country_code.getText().toString().replace("0", ""));
+                }
+                changing = false;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+        });
+
+
         btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -371,14 +419,14 @@ public class AddDailyReport extends AppCompatActivity {
                     totalImage.clear();
                     txt_image_show.setText("No Image");
                 }
-                if(totalFile != null){
+                if (totalFile != null) {
                     totalFile.clear();
                     txt_image_show.setText("No File");
                 }
-                if(docPaths != null){
+                if (docPaths != null) {
                     docPaths.clear();
                 }
-                if(photoPaths != null){
+                if (photoPaths != null) {
                     photoPaths.clear();
                 }
                 llSparePartsLayout.setVisibility(View.GONE);
@@ -431,63 +479,62 @@ public class AddDailyReport extends AppCompatActivity {
         });
 
 
-
         btn_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(totalFile.size() >0){
+                if (totalFile.size() > 0) {
 
-                   Config_Engg.alertBox("File already Selected",AddDailyReport.this);
-                   sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    Config_Engg.alertBox("File already Selected", AddDailyReport.this);
+                    sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
-               }else {
+                } else {
 
-                   if (currentapiVersion <= 22) {
-                       int maxCount = MAX_ATTACHMENT_COUNT - docPaths.size();
+                    if (currentapiVersion <= 22) {
+                        int maxCount = MAX_ATTACHMENT_COUNT - docPaths.size();
 
-                       FilePickerBuilder.getInstance()
-                               .setMaxCount(maxCount)
-                               .setSelectedFiles(photoPaths)
-                               .setActivityTheme(R.style.FilePickerTheme)
-                               .setActivityTitle("Please select media")
-                               .enableVideoPicker(false)
-                               .enableCameraSupport(true)
-                               .showGifs(false)
-                               .showFolderView(false)
-                               .enableSelectAll(true)
-                               .enableImagePicker(true)
-                               .setCameraPlaceholder(R.drawable.custom_camera)
-                               .withOrientation(Orientation.UNSPECIFIED)
-                               .pickPhoto(AddDailyReport.this, CUSTOM_REQUEST_CODE);
+                        FilePickerBuilder.getInstance()
+                                .setMaxCount(maxCount)
+                                .setSelectedFiles(photoPaths)
+                                .setActivityTheme(R.style.FilePickerTheme)
+                                .setActivityTitle("Please select media")
+                                .enableVideoPicker(false)
+                                .enableCameraSupport(true)
+                                .showGifs(false)
+                                .showFolderView(false)
+                                .enableSelectAll(true)
+                                .enableImagePicker(true)
+                                .setCameraPlaceholder(R.drawable.custom_camera)
+                                .withOrientation(Orientation.UNSPECIFIED)
+                                .pickPhoto(AddDailyReport.this, CUSTOM_REQUEST_CODE);
 
-                   } else {
-                       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                           if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                               requestPermissions(new String[]{Manifest.permission.CAMERA}, 1);
-                           }else if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
-                               requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-                           }else if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                               requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                           } else {
-                               int maxCount = MAX_ATTACHMENT_COUNT - docPaths.size();
-                               FilePickerBuilder.getInstance()
-                                       .setMaxCount(maxCount)
-                                       .setSelectedFiles(photoPaths)
-                                       .setActivityTheme(R.style.FilePickerTheme)
-                                       .setActivityTitle("Please select media")
-                                       .enableVideoPicker(false)
-                                       .enableCameraSupport(true)
-                                       .showGifs(false)
-                                       .showFolderView(false)
-                                       .enableSelectAll(true)
-                                       .enableImagePicker(true)
-                                       .setCameraPlaceholder(R.drawable.custom_camera)
-                                       .withOrientation(Orientation.UNSPECIFIED)
-                                       .pickPhoto(AddDailyReport.this, CUSTOM_REQUEST_CODE);
-                           }
-                       }
-                   }
-               }
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                                requestPermissions(new String[]{Manifest.permission.CAMERA}, 1);
+                            } else if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                            } else if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                            } else {
+                                int maxCount = MAX_ATTACHMENT_COUNT - docPaths.size();
+                                FilePickerBuilder.getInstance()
+                                        .setMaxCount(maxCount)
+                                        .setSelectedFiles(photoPaths)
+                                        .setActivityTheme(R.style.FilePickerTheme)
+                                        .setActivityTitle("Please select media")
+                                        .enableVideoPicker(false)
+                                        .enableCameraSupport(true)
+                                        .showGifs(false)
+                                        .showFolderView(false)
+                                        .enableSelectAll(true)
+                                        .enableImagePicker(true)
+                                        .setCameraPlaceholder(R.drawable.custom_camera)
+                                        .withOrientation(Orientation.UNSPECIFIED)
+                                        .pickPhoto(AddDailyReport.this, CUSTOM_REQUEST_CODE);
+                            }
+                        }
+                    }
+                }
             }
         });
 
@@ -527,7 +574,6 @@ public class AddDailyReport extends AppCompatActivity {
 
             }
         });
-
 
 
         txt_next_follow_up.setOnClickListener(new View.OnClickListener() {
@@ -687,6 +733,81 @@ public class AddDailyReport extends AppCompatActivity {
         txt_service.setFilters(new InputFilter[]{timeFilter});
         txt_travel.setFilters(new InputFilter[]{timeFilterTravel});
 
+        spinner_existing_customer_contacts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                checkConatct += 1;
+                Log.i("kritesh", String.valueOf(checkConatct));
+                Config_Engg.isOnline(AddDailyReport.this);
+                if (Config_Engg.internetStatus == true) {
+
+                    long SelectedContact = parent.getSelectedItemId();
+                    SelectedContactID = contactIDList.get((int) SelectedContact);
+
+                    if (checkConatct == 1 && reportMode.compareTo("true") == 0) {
+
+                        txt_sign_by_name.setText(SignByNameUpdate);
+
+                        txt_sign_by_name.setEnabled(true);
+
+                        txt_sign_by_mobile.setText(SignByMobileUpdate);
+
+                        txt_country_code.setText(CountryCodeUpdate);
+
+                        txt_sign_by_email.setText(SignByMailIDUpdate);
+
+                        txt_add_customer_remark.setText(CustomerRemarkUpdate);
+
+                    }
+                    if (checkConatct > 1 && reportMode.compareTo("true") == 0) {
+
+                        if (SelectedContact != 0) {
+
+                            new AddContactChange().execute();
+
+                        } else {
+
+                            txt_sign_by_name.setText("");
+                            txt_sign_by_name.setEnabled(true);
+                            txt_sign_by_mobile.setText("");
+                            txt_sign_by_email.setText("");
+                            txt_add_customer_remark.setText("");
+                            txt_country_code.setText("");
+                        }
+
+                    } else {
+
+                        if (SelectedContact != 0 && reportMode.compareTo("true") != 0) {
+
+                            new AddContactChange().execute();
+
+                        } else if (reportMode.compareTo("true") != 0) {
+                            txt_sign_by_name.setText("");
+                            txt_sign_by_name.setEnabled(true);
+                            txt_sign_by_mobile.setText("");
+                            txt_sign_by_email.setText("");
+                            txt_add_customer_remark.setText("");
+                            txt_country_code.setText("");
+                        }
+
+                    }
+
+                } else {
+                    Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", AddDailyReport.this);
+                }
+
+//                Toast.makeText(RaiseComplaintActivity.this,"Count" +" "+ checkConatct, Toast.LENGTH_LONG).show();
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         btn_add_daily_report.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -712,6 +833,8 @@ public class AddDailyReport extends AppCompatActivity {
 
                     String workDonePlant = txt_work_done_plant.getText().toString().trim();
                     String workDetal = txt_work_detail.getText().toString().trim();
+                    String checkmobile = txt_sign_by_mobile.getText().toString().trim();
+                    String code = txt_country_code.getText().toString().trim();
                     if (workDonePlant.compareTo("") == 0) {
                         Config_Engg.alertBox("Please Enter Observation ",
                                 AddDailyReport.this);
@@ -729,6 +852,56 @@ public class AddDailyReport extends AppCompatActivity {
                         Config_Engg.alertBox("Please Enter Travel Time hh : mm correct formate",
                                 AddDailyReport.this);
                         txt_travel.requestFocus();
+                    } else if (checkmobile.compareTo("") != 0 || code.compareTo("") != 0) {
+
+                        if (checkmobile.compareTo("") != 0 && !isValidMobile(txt_sign_by_mobile.getText().toString().trim())) {
+                            Config_Engg.alertBox("Please Enter Vaild Mobile No.",
+                                    AddDailyReport.this);
+                            txt_sign_by_mobile.requestFocus();
+                        } else if (checkmobile.compareTo("") == 0) {
+                            Config_Engg.alertBox("Please Enter Mobile No.", AddDailyReport.this);
+                            txt_sign_by_mobile.requestFocus();
+                        } else if (code.compareTo("") == 0) {
+                            Config_Engg.alertBox("Please Enter Country Code", AddDailyReport.this);
+                            txt_country_code.requestFocus();
+                        } else {
+
+                            if (file.length() > 0) {
+                                String signImgPath = String.valueOf(file);
+                                int dotposition = signImgPath.lastIndexOf(".");
+                                ImgExtension = signImgPath.substring(dotposition + 1, signImgPath.length());
+                                ImgString = decodeImage(signImgPath);
+                                pathtodeletesign = signImgPath; // getting path to delete sign from gallery after submit
+                            }
+
+                            long SelectedContactId = spinner_existing_customer_contacts.getSelectedItemId();
+                            SelectedSignByContactID = contactIDList.get((int) SelectedContactId);
+
+                            WorkDonePlant = txt_work_done_plant.getText().toString().trim();
+                            WorkDetails = txt_work_detail.getText().toString().trim();
+                            Suggestion = txt_suggestion.getText().toString().trim();
+                            NextFollowUp = txt_next_follow_up.getText().toString().trim();
+                            ReasonForNotClose = txt_reason_close.getText().toString().trim();
+                            EngieerTravelCost = txt_engg_travel_cost.getText().toString().trim();
+                            ServiceTime = txt_service.getText().toString().trim();
+                            TravelTime = txt_travel.getText().toString().trim();
+                            EngieerOtherExpense = txt_engg_other_exp.getText().toString().trim();
+                            EngieerExpenseDetails = txt_engg_exp_detail.getText().toString().trim();
+                            SignByName = txt_sign_by_name.getText().toString().trim();
+                            SignByMobileNo = txt_sign_by_mobile.getText().toString().trim();
+                            SignByE_mailid = txt_sign_by_email.getText().toString().trim();
+                            ServiceCharge = txt_add_service_charge.getText().toString().trim();
+                            CustomerRemark = txt_add_customer_remark.getText().toString().trim();
+                            CountryCode = txt_country_code.getText().toString().toString().trim();
+
+                            if (!NextFollowUp.equals("")) {
+                                String[] parts = NextFollowUp.split(" ");
+                                NextFollowUpDate = parts[0];
+                                NextFollowUpTime = parts[1];
+                            }
+                            new AddDailyReportAsy().execute();
+
+                        }
                     } else {
 
                         if (file.length() > 0) {
@@ -738,6 +911,9 @@ public class AddDailyReport extends AppCompatActivity {
                             ImgString = decodeImage(signImgPath);
                             pathtodeletesign = signImgPath; // getting path to delete sign from gallery after submit
                         }
+
+                        long SelectedContactId = spinner_existing_customer_contacts.getSelectedItemId();
+                        SelectedSignByContactID = contactIDList.get((int) SelectedContactId);
 
                         WorkDonePlant = txt_work_done_plant.getText().toString().trim();
                         WorkDetails = txt_work_detail.getText().toString().trim();
@@ -754,6 +930,7 @@ public class AddDailyReport extends AppCompatActivity {
                         SignByE_mailid = txt_sign_by_email.getText().toString().trim();
                         ServiceCharge = txt_add_service_charge.getText().toString().trim();
                         CustomerRemark = txt_add_customer_remark.getText().toString().trim();
+                        CountryCode = txt_country_code.getText().toString().toString().trim();
 
                         if (!NextFollowUp.equals("")) {
                             String[] parts = NextFollowUp.split(" ");
@@ -794,6 +971,11 @@ public class AddDailyReport extends AppCompatActivity {
                     }
                     String workDonePlant = txt_work_done_plant.getText().toString().trim();
                     String workDetal = txt_work_detail.getText().toString().trim();
+
+                    String checkmobile = txt_sign_by_mobile.getText().toString().trim();
+                    String code = txt_country_code.getText().toString().trim();
+
+
                     if (workDonePlant.compareTo("") == 0) {
                         Config_Engg.alertBox("Please Enter Observation ",
                                 AddDailyReport.this);
@@ -807,9 +989,60 @@ public class AddDailyReport extends AppCompatActivity {
                         Config_Engg.alertBox("Please Enter Service Time hh : mm correct formate\"",
                                 AddDailyReport.this);
                         txt_service.requestFocus();
-                    }  else if (txt_travel.getText().toString().length() < 5) {
+                    } else if (txt_travel.getText().toString().length() < 5) {
                         Config_Engg.alertBox("Please Enter Travel Time hh : mm correct formate", AddDailyReport.this);
                         txt_travel.requestFocus();
+                    } else if (checkmobile.compareTo("") != 0 || code.compareTo("") != 0) {
+
+                        if (checkmobile.compareTo("") != 0 && !isValidMobile(txt_sign_by_mobile.getText().toString().trim())) {
+                            Config_Engg.alertBox("Please Enter Vaild Mobile No.",
+                                    AddDailyReport.this);
+                            txt_sign_by_mobile.requestFocus();
+                        } else if (checkmobile.compareTo("") == 0) {
+                            Config_Engg.alertBox("Please Enter Mobile No.", AddDailyReport.this);
+                            txt_sign_by_mobile.requestFocus();
+                        } else if (code.compareTo("") == 0) {
+                            Config_Engg.alertBox("Please Enter Country Code", AddDailyReport.this);
+                            txt_country_code.requestFocus();
+                        } else {
+
+
+                            if (file.length() > 0) {
+                                String signImgPath = String.valueOf(file);
+                                int dotposition = signImgPath.lastIndexOf(".");
+                                ImgExtension = signImgPath.substring(dotposition + 1, signImgPath.length());
+                                ImgString = decodeImage(signImgPath);
+                                pathtodeletesign = signImgPath; // getting path to delete sign from gallery after submit
+                            }
+
+                            long SelectedContactId = spinner_existing_customer_contacts.getSelectedItemId();
+                            SelectedSignByContactID = contactIDList.get((int) SelectedContactId);
+
+                            WorkDonePlant = txt_work_done_plant.getText().toString().trim();
+                            WorkDetails = txt_work_detail.getText().toString().trim();
+                            Suggestion = txt_suggestion.getText().toString().trim();
+                            NextFollowUp = txt_next_follow_up.getText().toString().trim();
+                            ReasonForNotClose = txt_reason_close.getText().toString().trim();
+                            EngieerTravelCost = txt_engg_travel_cost.getText().toString().trim();
+                            ServiceTime = txt_service.getText().toString().trim();
+                            TravelTime = txt_travel.getText().toString().trim();
+                            EngieerOtherExpense = txt_engg_other_exp.getText().toString().trim();
+                            EngieerExpenseDetails = txt_engg_exp_detail.getText().toString().trim();
+                            SignByName = txt_sign_by_name.getText().toString().trim();
+                            SignByMobileNo = txt_sign_by_mobile.getText().toString().trim();
+                            SignByE_mailid = txt_sign_by_email.getText().toString().trim();
+                            ServiceCharge = txt_add_service_charge.getText().toString().trim();
+                            CustomerRemark = txt_add_customer_remark.getText().toString().trim();
+                            CountryCode = txt_country_code.getText().toString().toString().trim();
+
+                            if (!NextFollowUp.equals("")) {
+                                String[] parts = NextFollowUp.split(" ");
+                                NextFollowUpDate = parts[0];
+                                NextFollowUpTime = parts[1];
+                            }
+                            new AddDailyReportAsy().execute();
+
+                        }
                     } else {
 
                         if (file.length() > 0) {
@@ -819,6 +1052,10 @@ public class AddDailyReport extends AppCompatActivity {
                             ImgString = decodeImage(signImgPath);
                             pathtodeletesign = signImgPath; // getting path to delete sign from gallery after submit
                         }
+
+                        long SelectedContactId = spinner_existing_customer_contacts.getSelectedItemId();
+                        SelectedSignByContactID = contactIDList.get((int) SelectedContactId);
+
                         WorkDonePlant = txt_work_done_plant.getText().toString().trim();
                         WorkDetails = txt_work_detail.getText().toString().trim();
                         Suggestion = txt_suggestion.getText().toString().trim();
@@ -834,6 +1071,7 @@ public class AddDailyReport extends AppCompatActivity {
                         SignByE_mailid = txt_sign_by_email.getText().toString().trim();
                         ServiceCharge = txt_add_service_charge.getText().toString().trim();
                         CustomerRemark = txt_add_customer_remark.getText().toString().trim();
+                        CountryCode = txt_country_code.getText().toString().toString().trim();
 
                         if (!NextFollowUp.equals("")) {
                             String[] parts = NextFollowUp.split(" ");
@@ -856,54 +1094,54 @@ public class AddDailyReport extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(totalImage.size() > 0){
+                if (totalImage.size() > 0) {
 
-                    Config_Engg.alertBox("File already Selected",AddDailyReport.this);
+                    Config_Engg.alertBox("File already Selected", AddDailyReport.this);
                     sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
-                }else {
+                } else {
 
                     if (currentapiVersion <= 22) {
-                        String[] zips = { ".zip", ".rar" };
-                        String[] pdfs = { ".pdf" };
+                        String[] zips = {".zip", ".rar"};
+                        String[] pdfs = {".pdf"};
                         int maxCount = MAX_ATTACHMENT_COUNT - photoPaths.size();
 
-                            FilePickerBuilder.getInstance()
-                                    .setMaxCount(MAX_ATTACHMENT_COUNT)
-                                    .setSelectedFiles(docPaths)
-                                    .setActivityTheme(R.style.FilePickerTheme)
-                                    .setActivityTitle("Please select doc")
+                        FilePickerBuilder.getInstance()
+                                .setMaxCount(MAX_ATTACHMENT_COUNT)
+                                .setSelectedFiles(docPaths)
+                                .setActivityTheme(R.style.FilePickerTheme)
+                                .setActivityTitle("Please select doc")
 //                                    .addFileSupport("ZIP", zips)
-                                    .addFileSupport("PDF", pdfs, R.drawable.pdf_blue)
-                                    .enableDocSupport(false)
-                                    .enableSelectAll(true)
-                                    .sortDocumentsBy(SortingTypes.name)
-                                    .withOrientation(Orientation.UNSPECIFIED)
-                                    .pickFile(AddDailyReport.this);
+                                .addFileSupport("PDF", pdfs, R.drawable.pdf_blue)
+                                .enableDocSupport(false)
+                                .enableSelectAll(true)
+                                .sortDocumentsBy(SortingTypes.name)
+                                .withOrientation(Orientation.UNSPECIFIED)
+                                .pickFile(AddDailyReport.this);
 
                     } else {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-                            }else if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                            } else if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                             } else {
-                                String[] zips = { ".zip", ".rar" };
-                                String[] pdfs = { ".pdf" };
+                                String[] zips = {".zip", ".rar"};
+                                String[] pdfs = {".pdf"};
                                 int maxCount = MAX_ATTACHMENT_COUNT - photoPaths.size();
 
-                                    FilePickerBuilder.getInstance()
-                                            .setMaxCount(MAX_ATTACHMENT_COUNT)
-                                            .setSelectedFiles(docPaths)
-                                            .setActivityTheme(R.style.FilePickerTheme)
-                                            .setActivityTitle("Please select doc")
+                                FilePickerBuilder.getInstance()
+                                        .setMaxCount(MAX_ATTACHMENT_COUNT)
+                                        .setSelectedFiles(docPaths)
+                                        .setActivityTheme(R.style.FilePickerTheme)
+                                        .setActivityTitle("Please select doc")
 //                                            .addFileSupport("ZIP", zips)
-                                            .addFileSupport("PDF", pdfs, R.drawable.pdf_blue)
-                                            .enableDocSupport(false)
-                                            .enableSelectAll(true)
-                                            .sortDocumentsBy(SortingTypes.name)
-                                            .withOrientation(Orientation.UNSPECIFIED)
-                                            .pickFile(AddDailyReport.this);
+                                        .addFileSupport("PDF", pdfs, R.drawable.pdf_blue)
+                                        .enableDocSupport(false)
+                                        .enableSelectAll(true)
+                                        .sortDocumentsBy(SortingTypes.name)
+                                        .withOrientation(Orientation.UNSPECIFIED)
+                                        .pickFile(AddDailyReport.this);
 
                             }
                         }
@@ -925,6 +1163,23 @@ public class AddDailyReport extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    private boolean isValidMobile(String phone) {
+        boolean check = false;
+        if (!Pattern.matches("[a-zA-Z]+", phone)) {
+            if (phone.length() != 10) {
+                // if(phone.length() != 10) {
+                check = false;
+                //       Config_Engg.toastShow("Not Valid Number",RaiseComplaintActivity.this);
+            } else {
+                check = true;
+            }
+        } else {
+            check = false;
+        }
+        return check;
     }
 
     private void initiateImagePopupWindow() {
@@ -1026,7 +1281,6 @@ public class AddDailyReport extends AppCompatActivity {
         }
     }
 
-
     //handling the image chooser activity result
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1048,8 +1302,7 @@ public class AddDailyReport extends AppCompatActivity {
                     txt_image_show.setText(totalImage.size() + " Image");
                     txt_image_show.setEnabled(false);
 
-                //    photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
-
+                    //    photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
 
 
                 }
@@ -1059,7 +1312,7 @@ public class AddDailyReport extends AppCompatActivity {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     docPaths = new ArrayList<>();
                     totalFile.clear();
-                   // docPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
+                    // docPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
 
 
                     filePath = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS).toArray(new String[0]);
@@ -1076,11 +1329,11 @@ public class AddDailyReport extends AppCompatActivity {
                         // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
                         long fileSizeInMB = fileSizeInKB / 1024;
 
-                        if(fileSizeInMB > 2){
-                            Config_Engg.alertBox("File Size more than 2 MB. Please Upload file less than 2 MB",AddDailyReport.this);
+                        if (fileSizeInMB > 2) {
+                            Config_Engg.alertBox("File Size more than 2 MB. Please Upload file less than 2 MB", AddDailyReport.this);
                             myFile = null;
                             docPaths.clear();
-                        }else {
+                        } else {
                             totalFile.addAll(docPaths);
                         }
 
@@ -1244,17 +1497,21 @@ public class AddDailyReport extends AppCompatActivity {
                     String ExpenseDetail = jsonObject.getString("ExpenseDetail").toString();
                     txt_engg_exp_detail.setText(ExpenseDetail);
 
-                    String SignByName = jsonObject.getString("SignByName").toString();
-                    txt_sign_by_name.setText(SignByName);
+                    SignByContactIDUpdate = jsonObject.getString("SignByContactID").toString();
 
-                    String SignByMobile = jsonObject.getString("SignByMobile").toString();
-                    txt_sign_by_mobile.setText(SignByMobile);
+                    SignByNameUpdate = jsonObject.getString("SignByName").toString();
+                    //   txt_sign_by_name.setText(SignByNameUpdate);
 
-                    String SignByMailID = jsonObject.getString("SignByMailID").toString();
-                    txt_sign_by_email.setText(SignByMailID);
+                    SignByMobileUpdate = jsonObject.getString("SignByMobile").toString();
+                    //   txt_sign_by_mobile.setText(SignByMobileUpdate);
 
-                    String CustomerRemark = jsonObject.getString("CustomerRemark").toString();
-                    txt_add_customer_remark.setText(CustomerRemark);
+                    SignByMailIDUpdate = jsonObject.getString("SignByMailID").toString();
+                    // txt_sign_by_email.setText(SignByMailIDUpdate);
+
+                    CustomerRemarkUpdate = jsonObject.getString("CustomerRemark").toString();
+                    //   txt_add_customer_remark.setText(CustomerRemark);
+
+                    CountryCodeUpdate = jsonObject.getString("CountryCode").toString();
 
                     String ServiceCharge = jsonObject.getString("ServiceChargeAmount").toString();
                     txt_add_service_charge.setText(ServiceCharge);
@@ -1357,8 +1614,8 @@ public class AddDailyReport extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog, int which) {
 
 
-                                        for(int i=0;i<addedPart.size();i++){
-                                            if(pID.compareTo(addedPart.get(i).getSpareID())==0 ){
+                                        for (int i = 0; i < addedPart.size(); i++) {
+                                            if (pID.compareTo(addedPart.get(i).getSpareID()) == 0) {
                                                 addedPart.remove(i);
                                                 allEds.remove(i);
                                             }
@@ -1396,7 +1653,7 @@ public class AddDailyReport extends AppCompatActivity {
                 Config_Engg.putSharedPreferences(AddDailyReport.this, "checklogin", "status", "2");
                 finish();
 
-            }else if(flag == 5){
+            } else if (flag == 5) {
 
                 Snackbar snackbar = Snackbar
                         .make(maincontainer, "connectivity issues", Snackbar.LENGTH_LONG);
@@ -1416,8 +1673,6 @@ public class AddDailyReport extends AppCompatActivity {
         }
     }
 
-
-
     public String decodeImage(String imgPath) {
         Bitmap decodedBitmap = BitmapFactory.decodeFile(imgPath);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1426,7 +1681,6 @@ public class AddDailyReport extends AppCompatActivity {
         String imgString = Base64.encodeToString(ba, Base64.DEFAULT);
         return imgString;
     }
-
 
     public void datePicker() {
 
@@ -1437,7 +1691,7 @@ public class AddDailyReport extends AppCompatActivity {
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,android.R.style.Theme_Holo_Dialog,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Dialog,
                 new DatePickerDialog.OnDateSetListener() {
 
                     @Override
@@ -1492,7 +1746,6 @@ public class AddDailyReport extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-
     private void tiemPicker(String date_time) {
         this.date_time1 = date_time;
         // Get Current Time
@@ -1501,7 +1754,7 @@ public class AddDailyReport extends AppCompatActivity {
         mMinute = c.get(Calendar.MINUTE);
 
         // Launch Time Picker Dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,android.R.style.Theme_Holo_Dialog,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Dialog,
                 new TimePickerDialog.OnTimeSetListener() {
 
                     @Override
@@ -1961,23 +2214,17 @@ public class AddDailyReport extends AppCompatActivity {
                     file = new File(Environment.getExternalStorageDirectory() + path);
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                            checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                    {
+                            checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                         requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                    }
-                    else
-                    {
+                    } else {
                         try {
                             //DrawBitmap.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(file));
 
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                            {
+                                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                            }
-                            else
-                            {
+                            } else {
                                 signatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(file));
                                 //Toast.makeText(this, "File Saved ::" + path, Toast.LENGTH_SHORT).show();
 
@@ -1993,8 +2240,6 @@ public class AddDailyReport extends AppCompatActivity {
                             Config_Engg.toastShow("Error occured during saving your sign", AddDailyReport.this);
                         }
                     }
-
-
 
 
                 }
@@ -2014,7 +2259,6 @@ public class AddDailyReport extends AppCompatActivity {
         String imgString;
 
     }
-
 
     public void makeJson() {
 
@@ -2072,11 +2316,10 @@ public class AddDailyReport extends AppCompatActivity {
 
             if (totalImage.size() > 0) {
                 makeJsonImage();
-            }else if(totalFile.size() > 0){
-                
+            } else if (totalFile.size() > 0) {
+
                 makeJsonFile();
             }
-
 
 
             String EngineerID = Config_Engg.getSharedPreferences(AddDailyReport.this, "pref_Engg", "EngineerID", "");
@@ -2097,15 +2340,17 @@ public class AddDailyReport extends AppCompatActivity {
             request.addProperty("EngineerOtherExpense", EngieerOtherExpense);
             request.addProperty("ServiceTime", ServiceTime);
             request.addProperty("TravelTime", TravelTime);
-            request.addProperty("ServiceChargeAmount",ServiceCharge);
+            request.addProperty("ServiceChargeAmount", ServiceCharge);
             request.addProperty("ExpenseDetail", EngieerExpenseDetails);
+            request.addProperty("SignByContactID", SelectedSignByContactID);
             request.addProperty("SignByName", SignByName);
+            request.addProperty("CountryCode", CountryCode);
             request.addProperty("SignByMobile", SignByMobileNo);
             request.addProperty("SignByMailID", SignByE_mailid);
-            request.addProperty("CustomerRemark",CustomerRemark);
+            request.addProperty("CustomerRemark", CustomerRemark);
             request.addProperty("ImgJson", ImgString);
             request.addProperty("ImageExtension", ImgExtension);
-            request.addProperty("ReportFileJson",imageJson);
+            request.addProperty("ReportFileJson", imageJson);
             request.addProperty("AuthCode", AuthCode);
 
             if (addedPart.size() > 0) {
@@ -2185,7 +2430,7 @@ public class AddDailyReport extends AppCompatActivity {
                 Config_Engg.putSharedPreferences(AddDailyReport.this, "checklogin", "status", "2");
                 finish();
 
-            }else if(flag == 5){
+            } else if (flag == 5) {
 
                 ScanckBar();
                 btn_add_daily_report.setEnabled(false);
@@ -2237,7 +2482,7 @@ public class AddDailyReport extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
 
     private DecodeFileBean getImageObjectFilledFile(String filePath) {
@@ -2249,13 +2494,13 @@ public class AddDailyReport extends AppCompatActivity {
         bean.setFileExt(FileExt);
         bean.setFileContent(FileContent);
         return bean;
-        
+
     }
 
     private String decodeFile(String filePath) {
 
         InputStream inputStream = null;
-        String encodedFile= "", lastVal;
+        String encodedFile = "", lastVal;
         try {
             inputStream = new FileInputStream(filePath);
 
@@ -2267,12 +2512,10 @@ public class AddDailyReport extends AppCompatActivity {
                 output64.write(buffer, 0, bytesRead);
             }
             output64.close();
-            encodedFile =  output.toString();
-        }
-        catch (FileNotFoundException e1 ) {
+            encodedFile = output.toString();
+        } catch (FileNotFoundException e1) {
             e1.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         lastVal = encodedFile;
@@ -2302,8 +2545,6 @@ public class AddDailyReport extends AppCompatActivity {
 
     }
 
-    String imageJson = "";
-
     private DecodeFileBean getImageObjectFilledImage(String imgPath) {
         DecodeFileBean bean = new DecodeFileBean();
         int dotposition = imgPath.lastIndexOf(".");
@@ -2312,6 +2553,112 @@ public class AddDailyReport extends AppCompatActivity {
         bean.setFileExt(FileExt);
         bean.setFileContent(FileContent);
         return bean;
+    }
+
+    private class AddContactChange extends AsyncTask<String, String, String> {
+
+        int flag;
+        String msgstatus;
+        String contact_change_detail_value, contactChangeList;
+        ProgressDialog progressDialog;
+        String LoginStatus;
+        String invalid = "LoginFailed";
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = ProgressDialog.show(AddDailyReport.this, "Loading...", "Please Wait....", true, false);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME3);
+            String EngineerID = Config_Engg.getSharedPreferences(AddDailyReport.this, "pref_Engg", "EngineerID", "");
+            String AuthCode = Config_Engg.getSharedPreferences(AddDailyReport.this, "pref_Engg", "AuthCode", "");
+            String ContactPersonID = SelectedContactID;
+            request.addProperty("ContactPersonID", ContactPersonID);
+            request.addProperty("EngineerID", EngineerID);
+            request.addProperty("AuthCode", AuthCode);
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.setOutputSoapObject(request);
+            envelope.dotNet = true;
+            try {
+                HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+                androidHttpTransport.call(SOAP_ACTION3, envelope);
+                SoapObject result = (SoapObject) envelope.bodyIn;
+                if (result != null) {
+                    contact_change_detail_value = result.getProperty(0).toString();
+                    JSONArray jsonArray = new JSONArray(contact_change_detail_value);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    if (jsonObject.has("status")) {
+                        LoginStatus = jsonObject.getString("status");
+                        msgstatus = jsonObject.getString("MsgNotification");
+                        if (LoginStatus.equals(invalid)) {
+
+                            flag = 4;
+                        } else {
+
+                            flag = 1;
+                        }
+                    } else {
+                        flag = 2;
+                    }
+
+                } else {
+                    flag = 3;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                flag = 5;
+            }
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(String complain_detail_value) {
+            super.onPostExecute(complain_detail_value);
+            if (flag == 1) {
+                Config_Engg.toastShow(msgstatus, AddDailyReport.this);
+            } else if (flag == 2) {
+                try {
+                    JSONArray jsonArray2 = new JSONArray(contact_change_detail_value);
+                    JSONObject jsonObject2 = jsonArray2.getJSONObject(0);
+                    String ContactPersonName = jsonObject2.getString("ContactPersonName");
+                    String Email = jsonObject2.getString("Email");
+                    String Phone = jsonObject2.getString("Phone");
+                    String Code = jsonObject2.getString("CountryCode");
+
+                    txt_sign_by_name.setText(ContactPersonName);
+                    txt_sign_by_name.setEnabled(false);
+                    txt_sign_by_email.setText(Email);
+                    txt_country_code.setText(Code);
+                    txt_sign_by_mobile.setText(Phone);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    //Log.e("Error is here", e.toString());
+                }
+                progressDialog.dismiss();
+            } else if (flag == 3) {
+                Config_Engg.toastShow("No Response", AddDailyReport.this);
+//
+            } else if (flag == 4) {
+                Config_Engg.toastShow(msgstatus, AddDailyReport.this);
+                Config_Engg.logout(AddDailyReport.this);
+                Config_Engg.putSharedPreferences(AddDailyReport.this, "checklogin", "status", "2");
+                finish();
+
+            } else if (flag == 5) {
+                ScanckBar();
+                btn_add_daily_report.setEnabled(false);
+                btn_update_daily_report.setEnabled(false);
+                btn_clear.setEnabled(false);
+                progressDialog.dismiss();
+
+            }
+            progressDialog.dismiss();
+        }
     }
 
 
@@ -2387,6 +2734,165 @@ public class AddDailyReport extends AppCompatActivity {
         startActivity(intent);
         finish();
         super.onBackPressed();
+    }
+
+
+    private class AddContactPersonDropDown extends AsyncTask<String, String, String> {
+
+        int flag;
+        String msgstatus;
+        String contact_detail, contact_list;
+        String LoginStatus;
+        String invalid = "LoginFailed";
+        ProgressDialog progressDialog;
+        int count = 0;
+
+        @Override
+        protected void onPreExecute() {
+
+            progressDialog = ProgressDialog.show(AddDailyReport.this, "Loading...", "Please Wait....", true, false);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+
+            SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME4);
+            String EngineerID = Config_Engg.getSharedPreferences(AddDailyReport.this, "pref_Engg", "EngineerID", "");
+            String AuthCode = Config_Engg.getSharedPreferences(AddDailyReport.this, "pref_Engg", "AuthCode", "");
+
+            request.addProperty("ComplainNo", complainno);
+            request.addProperty("EngineerID", EngineerID);
+            request.addProperty("AuthCode", AuthCode);
+
+
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.setOutputSoapObject(request);
+            envelope.dotNet = true;
+            try {
+                HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+                androidHttpTransport.call(SOAP_ACTION4, envelope);
+                SoapObject result = (SoapObject) envelope.bodyIn;
+                if (result != null) {
+                    contact_detail = result.getProperty(0).toString();
+                    JSONArray jsonArray = new JSONArray(contact_detail);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    contact_list = jsonArray.toString();
+                    if (jsonObject.has("status")) {
+
+                        LoginStatus = jsonObject.getString("status");
+                        msgstatus = jsonObject.getString("MsgNotification");
+                        if (LoginStatus.equals(invalid)) {
+
+                            flag = 4;
+                        } else {
+
+                            flag = 1;
+                        }
+                    } else {
+                        flag = 2;
+                    }
+                } else {
+                    flag = 3;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                flag = 5;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String complain_detail_value) {
+            super.onPostExecute(complain_detail_value);
+            if (flag == 1) {
+                Config_Engg.toastShow(msgstatus, AddDailyReport.this);
+            } else if (flag == 2) {
+                try {
+
+                    // Add value in Plant List Status Spinner
+                    JSONArray jsonArray2 = new JSONArray(contact_list);
+                    contactIDList = new ArrayList<String>();
+                    contactIDList.add(0, "00000000-0000-0000-0000-000000000000");
+                    contactNameList = new ArrayList<String>();
+                    contactNameList.add(0, "New");
+                    for (int i = 0; i < jsonArray2.length(); i++) {
+                        count += 1;
+                        JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
+                        String ContactPersonID = jsonObject2.getString("ContactPersonID");
+                        String ContactPersonName = jsonObject2.getString("ContactPersonName");
+                        if (reportMode.compareTo("true") != 0) {
+
+                            ComplainByContactID = jsonObject2.getString("ComplainByContactID");
+                        }
+
+
+                        contactIDList.add(i + 1, ContactPersonID);
+                        contactNameList.add(i + 1, ContactPersonName);
+                    }
+
+                    spinneradapterContact = new ArrayAdapter<String>(AddDailyReport.this,
+                            android.R.layout.simple_spinner_item, contactNameList);
+                    spinneradapterContact.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner_existing_customer_contacts.setAdapter(spinneradapterContact);
+
+
+                    int index = -1;
+                    if (reportMode.compareTo("true") != 0) {
+                        for (int i = 0; i < contactIDList.size(); i++) {
+                            if (contactIDList.get(i).equals(ComplainByContactID)) {
+                                index = i;
+                                break;
+                            }
+                        }
+                    } else {
+                        for (int i = 0; i < contactIDList.size(); i++) {
+                            if (contactIDList.get(i).equals(SignByContactIDUpdate)) {
+                                index = i;
+                                break;
+                            }
+                        }
+
+                    }
+
+                    if (index > 0) {
+
+                        String plantString = contactNameList.get((int) index);
+                        if (!plantString.equalsIgnoreCase("")) {
+                            int spinnerpos = spinneradapterContact.getPosition(plantString);
+                            spinner_existing_customer_contacts.setSelection(spinnerpos);
+                        }
+                    } else if (count == 1) {
+
+                        ///  spinner_existing_customer_contacts.setSelection(1);
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    flag = 5;
+                }
+
+                progressDialog.dismiss();
+            } else if (flag == 3) {
+                Config_Engg.toastShow("No Response", AddDailyReport.this);
+
+            } else if (flag == 4) {
+                Config_Engg.toastShow(msgstatus, AddDailyReport.this);
+                Config_Engg.logout(AddDailyReport.this);
+                Config_Engg.putSharedPreferences(AddDailyReport.this, "checklogin", "status", "2");
+                finish();
+            } else if (flag == 5) {
+
+                ScanckBar();
+                btn_update_daily_report.setEnabled(false);
+                btn_update_daily_report.setEnabled(false);
+                btn_clear.setEnabled(false);
+                progressDialog.dismiss();
+            }
+
+            progressDialog.dismiss();
+        }
     }
 }
 

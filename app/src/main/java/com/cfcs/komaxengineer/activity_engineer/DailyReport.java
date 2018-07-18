@@ -48,7 +48,6 @@ public class DailyReport extends AppCompatActivity {
 
     ArrayList<DailyReportDataModel> dailyReportList = new ArrayList<DailyReportDataModel>();
 
-
     String[] DailyReportNo;
     String[] Workdone;
     String[] ComplainNo;
@@ -65,13 +64,9 @@ public class DailyReport extends AppCompatActivity {
     LinearLayout fabLayout1, fabLayout2;
     View fabBGLayout;
     boolean isFABOpen = false;
-
     String complainno;
-
     ListView list;
-
     CoordinatorLayout maincontainer;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,9 +112,7 @@ public class DailyReport extends AppCompatActivity {
             Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", DailyReport.this);
         }
 
-
     }
-
 
     @Override
     public void onBackPressed() {
@@ -133,14 +126,10 @@ public class DailyReport extends AppCompatActivity {
     private class DailyReportAsy extends AsyncTask<String, String, String> {
 
         int flag = 0;
-
         String DailyReportList;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
         String msgstatus;
-
         ProgressDialog progressDialog;
 
         @Override
@@ -218,7 +207,6 @@ public class DailyReport extends AppCompatActivity {
                                 dailyReportDataModel.setIsDelete(jsonObject1.getString("IsDelete").toString());
                                 dailyReportDataModel.setIsEdit(jsonObject1.getString("IsEdit").toString());
 
-
                                 // Add this object into the ArrayList myList
 
                                 dailyReportList.add(dailyReportDataModel);
@@ -238,8 +226,6 @@ public class DailyReport extends AppCompatActivity {
                 flag = 5;
 
             }
-
-
             return null;
         }
 
@@ -252,7 +238,6 @@ public class DailyReport extends AppCompatActivity {
                 Config_Engg.toastShow(msgstatus, DailyReport.this);
                 //  progressDialog.dismiss();
                 list.setAdapter(null);
-
             } else {
                 if (flag == 2) {
                     list.setAdapter(new DailyReportListAdapter(DailyReport.this, dailyReportList));
@@ -262,13 +247,11 @@ public class DailyReport extends AppCompatActivity {
                         //    progressDialog.dismiss();
                     } else {
                         if (flag == 4) {
-
                             Config_Engg.toastShow(msgstatus, DailyReport.this);
                             Config_Engg.logout(DailyReport.this);
                             Config_Engg.putSharedPreferences(DailyReport.this, "checklogin", "status", "2");
                             finish();
                         } else if (flag == 5) {
-
                             ScanckBar();
                             progressDialog.dismiss();
                         }
@@ -277,7 +260,6 @@ public class DailyReport extends AppCompatActivity {
                 }
             }
             progressDialog.dismiss();
-
         }
     }
 
@@ -302,7 +284,6 @@ public class DailyReport extends AppCompatActivity {
 
         // Changing message text color
         snackbar.setActionTextColor(Color.RED);
-
         snackbar.show();
 
     }
@@ -322,10 +303,9 @@ public class DailyReport extends AppCompatActivity {
                 intent = new Intent(DailyReport.this, ChangePassword.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
-            case R.id.logout:
 
+            case R.id.logout:
                 Config_Engg.logout(DailyReport.this);
                 finish();
                 Config_Engg.putSharedPreferences(this, "checklogin", "status", "2");
@@ -335,28 +315,32 @@ public class DailyReport extends AppCompatActivity {
                 intent = new Intent(DailyReport.this, DashboardActivity.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
+
             case R.id.profile:
                 intent = new Intent(DailyReport.this, ProfileUpdate.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_raise:
                 intent = new Intent(DailyReport.this, RaiseComplaintActivity.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_complain:
                 intent = new Intent(DailyReport.this, ManageComplaint.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_machines:
                 intent = new Intent(DailyReport.this, ManageMachines.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_contact:
                 intent = new Intent(DailyReport.this, ManageContact.class);
                 startActivity(intent);
@@ -371,6 +355,5 @@ public class DailyReport extends AppCompatActivity {
         }
         return (super.onOptionsItemSelected(item));
     }
-
 
 }

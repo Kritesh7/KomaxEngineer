@@ -3,6 +3,11 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
+
+            keyAlias 'KomaxEngineer'
+            keyPassword '@cfCs#420Qk'
+            storeFile file('D:/Android Software/KeyStore/KomaxEngineer/KomaxEngineer.jks')
+            storePassword 'Cfcs@502#89kQ'
         
         }
     }
@@ -11,8 +16,8 @@ android {
         applicationId "com.cfcs.komaxengineer"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -20,7 +25,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable true
+            debuggable false
+            signingConfig signingConfigs.config
+        }
+        debug {
             signingConfig signingConfigs.config
         }
     }

@@ -28,7 +28,6 @@ public class CustomerBroadcastReciever extends BroadcastReceiver {
             // Config_Customer.toastShow("No Internet Connection", context);
         }
 
-
     }
 
     public static void startAlarm(Context context) {

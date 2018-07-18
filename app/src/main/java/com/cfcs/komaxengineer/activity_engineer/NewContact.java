@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
@@ -41,6 +43,8 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class NewContact extends AppCompatActivity {
 
@@ -55,13 +59,13 @@ public class NewContact extends AppCompatActivity {
     private static String SOAP_ACTION3 = "http://cfcs.co.in/AppEngineerddlSite";
     private static String METHOD_NAME3 = "AppEngineerddlSite";
 
-    EditText txt_name, txt_designation, txt_mobile, txt_mail, txt_login_user_name,txt_other_contact,txt_country_code;
+    EditText txt_name, txt_designation, txt_mobile, txt_mail, txt_login_user_name, txt_other_contact, txt_country_code;
 
     Spinner spinner_customer_name, spinner_plant;
 
     Button btn_submit_contact, btn_update_contact;
 
-    String ContactPersonId, ContactPersonName, Designation, PhoneNo, EmailID, LoginUserName,OtherContact,CountryCode;
+    String ContactPersonId, ContactPersonName, Designation, PhoneNo, EmailID, LoginUserName, OtherContact, CountryCode;
 
     String SelectedPlantID = "";
 
@@ -81,9 +85,11 @@ public class NewContact extends AppCompatActivity {
     String ComapareParentCustomerID = "";
     String CompareCustomerID = "";
 
-   LinearLayout maincontainer;
+    LinearLayout maincontainer;
 
-   TextView tv_customer_name,tv_plant,tv_name,tv_country_code,tv_login_user_name;
+    TextView tv_customer_name, tv_plant, tv_name, tv_country_code, tv_login_user_name;
+
+    boolean changing = false;
 
 
     @Override
@@ -104,27 +110,27 @@ public class NewContact extends AppCompatActivity {
 
         SimpleSpanBuilder ssbCustomer = new SimpleSpanBuilder();
         ssbCustomer.appendWithSpace("Customer Name");
-        ssbCustomer.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbCustomer.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_customer_name.setText(ssbCustomer.build());
 
         SimpleSpanBuilder ssbPlant = new SimpleSpanBuilder();
         ssbPlant.appendWithSpace("Plant");
-        ssbPlant.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbPlant.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_plant.setText(ssbPlant.build());
 
         SimpleSpanBuilder ssbName = new SimpleSpanBuilder();
         ssbName.appendWithSpace("Name");
-        ssbName.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbName.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_name.setText(ssbName.build());
 
         SimpleSpanBuilder ssbCountryName = new SimpleSpanBuilder();
         ssbCountryName.appendWithSpace("Country Code + Mobile No ");
-        ssbCountryName.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbCountryName.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_country_code.setText(ssbCountryName.build());
 
         SimpleSpanBuilder ssbLoginUserName = new SimpleSpanBuilder();
         ssbLoginUserName.appendWithSpace("Login User Name");
-        ssbLoginUserName.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbLoginUserName.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_login_user_name.setText(ssbLoginUserName.build());
 
         spinner_customer_name = findViewById(R.id.spinner_customer_name);
@@ -162,8 +168,6 @@ public class NewContact extends AppCompatActivity {
                 Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", NewContact.this);
             }
 
-
-
         }
 
         Config_Engg.isOnline(NewContact.this);
@@ -174,6 +178,27 @@ public class NewContact extends AppCompatActivity {
         } else {
             Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", NewContact.this);
         }
+
+        txt_country_code.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!changing && txt_country_code.getText().toString().startsWith("0")){
+                    changing = true;
+                    txt_country_code.setText(txt_country_code.getText().toString().replace("0", ""));
+                }
+                changing = false;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+        });
 
 
         btn_submit_contact.setOnClickListener(new View.OnClickListener() {
@@ -196,18 +221,22 @@ public class NewContact extends AppCompatActivity {
                         Config_Engg.alertBox("Please Enter Name ",
                                 NewContact.this);
                         txt_name.requestFocus();
-                    }else if(txt_country_code.getText().toString().equalsIgnoreCase("")){
-                        Config_Engg.alertBox("Please Enter Country Code",NewContact.this);
+                    } else if (txt_country_code.getText().toString().equalsIgnoreCase("")) {
+                        Config_Engg.alertBox("Please Enter Country Code", NewContact.this);
                         txt_country_code.requestFocus();
-                    } else if (txt_mobile.getText().toString().equalsIgnoreCase("")) {
-                        Config_Engg.alertBox("Please Enter Mobile No",
+                    } else if (!isValidMobile(txt_mobile.getText().toString().trim())) {
+                        Config_Engg.alertBox("Please Enter Valid Mobile No",
                                 NewContact.this);
                         txt_mobile.requestFocus();
-                    } else if (txt_login_user_name.getText().toString().equalsIgnoreCase("")) {
+                    } else if (!txt_mail.getText().toString().equalsIgnoreCase("") && !isValidMail(txt_mail.getText().toString())) {
+                        Config_Engg.alertBox("Please Enter Vaild Email",
+                                NewContact.this);
+                        txt_mail.requestFocus();
+                    }else if (txt_login_user_name.getText().toString().equalsIgnoreCase("")) {
                         Config_Engg.alertBox("Please Enter Login User Name",
                                 NewContact.this);
                         txt_login_user_name.requestFocus();
-                    }else {
+                    } else {
 
                         long SelectedPlant = spinner_plant.getSelectedItemId();
                         SelectedPlantID = plantID.get((int) SelectedPlant);
@@ -219,7 +248,6 @@ public class NewContact extends AppCompatActivity {
                         LoginUserName = txt_login_user_name.getText().toString().trim();
                         OtherContact = txt_other_contact.getText().toString();
                         CountryCode = txt_country_code.getText().toString().trim();
-
 
                         new AddNewContactAsy().execute();
                     }
@@ -252,17 +280,21 @@ public class NewContact extends AppCompatActivity {
                         Config_Engg.alertBox("Please Enter Name ",
                                 NewContact.this);
                         txt_name.requestFocus();
-                    } else if (txt_mobile.getText().toString().equalsIgnoreCase("")) {
+                    }else if (txt_country_code.getText().toString().equalsIgnoreCase("")) {
+                        Config_Engg.alertBox("Please Enter Country Code", NewContact.this);
+                        txt_country_code.requestFocus();
+                    } else if (!isValidMobile(txt_mobile.getText().toString().trim())) {
                         Config_Engg.alertBox("Please Enter Mobile No",
                                 NewContact.this);
                         txt_mobile.requestFocus();
+                    } else if (!txt_mail.getText().toString().equalsIgnoreCase("") && !isValidMail(txt_mail.getText().toString())) {
+                        Config_Engg.alertBox("Please Enter Vaild Email",
+                                NewContact.this);
+                        txt_mail.requestFocus();
                     }else if (txt_login_user_name.getText().toString().equalsIgnoreCase("")) {
                         Config_Engg.alertBox("Please Enter Login User Name",
                                 NewContact.this);
                         txt_login_user_name.requestFocus();
-                    }else if(txt_country_code.getText().toString().equalsIgnoreCase("")){
-                        Config_Engg.alertBox("Please Enter Country Code",NewContact.this);
-                        txt_country_code.requestFocus();
                     } else {
 
                         long SelectedPlant = spinner_plant.getSelectedItemId();
@@ -275,7 +307,6 @@ public class NewContact extends AppCompatActivity {
                         LoginUserName = txt_login_user_name.getText().toString();
                         OtherContact = txt_other_contact.getText().toString();
                         CountryCode = txt_country_code.getText().toString().trim();
-
 
                         new AddNewContactAsy().execute();
                     }
@@ -307,7 +338,6 @@ public class NewContact extends AppCompatActivity {
                         plantName = new ArrayList<String>();
                         plantName.add(0, "Select");
 
-
                         ArrayAdapter<String> spinneradapterMachine = new ArrayAdapter<String>(NewContact.this,
                                 android.R.layout.simple_spinner_item, plantName);
                         spinneradapterMachine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -327,6 +357,41 @@ public class NewContact extends AppCompatActivity {
             }
         });
 
+    }
+
+    private boolean isValidMobile(String phone) {
+        boolean check = false;
+        if (!Pattern.matches("[a-zA-Z]+", phone)) {
+            if (phone.length() != 10) {
+                // if(phone.length() != 10) {
+                check = false;
+                //       Config_Engg.toastShow("Not Valid Number",RaiseComplaintActivity.this);
+            } else {
+                check = true;
+            }
+        } else {
+            check = false;
+        }
+        return check;
+    }
+
+    private boolean isValidMail(String email) {
+        boolean check;
+        Pattern p;
+        Matcher m;
+
+        String EMAIL_STRING = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+        p = Pattern.compile(EMAIL_STRING);
+
+        m = p.matcher(email);
+        check = m.matches();
+
+        if (!check) {
+            //       Config_Engg.toastShow("Not Valid Email", RaiseComplaintActivity.this);
+        }
+        return check;
     }
 
     private class FillContactData extends AsyncTask<String, String, String> {
@@ -398,7 +463,7 @@ public class NewContact extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                flag =5;
+                flag = 5;
             }
             return contact_detail_value;
         }
@@ -413,11 +478,9 @@ public class NewContact extends AppCompatActivity {
                     JSONArray jsonArray = new JSONArray(contact_detail_value);
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-
                     CompareCustomerID = jsonObject.getString("CustomerID").toString();
 
                     ComapareParentCustomerID = jsonObject.getString("ParentCustomerID").toString();
-
 
                     String ContactPersonName = jsonObject.getString("ContactPersonName").toString();
                     txt_name.setText(ContactPersonName);
@@ -425,13 +488,11 @@ public class NewContact extends AppCompatActivity {
                     String Email = jsonObject.getString("Email").toString();
                     txt_mail.setText(Email);
 
-
                     String Phone = jsonObject.getString("Phone").toString();
                     txt_mobile.setText(Phone);
 
                     String Designation = jsonObject.getString("Designation").toString();
                     txt_designation.setText(Designation);
-
 
                     String LoginUserName = jsonObject.getString("LoginUserName").toString();
                     txt_login_user_name.setText(LoginUserName);
@@ -442,11 +503,9 @@ public class NewContact extends AppCompatActivity {
                     String CountryCode = jsonObject.getString("CountryCode").toString();
                     txt_country_code.setText(CountryCode);
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
 
             } else if (flag == 3) {
                 Config_Engg.toastShow("No Response", NewContact.this);
@@ -457,7 +516,7 @@ public class NewContact extends AppCompatActivity {
                 Config_Engg.putSharedPreferences(NewContact.this, "checklogin", "status", "2");
                 finish();
 
-            }else if(flag == 5){
+            } else if (flag == 5) {
                 ScanckBar();
                 btn_submit_contact.setEnabled(false);
                 btn_update_contact.setEnabled(false);
@@ -467,7 +526,6 @@ public class NewContact extends AppCompatActivity {
             progressDialog.dismiss();
         }
     }
-
 
     private void ScanckBar() {
 
@@ -493,7 +551,6 @@ public class NewContact extends AppCompatActivity {
                             }
 
 
-
                         }
 
                         btn_submit_contact.setEnabled(true);
@@ -511,7 +568,6 @@ public class NewContact extends AppCompatActivity {
 
         // Changing message text color
         snackbar.setActionTextColor(Color.RED);
-
         snackbar.show();
 
     }
@@ -544,7 +600,7 @@ public class NewContact extends AppCompatActivity {
             request.addProperty("Designation", Designation);
             request.addProperty("EmailID", EmailID);
             request.addProperty("PhoneNo", PhoneNo);
-            request.addProperty("OtherPhoneNo",OtherContact);
+            request.addProperty("OtherPhoneNo", OtherContact);
             request.addProperty("LoginUserName", LoginUserName);
             request.addProperty("CountryCode", CountryCode);
             request.addProperty("EngineerID", EngineerID);
@@ -617,7 +673,7 @@ public class NewContact extends AppCompatActivity {
                 Config_Engg.putSharedPreferences(NewContact.this, "checklogin", "status", "2");
                 finish();
 
-            }else if(flag == 5){
+            } else if (flag == 5) {
                 ScanckBar();
                 progressDialog.dismiss();
             }
@@ -626,17 +682,14 @@ public class NewContact extends AppCompatActivity {
         }
     }
 
-
     private class AddInitialData extends AsyncTask<String, String, String> {
 
         int flag;
         String msgstatus;
         String initialData, customerList, transactionList, engWorkStatusList;
         ProgressDialog progressDialog;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
 
         @Override
         protected void onPreExecute() {
@@ -762,7 +815,6 @@ public class NewContact extends AppCompatActivity {
                     //Log.e("Error is here", e.toString());
                 }
 
-
                 //  fillListDialog.dismiss();
             } else if (flag == 3) {
                 Config_Engg.toastShow("No Response", NewContact.this);
@@ -775,7 +827,7 @@ public class NewContact extends AppCompatActivity {
                     Config_Engg.logout(NewContact.this);
                     Config_Engg.putSharedPreferences(NewContact.this, "checklogin", "status", "2");
                     finish();
-                }else if(flag == 5){
+                } else if (flag == 5) {
 
                     ScanckBar();
                     btn_submit_contact.setEnabled(false);
@@ -783,31 +835,25 @@ public class NewContact extends AppCompatActivity {
                     progressDialog.dismiss();
                 }
 
-
             }
-           progressDialog.dismiss();
+            progressDialog.dismiss();
         }
     }
-
 
     private class AddSitePlant extends AsyncTask<String, String, String> {
 
         int flag;
         String msgstatus;
         String machine_detail, machine_list;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
-         ProgressDialog progressDialog;
-
+        ProgressDialog progressDialog;
         int count = 0;
-
 
         @Override
         protected void onPreExecute() {
 
-              progressDialog = ProgressDialog.show(NewContact.this, "Loading...", "Please Wait....", true, false);
+            progressDialog = ProgressDialog.show(NewContact.this, "Loading...", "Please Wait....", true, false);
         }
 
         @Override
@@ -924,7 +970,7 @@ public class NewContact extends AppCompatActivity {
                 Config_Engg.logout(NewContact.this);
                 Config_Engg.putSharedPreferences(NewContact.this, "checklogin", "status", "2");
                 finish();
-            }else if(flag == 5){
+            } else if (flag == 5) {
                 ScanckBar();
                 btn_submit_contact.setEnabled(false);
                 btn_update_contact.setEnabled(false);
@@ -950,10 +996,9 @@ public class NewContact extends AppCompatActivity {
                 intent = new Intent(NewContact.this, ChangePassword.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
-            case R.id.logout:
 
+            case R.id.logout:
                 Config_Engg.logout(NewContact.this);
                 finish();
                 Config_Engg.putSharedPreferences(this, "checklogin", "status", "2");
@@ -963,28 +1008,32 @@ public class NewContact extends AppCompatActivity {
                 intent = new Intent(NewContact.this, DashboardActivity.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
+
             case R.id.profile:
                 intent = new Intent(NewContact.this, ProfileUpdate.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_raise:
                 intent = new Intent(NewContact.this, RaiseComplaintActivity.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_complain:
                 intent = new Intent(NewContact.this, ManageComplaint.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_machines:
                 intent = new Intent(NewContact.this, ManageMachines.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_contact:
                 intent = new Intent(NewContact.this, ManageContact.class);
                 startActivity(intent);

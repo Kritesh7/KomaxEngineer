@@ -45,11 +45,8 @@ public class ComplaintListAdapter extends BaseAdapter {
     LayoutInflater inflater;
     Context context;
     private int i;
-
     String Status = "";
-
     int EditStatus = 1;
-
 
     public ComplaintListAdapter(Context context, ArrayList<ComplaintDataModel> complainList, String Status) {
         this.ComplainList = complainList;
@@ -69,7 +66,6 @@ public class ComplaintListAdapter extends BaseAdapter {
 
         return ComplainList.get(position);
     }
-
 
     @Override
     public int getViewTypeCount() {

@@ -94,7 +94,6 @@ public class EngineerWorkStatusListAdapter extends BaseAdapter {
     class MyViewHolder {
         TextView txt_complaint_no, txt_update_date, txt_work_status, txt_status_remark, txt_required_part, txt_update_by;
 
-
         //Button btnDetail;
         public MyViewHolder(View view) {
 //            card_view = view.findViewById(R.id.card_view);

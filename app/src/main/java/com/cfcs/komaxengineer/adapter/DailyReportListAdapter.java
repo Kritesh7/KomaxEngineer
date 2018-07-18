@@ -53,17 +53,14 @@ public class DailyReportListAdapter extends BaseAdapter {
         return DailyReportDataModelsList.get(position);
     }
 
-
     @Override
     public int getViewTypeCount() {
-
 
         return getCount();
     }
 
     @Override
     public int getItemViewType(int position) {
-
 
         return position;
     }
@@ -77,7 +74,6 @@ public class DailyReportListAdapter extends BaseAdapter {
     public View getView(final int position, View view, final ViewGroup viewGroup) {
         final DailyReportListAdapter.MyViewHolder mViewHolder;
 
-
         final DailyReportDataModel currentListData = getItem(position);
 
         if (view == null) {
@@ -90,14 +86,12 @@ public class DailyReportListAdapter extends BaseAdapter {
             mViewHolder = (DailyReportListAdapter.MyViewHolder) view.getTag();
         }
 
-
         mViewHolder.txt_report_no.setText(currentListData.getDailyReportNo());
         mViewHolder.txt_report_date.setText(currentListData.getDailyReportDateText());
         mViewHolder.txt_work_done.setText(currentListData.getWorkdone());
         mViewHolder.txt_travel_time.setText(currentListData.getTraveltime());
         mViewHolder.txt_service_time.setText(currentListData.getServicetime());
         mViewHolder.txt_next_follow_up.setText(currentListData.getNextFollowUpDateText());
-
 
         mViewHolder.action_dots.setOnClickListener(new View.OnClickListener() {
             class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
@@ -197,7 +191,6 @@ public class DailyReportListAdapter extends BaseAdapter {
         TextView txt_report_no, txt_report_date, txt_work_done, txt_travel_time, txt_service_time, txt_next_follow_up;
         ImageView iv_edit, iv_delete, action_dots;
         LinearLayout card_view_dailyReoprt;
-
 
         //Button btnDetail;
         public MyViewHolder(View view) {

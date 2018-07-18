@@ -52,7 +52,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView txt_contact_person_name, txt_plant_customer, txt_designation, txt_mail, txt_contact_mobile, txt_status,
-                txt_approval_remark, txt_customer, txt_srno,txt_other_contact;
+                txt_approval_remark, txt_customer, txt_srno, txt_other_contact;
 
         LinearLayout card_view_contact;
 
@@ -84,7 +84,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         rootView.setLayoutParams(lp);
 
-
         return new MyViewHolder(rootView);
 
     }
@@ -96,7 +95,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
         final String IsEditDelete = currentListData.getIsEditDelete();
         final String ContactPersonId = currentListData.getContactPersonId();
-
 
         holder.txt_contact_person_name.setText(currentListData.getContactPersonName());
         holder.txt_plant_customer.setText(currentListData.getSiteAddress());
@@ -115,7 +113,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         } else {
             holder.action_dots.setVisibility(View.VISIBLE);
         }
-
 
         holder.action_dots.setOnClickListener(new View.OnClickListener() {
 
@@ -174,7 +171,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             popupMenu.findItem(R.id.action_edit_record).setVisible(true);
         }
 
-
     }
 
     class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
@@ -193,7 +189,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             this.position = position;
             this.contactPersonId = ContactPersonId;
             this.isEditDelete = IsEditDelete;
-
         }
 
         public MyMenuItemClickListener() {
@@ -245,11 +240,9 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                     });
                     alertDialog.show();
 
-
                     return true;
                 default:
             }
-
 
             return false;
         }

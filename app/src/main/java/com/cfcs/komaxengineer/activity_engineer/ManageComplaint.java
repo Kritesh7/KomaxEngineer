@@ -65,7 +65,6 @@ public class ManageComplaint extends AppCompatActivity {
     private static String SOAP_ACTION3 = "http://cfcs.co.in/AppEngineerddlSite";
     private static String METHOD_NAME3 = "AppEngineerddlSite";
 
-
     ArrayList<ComplaintDataModel> complainList = new ArrayList<ComplaintDataModel>();
 
     String[] ComplainNo;
@@ -82,7 +81,6 @@ public class ManageComplaint extends AppCompatActivity {
     String[] ComplainByName;
     String[] IsEditDelete;
     String[] IsServiceReportFill;
-
 
     FloatingActionButton fab, fab1, fab2;
     LinearLayout fabLayout1, fabLayout2;
@@ -125,7 +123,7 @@ public class ManageComplaint extends AppCompatActivity {
 
     CoordinatorLayout maincontainer;
 
-    Button btn_search_find,btn_search_clear;
+    Button btn_search_find, btn_search_clear;
 
     AlertDialog dialog;
 
@@ -140,7 +138,6 @@ public class ManageComplaint extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.logo_komax);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-
         Config_Engg.getSharedPreferenceRemove(ManageComplaint.this, "pref_Engg", "Customer");
 
         Config_Engg.getSharedPreferenceRemove(ManageComplaint.this, "pref_Engg", "Plant");
@@ -154,7 +151,6 @@ public class ManageComplaint extends AppCompatActivity {
         Config_Engg.getSharedPreferenceRemove(ManageComplaint.this, "pref_Engg", "Status");
 
         Config_Engg.getSharedPreferenceRemove(ManageComplaint.this, "pref_Engg", "WorkStatus");
-
 
         list = (ListView) findViewById(R.id.complaint_list_view);
 
@@ -282,10 +278,9 @@ public class ManageComplaint extends AppCompatActivity {
                 intent = new Intent(ManageComplaint.this, ChangePassword.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
-            case R.id.logout:
 
+            case R.id.logout:
                 Config_Engg.logout(ManageComplaint.this);
                 finish();
                 Config_Engg.putSharedPreferences(this, "checklogin", "status", "2");
@@ -295,28 +290,32 @@ public class ManageComplaint extends AppCompatActivity {
                 intent = new Intent(ManageComplaint.this, DashboardActivity.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
+
             case R.id.profile:
                 intent = new Intent(ManageComplaint.this, ProfileUpdate.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_raise:
                 intent = new Intent(ManageComplaint.this, RaiseComplaintActivity.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_complain:
                 intent = new Intent(ManageComplaint.this, ManageComplaint.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_machines:
                 intent = new Intent(ManageComplaint.this, ManageMachines.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_contact:
                 intent = new Intent(ManageComplaint.this, ManageContact.class);
                 startActivity(intent);
@@ -338,7 +337,6 @@ public class ManageComplaint extends AppCompatActivity {
         if (isFABOpen) {
             closeFABMenu();
         } else {
-
             Intent intent = new Intent(ManageComplaint.this, DashboardActivity.class);
             startActivity(intent);
             finish();
@@ -372,7 +370,6 @@ public class ManageComplaint extends AppCompatActivity {
 
         myCalendar = Calendar.getInstance();
 
-
         String ComparedDateFrom = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "DateFrom", "");
 
         txt_complaint_date_from.setText(ComparedDateFrom);
@@ -385,10 +382,8 @@ public class ManageComplaint extends AppCompatActivity {
 
         txt_complaint_no.setText(ComparedComplainNo);
 
-
         String ComparedCustomerName = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "Customer", "");
         String ComparedWorkStatusName = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "WorkStatus", "");
-
 
         spinner_customer.setAdapter(spinneradapterCustomer);
 
@@ -432,8 +427,6 @@ public class ManageComplaint extends AppCompatActivity {
         };
 
 
-
-
         // DatePicker Listener for Date to
         final DatePickerDialog.OnDateSetListener date_to = new DatePickerDialog.OnDateSetListener() {
 
@@ -464,7 +457,7 @@ public class ManageComplaint extends AppCompatActivity {
             public void onClick(View view) {
 
                 // TODO Auto-generated method stub
-                new DatePickerDialog(ManageComplaint.this,android.R.style.Theme_Holo_Dialog, date_from, myCalendar
+                new DatePickerDialog(ManageComplaint.this, android.R.style.Theme_Holo_Dialog, date_from, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -477,7 +470,7 @@ public class ManageComplaint extends AppCompatActivity {
             public void onClick(View view) {
 
                 // TODO Auto-generated method stub
-                new DatePickerDialog(ManageComplaint.this,android.R.style.Theme_Holo_Dialog, date_to, myCalendar
+                new DatePickerDialog(ManageComplaint.this, android.R.style.Theme_Holo_Dialog, date_to, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 
@@ -508,7 +501,6 @@ public class ManageComplaint extends AppCompatActivity {
             spinner_status.setSelection(spinnerpostion);
 
         }
-
 
         spinner_customer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -578,9 +570,7 @@ public class ManageComplaint extends AppCompatActivity {
                     long statusID = spinner_status.getSelectedItemId();
                     StatusID = statusIDList.get((int) statusID);
 
-
                     complainList.clear();
-
 
                     Config_Engg.putSharedPreferences(ManageComplaint.this, "pref_Engg", "Customer", spinner_customer.getSelectedItem().toString());
 
@@ -595,7 +585,6 @@ public class ManageComplaint extends AppCompatActivity {
                     Config_Engg.putSharedPreferences(ManageComplaint.this, "pref_Engg", "WorkStatus", spinner_work_status.getSelectedItem().toString());
 
                     Config_Engg.putSharedPreferences(ManageComplaint.this, "pref_Engg", "Status", spinner_status.getSelectedItem().toString());
-
 
                     dialog.dismiss();
 
@@ -629,7 +618,6 @@ public class ManageComplaint extends AppCompatActivity {
 
                 Config_Engg.getSharedPreferenceRemove(ManageComplaint.this, "pref_Engg", "WorkStatus");
 
-
                 Config_Engg.isOnline(ManageComplaint.this);
                 if (Config_Engg.internetStatus == true) {
 
@@ -655,7 +643,6 @@ public class ManageComplaint extends AppCompatActivity {
         String statusbtn = "";
         String LoginStatus;
         String invalid = "LoginFailed";
-
         String ComplainList = "";
         String CustomerID = "";
         String SiteID = "";
@@ -792,7 +779,7 @@ public class ManageComplaint extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-               flag = 5;
+                flag = 5;
                 Log.e("error is 1 ", e.toString());
             }
             return null;
@@ -814,7 +801,7 @@ public class ManageComplaint extends AppCompatActivity {
                 } else {
                     if (flag == 3) {
                         Config_Engg.toastShow("No Response", ManageComplaint.this);
-                            progressDialog.dismiss();
+                        progressDialog.dismiss();
                     } else {
                         if (flag == 4) {
 
@@ -822,7 +809,7 @@ public class ManageComplaint extends AppCompatActivity {
                             Config_Engg.logout(ManageComplaint.this);
                             Config_Engg.putSharedPreferences(ManageComplaint.this, "checklogin", "status", "2");
                             finish();
-                        }else if(flag == 5){
+                        } else if (flag == 5) {
 
                             ScanckBar();
                             progressDialog.dismiss();
@@ -836,7 +823,6 @@ public class ManageComplaint extends AppCompatActivity {
             progressDialog.dismiss();
         }
     }
-
 
     private void ScanckBar() {
 
@@ -856,25 +842,20 @@ public class ManageComplaint extends AppCompatActivity {
                             Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", ManageComplaint.this);
                         }
 
-
                     }
                 });
 
         // Changing message text color
         snackbar.setActionTextColor(Color.RED);
-
         snackbar.show();
 
     }
-
 
     private class SetdataInCustomerSpinner extends AsyncTask<String, String, String> {
 
         int flag;
         String msgstatus;
         String initialData, customerList, transactionList, engWorkStatusList;
-
-
         String LoginStatus;
         String invalid = "LoginFailed";
 
@@ -958,19 +939,16 @@ public class ManageComplaint extends AppCompatActivity {
                 Config_Engg.toastShow(msgstatus, ManageComplaint.this);
             } else if (flag == 2) {
                 try {
-//
                     JSONArray jsonArray2 = new JSONArray(customerList);
                     customerIDList = new ArrayList<String>();
                     customerIDList.add(0, "00000000-0000-0000-0000-000000000000");
                     customerNameList = new ArrayList<String>();
                     customerNameList.add(0, "Select");
 
-
                     for (int i = 0; i < jsonArray2.length(); i++) {
                         JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
                         String CustomerID = jsonObject2.getString("CustomerID");
                         String CustomerName = jsonObject2.getString("CustomerName");
-
 
                         customerIDList.add(i + 1, CustomerID);
 
@@ -979,7 +957,6 @@ public class ManageComplaint extends AppCompatActivity {
 
                     spinneradapterCustomer = new ArrayAdapter<String>(ManageComplaint.this, android.R.layout.simple_spinner_item, customerNameList);
                     spinneradapterCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1030,19 +1007,14 @@ public class ManageComplaint extends AppCompatActivity {
         }
     }
 
-
     private class AddSitePlant extends AsyncTask<String, String, String> {
 
         int flag;
         String msgstatus;
         String machine_detail, machine_list;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
-
         int count = 0;
-
         String ComparedPlantName = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "Plant", "");
 
         @Override
@@ -1154,10 +1126,9 @@ public class ManageComplaint extends AppCompatActivity {
                 Config_Engg.logout(ManageComplaint.this);
                 Config_Engg.putSharedPreferences(ManageComplaint.this, "checklogin", "status", "2");
                 finish();
-            }else if(flag == 5){
+            } else if (flag == 5) {
 
                 dialog.dismiss();
-
                 ScanckBar();
 
             }

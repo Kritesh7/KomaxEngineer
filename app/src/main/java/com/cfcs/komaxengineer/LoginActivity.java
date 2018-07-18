@@ -63,22 +63,27 @@ public class LoginActivity extends Activity {
         forgotPassword = findViewById(R.id.forgotPassword);
         maincontainer = findViewById(R.id.maincontainer);
 
+        String Username = Config_Engg.getSharedPreferences(LoginActivity.this,"pref_Engg","UserName","");
+        txt_user_name.setText(Username);
+        userName = txt_user_name.getText().toString().trim();
+        userPass = txt_user_pass.getText().toString().trim();
 
+        if(userName.compareTo("") != 0){
+            txt_user_pass.requestFocus();
+        }else {
+            txt_user_name.requestFocus();
+        }
 
         //Click Listener
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
-                userName = txt_user_name.getText().toString().trim();
-                userPass = txt_user_pass.getText().toString().trim();
                 if (userName.compareTo("") != 0 && userPass.compareTo("") != 0) {
 
                     Config_Engg.isOnline(LoginActivity.this);
                     if (Config_Engg.internetStatus == true) {
                         btn_submit.setClickable(false);
-
                         new LoginTask().execute();
                     } else {
                         Config_Engg.toastShow("No Internet Connection", LoginActivity.this);
@@ -106,6 +111,7 @@ public class LoginActivity extends Activity {
 
                 Intent i = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
                 startActivity(i);
+                finish();
             }
         });
     }
@@ -197,7 +203,6 @@ public class LoginActivity extends Activity {
 
     }
 
-
     private void ScanckBar() {
 
         Snackbar snackbar = Snackbar
@@ -219,7 +224,6 @@ public class LoginActivity extends Activity {
 
     }
 
-
     private void login() {
 
         Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
@@ -231,7 +235,6 @@ public class LoginActivity extends Activity {
         finish();
 
     }
-
 
     @Override
     public void onBackPressed() {

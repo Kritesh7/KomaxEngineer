@@ -1,6 +1,7 @@
 package com.cfcs.komaxengineer.activity_engineer;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -16,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +32,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -64,10 +68,15 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import in.co.cfcs.kriteshfilepicker.FilePickerBuilder;
+import in.co.cfcs.kriteshfilepicker.FilePickerConst;
+import in.co.cfcs.kriteshfilepicker.utils.Orientation;
 
 public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnClickListener {
 
@@ -83,7 +92,7 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
 
     EditText txt_remark;
 
-    Button btn_image_choose, btn_submit_work_status, btn_spare_search, btn_take_image, btn_image_view;
+    Button btn_submit_work_status, btn_spare_search, btn_take_image, btn_image_view;
 
     int currentapiVersion = 0;
 
@@ -140,6 +149,9 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
 
     TextView tv_status;
 
+    private static final int CUSTOM_REQUEST_CODE = 532;
+    private ArrayList<String> photoPaths = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,14 +166,13 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
 
         SimpleSpanBuilder ssbStatus = new SimpleSpanBuilder();
         ssbStatus.appendWithSpace("Eng. Work Status");
-        ssbStatus.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbStatus.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_status.setText(ssbStatus.build());
 
         spinner_engg_work_status = findViewById(R.id.spinner_engg_work_status);
         btn_spare_search = findViewById(R.id.btn_spare_search);
         txt_remark = findViewById(R.id.txt_remark);
         btn_take_image = findViewById(R.id.btn_take_image);
-        btn_image_choose = findViewById(R.id.btn_image_choose);
         btn_image_view = findViewById(R.id.btn_image_view);
         btn_submit_work_status = findViewById(R.id.btn_submit_work_status);
         llSpareParts = (LinearLayout) findViewById(R.id.llSpareParts);
@@ -172,7 +183,6 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
         totalImage = new ArrayList<String>();
 
         btn_take_image.setOnClickListener(this);
-        btn_image_choose.setOnClickListener(this);
         btn_image_view.setOnClickListener(this);
 
         currentapiVersion = android.os.Build.VERSION.SDK_INT;
@@ -285,7 +295,6 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
                     }
 
                 }
-
             }
         });
 
@@ -334,23 +343,6 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
 
         switch (v.getId()) {
 
-            case R.id.btn_image_choose:
-
-                if (currentapiVersion <= 22) {
-                    Intent intent = new Intent(this, CustomGallery.class);
-                    startActivityForResult(intent, PICK_IMAGE_MULTIPLE);
-                } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-                        } else {
-                            Intent intent = new Intent(this, CustomGallery.class);
-                            startActivityForResult(intent, PICK_IMAGE_MULTIPLE);
-                        }
-                    }
-                }
-                break;
-
             case R.id.btn_image_view:
 
                 if (totalImage.size() > 0) {
@@ -363,14 +355,24 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
 
             case R.id.btn_take_image:
 
-                if (currentapiVersion <= 22) {
 
-                    ContentValues values = new ContentValues();
-                    values.put(MediaStore.Images.Media.TITLE, "Image File name");
-                    mCapturedImageURI = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                    Intent intentImg = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intentImg.putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
-                    startActivityForResult(intentImg, 0);
+                if (currentapiVersion <= 22) {
+                    //   int maxCount = MAX_ATTACHMENT_COUNT - docPaths.size();
+
+                    FilePickerBuilder.getInstance()
+                            .setMaxCount(5)
+                            .setSelectedFiles(photoPaths)
+                            .setActivityTheme(R.style.FilePickerTheme)
+                            .setActivityTitle("Please select media")
+                            .enableVideoPicker(false)
+                            .enableCameraSupport(true)
+                            .showGifs(false)
+                            .showFolderView(false)
+                            .enableSelectAll(true)
+                            .enableImagePicker(true)
+                            .setCameraPlaceholder(R.drawable.custom_camera)
+                            .withOrientation(Orientation.UNSPECIFIED)
+                            .pickPhoto(SubmitEngWorkStatus.this, CUSTOM_REQUEST_CODE);
 
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -381,12 +383,21 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
                         } else if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                         } else {
-                            ContentValues values = new ContentValues();
-                            values.put(MediaStore.Images.Media.TITLE, "Image File name");
-                            mCapturedImageURI = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                            Intent intentImg = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            intentImg.putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
-                            startActivityForResult(intentImg, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+                            //   int maxCount = MAX_ATTACHMENT_COUNT - docPaths.size();
+                            FilePickerBuilder.getInstance()
+                                    .setMaxCount(5)
+                                    .setSelectedFiles(photoPaths)
+                                    .setActivityTheme(R.style.FilePickerTheme)
+                                    .setActivityTitle("Please select media")
+                                    .enableVideoPicker(false)
+                                    .enableCameraSupport(true)
+                                    .showGifs(false)
+                                    .showFolderView(false)
+                                    .enableSelectAll(true)
+                                    .enableImagePicker(true)
+                                    .setCameraPlaceholder(R.drawable.custom_camera)
+                                    .withOrientation(Orientation.UNSPECIFIED)
+                                    .pickPhoto(SubmitEngWorkStatus.this, CUSTOM_REQUEST_CODE);
                         }
                     }
                 }
@@ -402,50 +413,31 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
-            if (requestCode == PICK_IMAGE_MULTIPLE) {
-                imagesPathList = new ArrayList<String>();
-                imagesPath = data.getStringExtra("data").split("\\|");
+        switch (requestCode) {
+            case CUSTOM_REQUEST_CODE:
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    photoPaths = new ArrayList<>();
+                    totalImage.clear();
+                    imagesPath = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA).toArray(new String[0]);
 
-                for (int i = 0; i < imagesPath.length; i++) {
-                    imagesPathList.add(imagesPath[i]);
+                    for (int i = 0; i < imagesPath.length; i++) {
+                        photoPaths.add(imagesPath[i]);
+                    }
+                    totalImage.addAll(photoPaths);
+
+                    if (totalImage.size() > 0) {
+                        btn_image_view.setText(totalImage.size() + " Image");
+                    } else {
+                        btn_image_view.setText("No Image");
+                    }
+
+
                 }
-                totalImage.addAll(imagesPathList);
-            } else if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
-                String selectedImagePath = getRealPathFromURI(mCapturedImageURI);
-                totalImage.add(selectedImagePath);
-
-            } else if (resultCode == RESULT_CANCELED) {
-                // user cancelled Image capture
-                Toast.makeText(getApplicationContext(),
-                        "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
-                        .show();
-            } else {
-                // failed to capture image
-                Toast.makeText(getApplicationContext(),
-                        "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
-                        .show();
-            }
-            if (totalImage.size() > 0) {
-                btn_image_view.setText(totalImage.size() + " Image");
-            } else {
-                btn_image_view.setText("No Image");
-            }
+                break;
 
         }
 
-    }
 
-    public String getRealPathFromURI(Uri contentUri) {
-        try {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } catch (Exception e) {
-            return contentUri.getPath();
-        }
     }
 
     private void initiateImagePopupWindow() {
@@ -528,7 +520,6 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
                     }
                 }
             });
-
 
 
             alertDialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
@@ -879,6 +870,7 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
                 @Override
                 public void onClick(View v) {
                     totalImage.remove(position);
+                    photoPaths.remove(position);
                     notifyDataSetChanged();
                 }
             });
@@ -889,7 +881,6 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
             return totalImage.size();
         }
     }
-
 
     public void getEngineerLocation() {
 
@@ -1202,6 +1193,7 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
 
         }
     }
+
     private void ScanckBar() {
 
         Snackbar snackbar = Snackbar
@@ -1231,4 +1223,79 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
         snackbar.show();
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.change_password:
+                Intent intent;
+                intent = new Intent(SubmitEngWorkStatus.this, ChangePassword.class);
+                startActivity(intent);
+                finish();
+
+                return (true);
+            case R.id.logout:
+
+                Config_Engg.logout(SubmitEngWorkStatus.this);
+                finish();
+                Config_Engg.putSharedPreferences(this, "checklogin", "status", "2");
+                return (true);
+
+            case R.id.dashboard:
+                intent = new Intent(SubmitEngWorkStatus.this, DashboardActivity.class);
+                startActivity(intent);
+                finish();
+
+                return (true);
+            case R.id.profile:
+                intent = new Intent(SubmitEngWorkStatus.this, ProfileUpdate.class);
+                startActivity(intent);
+                finish();
+                return (true);
+            case R.id.btn_raise:
+                intent = new Intent(SubmitEngWorkStatus.this, RaiseComplaintActivity.class);
+                startActivity(intent);
+                finish();
+                return (true);
+            case R.id.btn_complain:
+                intent = new Intent(SubmitEngWorkStatus.this, ManageComplaint.class);
+                startActivity(intent);
+                finish();
+                return (true);
+            case R.id.btn_machines:
+                intent = new Intent(SubmitEngWorkStatus.this, ManageMachines.class);
+                startActivity(intent);
+                finish();
+                return (true);
+            case R.id.btn_contact:
+                intent = new Intent(SubmitEngWorkStatus.this, ManageContact.class);
+                startActivity(intent);
+                finish();
+                return (true);
+
+            case R.id.btn_menu_feedback:
+                intent = new Intent(SubmitEngWorkStatus.this, FeedbackActivity.class);
+                startActivity(intent);
+                finish();
+                return (true);
+        }
+        return (super.onOptionsItemSelected(item));
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(SubmitEngWorkStatus.this, EngineerWorkStatusUpdate.class);
+        intent.putExtra("ComplainNo", complainno);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
+    }
+
 }

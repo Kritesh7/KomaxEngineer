@@ -46,7 +46,7 @@ public class DailyReportDetail extends AppCompatActivity {
     String dailyreportNo;
 
     TextView txt_work_done_plant, txt_work_detail, txt_suggestion, txt_cause_of_faliure, txt_next_follow_up, txt_reason_close, txt_travel_cost,
-            txt_other_exp, txt_travel_time, txt_service_time, txt_engg_exp_detail, txt_sign_by_name, txt_sign_by_mobile,txt_customer_remark, txt_sign_by_email,txt_service_charge;
+            txt_other_exp, txt_travel_time, txt_service_time, txt_engg_exp_detail, txt_sign_by_name, txt_sign_by_mobile, txt_customer_remark, txt_sign_by_email, txt_service_charge;
 
     LinearLayout add_card_view_spare_part;
 
@@ -101,7 +101,6 @@ public class DailyReportDetail extends AppCompatActivity {
         } else {
             Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", DailyReportDetail.this);
         }
-
 
     }
 
@@ -192,7 +191,6 @@ public class DailyReportDetail extends AppCompatActivity {
                 flag = 5;
             }
 
-
             return null;
         }
 
@@ -216,21 +214,15 @@ public class DailyReportDetail extends AppCompatActivity {
                     String Suggestion = jsonObject.getString("Suggestion").toString();
                     txt_suggestion.setText(Suggestion);
 
-//                    String CauseOfFailure = jsonObject.getString("CauseOfFailure").toString();
-//                    txt_cause_of_faliure.setText(CauseOfFailure);
-
                     String NextFollowUpTimeText = jsonObject.getString("NextFollowUpTimeText").toString();
                     String NextFollowUpDateText = jsonObject.getString("NextFollowUpDateText").toString();
                     txt_next_follow_up.setText(NextFollowUpDateText + " " + NextFollowUpTimeText);
 
-
                     String ReasonForNotClose = jsonObject.getString("ReasonForNotClose").toString();
                     txt_reason_close.setText(ReasonForNotClose);
 
-
                     String EngineerTravelExpense = jsonObject.getString("EngineerTravelExpense").toString();
                     txt_travel_cost.setText(EngineerTravelExpense);
-
 
                     String EngineerOtherExpense = jsonObject.getString("EngineerOtherExpense").toString();
                     txt_other_exp.setText(EngineerOtherExpense);
@@ -260,7 +252,6 @@ public class DailyReportDetail extends AppCompatActivity {
                     txt_service_charge.setText(ServiceCharge);
 
                     imv_signature.setImageBitmap(bitmap);
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -298,7 +289,6 @@ public class DailyReportDetail extends AppCompatActivity {
                     childSpareDetail.setOrientation(LinearLayout.HORIZONTAL);
                     parentInCardView.addView(childSpareDetail);
 
-
                     LinearLayout.LayoutParams Textparams = new LinearLayout.LayoutParams(
                             0, LinearLayout.LayoutParams.WRAP_CONTENT, 3.3f);
 
@@ -320,7 +310,6 @@ public class DailyReportDetail extends AppCompatActivity {
                     Qty.setLayoutParams(Textparams);
                     Qty.setText("Qty");
                     Qty.setTypeface(null, Typeface.BOLD);
-
 
                     childSpareDetail.addView(SNo);
                     childSpareDetail.addView(Part_No);
@@ -356,7 +345,6 @@ public class DailyReportDetail extends AppCompatActivity {
                         childSpareDetailDecs.setOrientation(LinearLayout.HORIZONTAL);
                         parentInCardView.addView(childSpareDetailDecs);
 
-
                         LinearLayout.LayoutParams Textparams3 = new LinearLayout.LayoutParams(
                                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 3.3f);
 //                        Textparams.setMargins(50, 8, 50, 8);
@@ -376,12 +364,10 @@ public class DailyReportDetail extends AppCompatActivity {
                         Part_No1.setText(PartNo);
                         // Part_No1.setTypeface(null, Typeface.BOLD);
 
-
                         TextView Qty1 = new TextView(DailyReportDetail.this);
                         Qty1.setLayoutParams(Textparams3);
                         Qty1.setText(SpareQuantity);
                         // Qty1.setTypeface(null, Typeface.BOLD);
-
 
                         LinearLayout.LayoutParams Textparams6 = new LinearLayout.LayoutParams(
                                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
@@ -401,7 +387,6 @@ public class DailyReportDetail extends AppCompatActivity {
                             view001.setElevation(2);
                         }
                         view001.setBackgroundColor(Color.parseColor("#e0e0e0"));
-
 
                         childSpareDetailDynamic.addView(SNo1);
                         childSpareDetailDynamic.addView(Part_No1);
@@ -424,19 +409,17 @@ public class DailyReportDetail extends AppCompatActivity {
 
             } else if (flag == 4) {
 
-
                 Config_Engg.toastShow(msgstatus, DailyReportDetail.this);
                 Config_Engg.logout(DailyReportDetail.this);
                 Config_Engg.putSharedPreferences(DailyReportDetail.this, "checklogin", "status", "2");
                 finish();
 
-            }else if(flag == 5){
+            } else if (flag == 5) {
 
                 ScanckBar();
                 progressDialog.dismiss();
             }
             progressDialog.dismiss();
-
         }
     }
 
@@ -461,7 +444,6 @@ public class DailyReportDetail extends AppCompatActivity {
 
         // Changing message text color
         snackbar.setActionTextColor(Color.RED);
-
         snackbar.show();
 
     }
@@ -493,10 +475,9 @@ public class DailyReportDetail extends AppCompatActivity {
                 intent = new Intent(DailyReportDetail.this, ChangePassword.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
-            case R.id.logout:
 
+            case R.id.logout:
                 Config_Engg.logout(DailyReportDetail.this);
                 finish();
                 Config_Engg.putSharedPreferences(this, "checklogin", "status", "2");
@@ -506,28 +487,32 @@ public class DailyReportDetail extends AppCompatActivity {
                 intent = new Intent(DailyReportDetail.this, DashboardActivity.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
+
             case R.id.profile:
                 intent = new Intent(DailyReportDetail.this, ProfileUpdate.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_raise:
                 intent = new Intent(DailyReportDetail.this, RaiseComplaintActivity.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_complain:
                 intent = new Intent(DailyReportDetail.this, ManageComplaint.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_machines:
                 intent = new Intent(DailyReportDetail.this, ManageMachines.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_contact:
                 intent = new Intent(DailyReportDetail.this, ManageContact.class);
                 startActivity(intent);

@@ -67,7 +67,6 @@ public class ManageContact extends AppCompatActivity {
     private static String SOAP_ACTION3 = "http://cfcs.co.in/AppEngineerddlSite";
     private static String METHOD_NAME3 = "AppEngineerddlSite";
 
-
     private static String SOAP_ACTION6 = "http://cfcs.co.in/AppEngineerddlPrincipalRegionAppStatus";
     private static String METHOD_NAME6 = "AppEngineerddlPrincipalRegionAppStatus";
 
@@ -125,7 +124,7 @@ public class ManageContact extends AppCompatActivity {
     AlertDialog.Builder alertDialog;
     AlertDialog dialog;
 
-    Button btn_search_find,btn_search_clear;
+    Button btn_search_find, btn_search_clear;
 
 
     @Override
@@ -147,14 +146,11 @@ public class ManageContact extends AppCompatActivity {
 
         Config_Engg.getSharedPreferenceRemove(ManageContact.this, "pref_Engg", "appStatus");
 
-
         recycler_view = findViewById(R.id.recycler_view);
-
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recycler_view.setLayoutManager(mLayoutManager);
         recycler_view.setItemAnimator(new DefaultItemAnimator());
-
 
         customerID = "00000000-0000-0000-0000-000000000000";
         siteID = "00000000-0000-0000-0000-000000000000";
@@ -183,7 +179,6 @@ public class ManageContact extends AppCompatActivity {
         fabBGLayout = findViewById(R.id.fabBGLayout);
 
         maincontainer = findViewById(R.id.maincontainer);
-
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,7 +282,7 @@ public class ManageContact extends AppCompatActivity {
 
         btn_search_clear = convertView.findViewById(R.id.btn_search_clear);
 
-         dialog = alertDialog.create();
+        dialog = alertDialog.create();
 
 //        Config_Engg.isOnline(ManageContact.this);
 //        if (Config_Engg.internetStatus == true) {
@@ -301,7 +296,6 @@ public class ManageContact extends AppCompatActivity {
 
         String ComparedCustomerName = Config_Engg.getSharedPreferences(ManageContact.this, "pref_Engg", "CustomerID", "");
         spinner_customer_name.setAdapter(spinneradapterCustomer);
-
 
         if (!ComparedCustomerName.equalsIgnoreCase("")) {
 
@@ -320,11 +314,9 @@ public class ManageContact extends AppCompatActivity {
 
         }
 
-
         String ComparedSerach = Config_Engg.getSharedPreferences(ManageContact.this, "pref_Engg", "SearchStr", "");
 
         txt_name_email.setText(ComparedSerach);
-
 
         spinner_customer_name.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -344,7 +336,6 @@ public class ManageContact extends AppCompatActivity {
                         plantID.add(0, "00000000-0000-0000-0000-000000000000");
                         plantName = new ArrayList<String>();
                         plantName.add(0, "Select");
-
 
                         ArrayAdapter<String> spinneradapterMachine = new ArrayAdapter<String>(ManageContact.this,
                                 android.R.layout.simple_spinner_item, plantName);
@@ -389,10 +380,7 @@ public class ManageContact extends AppCompatActivity {
                     long appStatus = spinner_approval_status.getSelectedItemId();
                     approveStatusID = appStatusIDList.get((int) appStatus);
 
-
-
                     contactList.clear();
-
 
                     Config_Engg.putSharedPreferences(ManageContact.this, "pref_Engg", "SearchStr", SearchStr);
 
@@ -401,7 +389,6 @@ public class ManageContact extends AppCompatActivity {
                     Config_Engg.putSharedPreferences(ManageContact.this, "pref_Engg", "PlantID", spinner_plant.getSelectedItem().toString());
 
                     Config_Engg.putSharedPreferences(ManageContact.this, "pref_Engg", "appStatus", spinner_approval_status.getSelectedItem().toString());
-
 
                     dialog.dismiss();
 
@@ -415,7 +402,6 @@ public class ManageContact extends AppCompatActivity {
 
             }
         });
-
 
 
         btn_search_clear.setOnClickListener(new View.OnClickListener() {
@@ -466,10 +452,7 @@ public class ManageContact extends AppCompatActivity {
         String LoginStatus;
         String invalid = "LoginFailed";
         ProgressDialog progressDialog;
-
         String ContactList = "";
-
-
         String CustomerID = "";
         String SiteID = "";
         String ApproveStatusID = "";
@@ -549,7 +532,6 @@ public class ManageContact extends AppCompatActivity {
                         LoginUserName = new String[jsonArray.length()];
                         OtherContact = new String[jsonArray.length()];
 
-
                         for (int i = 0; i < jsonArray.length(); i++) {
                             count += 1;
 
@@ -558,7 +540,7 @@ public class ManageContact extends AppCompatActivity {
                                         .getJSONObject(i);
 
                                 ContactListDataModel contactListDataModel = new ContactListDataModel(AuthCode,
-                                        AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode,AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode);
+                                        AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode);
                                 contactListDataModel.setContactPersonId(jsonObject1.getString("ContactPersonId").toString());
                                 contactListDataModel.setCustomerID(jsonObject1.getString("CustomerID").toString());
                                 contactListDataModel.setSiteAddress(jsonObject1.getString("SiteAddress").toString());
@@ -625,7 +607,7 @@ public class ManageContact extends AppCompatActivity {
                             Config_Engg.logout(ManageContact.this);
                             Config_Engg.putSharedPreferences(ManageContact.this, "checklogin", "status", "2");
                             finish();
-                        }else  if(flag == 5){
+                        } else if (flag == 5) {
 
 
                             ScanckBar();
@@ -672,17 +654,14 @@ public class ManageContact extends AppCompatActivity {
 
     }
 
-
     private class SetdataInCustomerSpinner extends AsyncTask<String, String, String> {
 
         int flag;
         String msgstatus;
         String initialData, customerList, transactionList, engWorkStatusList;
         ProgressDialog progressDialog;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
 
         @Override
         protected void onPreExecute() {
@@ -777,7 +756,6 @@ public class ManageContact extends AppCompatActivity {
                         String CustomerID = jsonObject2.getString("CustomerID");
                         String CustomerName = jsonObject2.getString("CustomerName");
 
-
                         customerIDList.add(i + 1, CustomerID);
                         //siteNameList.add(SiteName);
                         customerNameList.add(i + 1, CustomerName);
@@ -799,17 +777,13 @@ public class ManageContact extends AppCompatActivity {
                 finish();
             } else {
                 if (flag == 4) {
-
                     Config_Engg.toastShow(msgstatus, ManageContact.this);
                     Config_Engg.logout(ManageContact.this);
                     Config_Engg.putSharedPreferences(ManageContact.this, "checklogin", "status", "2");
                     finish();
-                }
-                else if(flag == 5){
+                } else if (flag == 5) {
                     ScanckBar();
                 }
-
-
             }
             progressDialog.dismiss();
         }
@@ -819,18 +793,15 @@ public class ManageContact extends AppCompatActivity {
 
         int flag;
         String msgstatus;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
         String RegionPrincipalAppStatus, appStatus, zone;
-
         ProgressDialog progressDialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = ProgressDialog.show(ManageContact.this,"Loading","Please wait...",true,false);
+            progressDialog = ProgressDialog.show(ManageContact.this, "Loading", "Please wait...", true, false);
         }
 
         @Override
@@ -872,7 +843,6 @@ public class ManageContact extends AppCompatActivity {
                         JSONObject jsonObject = jsonArray.getJSONObject(0);
                         msgstatus = jsonObject.getString("MsgNotification");
                         if (jsonObject.has("status")) {
-
                             LoginStatus = jsonObject.getString("status");
                             msgstatus = jsonObject.getString("MsgNotification");
                             if (LoginStatus.equals(invalid)) {
@@ -883,9 +853,7 @@ public class ManageContact extends AppCompatActivity {
                                 flag = 1;
                             }
                         }
-
                     }
-
 
                 } else {
                     JSONArray jsonArray = new JSONArray(RegionPrincipalAppStatus);
@@ -922,7 +890,6 @@ public class ManageContact extends AppCompatActivity {
                         String ApproveStatusID = jsonObject2.getString("ApproveStatusID");
                         String ApproveStatusName = jsonObject2.getString("ApproveStatusName");
 
-
                         appStatusIDList.add(i + 1, ApproveStatusID);
                         //siteNameList.add(SiteName);
                         appStatusNameList.add(i + 1, ApproveStatusName);
@@ -931,13 +898,11 @@ public class ManageContact extends AppCompatActivity {
                     spinneradapterAppStatus = new ArrayAdapter<String>(ManageContact.this, android.R.layout.simple_spinner_item, appStatusNameList);
                     spinneradapterAppStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //Log.e("Error is here", e.toString());
                     flag = 5;
                 }
-
 
                 //  fillListDialog.dismiss();
             } else if (flag == 3) {
@@ -946,19 +911,16 @@ public class ManageContact extends AppCompatActivity {
                 finish();
             } else {
                 if (flag == 4) {
-
                     Config_Engg.toastShow(msgstatus, ManageContact.this);
                     Config_Engg.logout(ManageContact.this);
                     Config_Engg.putSharedPreferences(ManageContact.this, "checklogin", "status", "2");
                     finish();
-                }else if(flag == 5){
+                } else if (flag == 5) {
 
                     ScanckBar();
                     dialog.dismiss();
                     progressDialog.dismiss();
-
                 }
-
 
             }
             progressDialog.dismiss();
@@ -971,20 +933,16 @@ public class ManageContact extends AppCompatActivity {
         int flag;
         String msgstatus;
         String machine_detail, machine_list;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
         ProgressDialog progressDialog;
-
         int count = 0;
-
         String ComparedPlantName = Config_Engg.getSharedPreferences(ManageContact.this, "pref_Engg", "PlantID", "");
 
         @Override
         protected void onPreExecute() {
 
-              progressDialog = ProgressDialog.show(ManageContact.this, "Loading", "Please Wait....", true, false);
+            progressDialog = ProgressDialog.show(ManageContact.this, "Loading", "Please Wait....", true, false);
         }
 
         @Override
@@ -1029,7 +987,7 @@ public class ManageContact extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                flag =5;
+                flag = 5;
             }
             return null;
         }
@@ -1063,7 +1021,6 @@ public class ManageContact extends AppCompatActivity {
                     spinneradapterPlant.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner_plant.setAdapter(spinneradapterPlant);
 
-
                     if (!ComparedPlantName.equalsIgnoreCase("")) {
 
                         int spinnerPosition = spinneradapterPlant.getPosition(ComparedPlantName);
@@ -1073,7 +1030,6 @@ public class ManageContact extends AppCompatActivity {
 
                         spinner_plant.setSelection(1);
                     }
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1086,14 +1042,12 @@ public class ManageContact extends AppCompatActivity {
 
             } else if (flag == 4) {
 
-
                 Config_Engg.toastShow(msgstatus, ManageContact.this);
                 Config_Engg.logout(ManageContact.this);
                 Config_Engg.putSharedPreferences(ManageContact.this, "checklogin", "status", "2");
                 finish();
 
-
-            }else if(flag == 5){
+            } else if (flag == 5) {
 
                 dialog.dismiss();
                 ScanckBar();
@@ -1119,10 +1073,9 @@ public class ManageContact extends AppCompatActivity {
                 intent = new Intent(ManageContact.this, ChangePassword.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
-            case R.id.logout:
 
+            case R.id.logout:
                 Config_Engg.logout(ManageContact.this);
                 finish();
                 Config_Engg.putSharedPreferences(this, "checklogin", "status", "2");
@@ -1132,28 +1085,32 @@ public class ManageContact extends AppCompatActivity {
                 intent = new Intent(ManageContact.this, DashboardActivity.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
+
             case R.id.profile:
                 intent = new Intent(ManageContact.this, ProfileUpdate.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_raise:
                 intent = new Intent(ManageContact.this, RaiseComplaintActivity.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_complain:
                 intent = new Intent(ManageContact.this, ManageComplaint.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_machines:
                 intent = new Intent(ManageContact.this, ManageMachines.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_contact:
                 intent = new Intent(ManageContact.this, ManageContact.class);
                 startActivity(intent);

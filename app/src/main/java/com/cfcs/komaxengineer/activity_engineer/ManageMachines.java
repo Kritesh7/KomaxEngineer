@@ -153,7 +153,7 @@ public class ManageMachines extends AppCompatActivity {
 
     CoordinatorLayout maincontainer;
 
-    Button btn_search_find,btn_search_clear;
+    Button btn_search_find, btn_search_clear;
 
     AlertDialog dialog;
 
@@ -180,7 +180,6 @@ public class ManageMachines extends AppCompatActivity {
 
         Config_Engg.getSharedPreferenceRemove(ManageMachines.this, "pref_Engg", "AppStatus");
 
-
         //   list = findViewById(R.id.machine_list_view);
 
         recycler_view = findViewById(R.id.recycler_view);
@@ -190,7 +189,6 @@ public class ManageMachines extends AppCompatActivity {
         recycler_view.setLayoutManager(mLayoutManager);
         recycler_view.setItemAnimator(new DefaultItemAnimator());
 
-
         zoneID = "0";
         customerID = "00000000-0000-0000-0000-000000000000";
         siteID = "00000000-0000-0000-0000-000000000000";
@@ -199,7 +197,6 @@ public class ManageMachines extends AppCompatActivity {
         approveStatusID = "0";
         SearchStr = "";
 
-
         Config_Engg.isOnline(ManageMachines.this);
         if (Config_Engg.internetStatus == true) {
 
@@ -207,11 +204,9 @@ public class ManageMachines extends AppCompatActivity {
 
             new SetdataInCustomerSpinner().execute();
 
-
         } else {
             Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", ManageMachines.this);
         }
-
 
         fab = findViewById(R.id.fab);
         fabLayout1 = (LinearLayout) findViewById(R.id.fabLayout1);
@@ -255,7 +250,6 @@ public class ManageMachines extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
 
     }
 
@@ -337,14 +331,12 @@ public class ManageMachines extends AppCompatActivity {
 
         dialog = alertDialog.create();
 
-
         String ComparedSerialNo = Config_Engg.getSharedPreferences(ManageMachines.this, "pref_Engg", "SerialNo", "");
 
         txt_serial_no.setText(ComparedSerialNo);
 
         String ComparedCustomerName = Config_Engg.getSharedPreferences(ManageMachines.this, "pref_Engg", "CustomerName", "");
         String ComparedWorkStatusName = Config_Engg.getSharedPreferences(ManageMachines.this, "pref_Engg", "Trans", "");
-
 
         Config_Engg.isOnline(ManageMachines.this);
         if (Config_Engg.internetStatus == true) {
@@ -402,7 +394,6 @@ public class ManageMachines extends AppCompatActivity {
                         spinner_plant.setAdapter(spinneradapterMachine);
                     }
 
-
                 } else {
                     Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", ManageMachines.this);
                 }
@@ -433,7 +424,6 @@ public class ManageMachines extends AppCompatActivity {
                         modelListID.add(0, "00000000-0000-0000-0000-000000000000");
                         modelListName = new ArrayList<String>();
                         modelListName.add(0, "Select");
-
 
                         ArrayAdapter<String> spinneradapterModel1 = new ArrayAdapter<String>(ManageMachines.this,
                                 android.R.layout.simple_spinner_item, modelListName);
@@ -486,9 +476,7 @@ public class ManageMachines extends AppCompatActivity {
                     long AppStatusID = spinner_approval_status.getSelectedItemId();
                     approveStatusID = appStatusIDList.get((int) AppStatusID);
 
-
                     machineList.clear();
-
 
                     Config_Engg.putSharedPreferences(ManageMachines.this, "pref_Engg", "SerialNo", SearchStr);
 
@@ -514,7 +502,6 @@ public class ManageMachines extends AppCompatActivity {
 
             }
         });
-
 
 
         btn_search_clear.setOnClickListener(new View.OnClickListener() {
@@ -557,7 +544,6 @@ public class ManageMachines extends AppCompatActivity {
         if (isFABOpen) {
             closeFABMenu();
         } else {
-
             Intent intent = new Intent(ManageMachines.this, DashboardActivity.class);
             startActivity(intent);
             finish();
@@ -573,10 +559,7 @@ public class ManageMachines extends AppCompatActivity {
         String LoginStatus;
         String invalid = "LoginFailed";
         ProgressDialog progressDialog;
-
         String MachineList = "";
-
-
         String ZoneID = "";
         String CustomerID = "";
         String SiteID = "";
@@ -586,7 +569,6 @@ public class ManageMachines extends AppCompatActivity {
         String SearchStr = "";
 
         public ManageMachines manageMachines;
-
 
         public MachineListAsy(String zoneID, String customerID, String siteID, String modelID, String transactionType, String approveStatusID, String searchStr) {
             this.ZoneID = zoneID;
@@ -699,9 +681,7 @@ public class ManageMachines extends AppCompatActivity {
                                 machineListDataModal.setAddByNameText(jsonObject1.getString("AddByNameText").toString());
                                 machineListDataModal.setSaleID(jsonObject1.getString("SaleID").toString());
 
-
                                 machineListDataModal.setCounter(String.valueOf(count));
-
 
                                 // Add this object into the ArrayList myList
 
@@ -752,7 +732,7 @@ public class ManageMachines extends AppCompatActivity {
                             Config_Engg.logout(ManageMachines.this);
                             Config_Engg.putSharedPreferences(ManageMachines.this, "checklogin", "status", "2");
                             finish();
-                        }else if(flag == 5){
+                        } else if (flag == 5) {
 
                             ScanckBar();
                             recycler_view.setAdapter(null);
@@ -765,7 +745,6 @@ public class ManageMachines extends AppCompatActivity {
                 }
             }
             progressDialog.dismiss();
-
         }
     }
 
@@ -784,7 +763,6 @@ public class ManageMachines extends AppCompatActivity {
 
                             new SetdataInCustomerSpinner().execute();
 
-
                         } else {
                             Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", ManageMachines.this);
                         }
@@ -795,11 +773,8 @@ public class ManageMachines extends AppCompatActivity {
 
         // Changing message text color
         snackbar.setActionTextColor(Color.RED);
-
         snackbar.show();
-
     }
-
 
     private class SetdataInCustomerSpinner extends AsyncTask<String, String, String> {
 
@@ -807,12 +782,8 @@ public class ManageMachines extends AppCompatActivity {
         String msgstatus;
         String initialData, customerList, transactionList, engWorkStatusList;
         ProgressDialog progressDialog;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
-//        String ComparedCustomerName = Config_Engg.getSharedPreferences(ManageMachines.this, "pref_Engg", "CustomerName", "");
-//        String ComparedWorkStatusName = Config_Engg.getSharedPreferences(ManageMachines.this, "pref_Engg", "Trans", "");
 
         @Override
         protected void onPreExecute() {
@@ -881,7 +852,7 @@ public class ManageMachines extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                flag =5;
+                flag = 5;
             }
             return null;
         }
@@ -958,12 +929,11 @@ public class ManageMachines extends AppCompatActivity {
                     Config_Engg.logout(ManageMachines.this);
                     Config_Engg.putSharedPreferences(ManageMachines.this, "checklogin", "status", "2");
                     finish();
-                }else if(flag == 5){
+                } else if (flag == 5) {
 
                     ScanckBar();
 
                 }
-
 
             }
             //  progressDialog.dismiss();
@@ -975,14 +945,10 @@ public class ManageMachines extends AppCompatActivity {
         int flag;
         String msgstatus;
         String machine_detail, machine_list;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
         ProgressDialog progressDialog;
-
         int count = 0;
-
         String ComparedPlantName = Config_Engg.getSharedPreferences(ManageMachines.this, "pref_Engg", "Plant", "");
 
         @Override
@@ -1093,12 +1059,10 @@ public class ManageMachines extends AppCompatActivity {
                 Config_Engg.logout(ManageMachines.this);
                 Config_Engg.putSharedPreferences(ManageMachines.this, "checklogin", "status", "2");
                 finish();
-            }
-            else if(flag == 5){
+            } else if (flag == 5) {
 
                 ScanckBar();
                 dialog.dismiss();
-
 
             }
 
@@ -1110,15 +1074,11 @@ public class ManageMachines extends AppCompatActivity {
 
         String msgstatus;
         int flag = 0;
-
         String model_detail, model_list;
-
         int count = 0;
-
         ProgressDialog progressDialog;
         String LoginStatus;
         String invalid = "LoginFailed";
-
         String ComparedModel = Config_Engg.getSharedPreferences(ManageMachines.this, "pref_Engg", "Model", "");
 
         @Override
@@ -1180,29 +1140,7 @@ public class ManageMachines extends AppCompatActivity {
                                 flag = 1;
                             }
                         }
-
                     }
-
-
-//
-//                    model_detail = result.getProperty(0).toString();
-//                    JSONArray jsonArray = new JSONArray(model_detail);
-//                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-//                    model_list = jsonArray.toString();
-//                    if (jsonObject.has("status")) {
-//
-//                        LoginStatus = jsonObject.getString("status");
-//                        msgstatus = jsonObject.getString("MsgNotification");
-//                        if (LoginStatus.equals(invalid)) {
-//
-//                            flag = 4;
-//                        } else {
-//
-//                            flag = 1;
-//                        }
-//                    } else {
-//                        flag = 2;
-//                    }
                 } else {
                     flag = 3;
                 }
@@ -1271,11 +1209,10 @@ public class ManageMachines extends AppCompatActivity {
                 Config_Engg.logout(ManageMachines.this);
                 Config_Engg.putSharedPreferences(ManageMachines.this, "checklogin", "status", "2");
                 finish();
-            }else if(flag == 5){
+            } else if (flag == 5) {
 
                 ScanckBar();
                 dialog.dismiss();
-
 
 
             }
@@ -1292,12 +1229,9 @@ public class ManageMachines extends AppCompatActivity {
         int flag = 0;
         ProgressDialog progressDialog;
         String EngineerID;
-
         int count = 0;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
         String ComparedEngg = Config_Engg.getSharedPreferences(ManageMachines.this, "pref_Engg", "Engg", "");
 
         @Override
@@ -1382,9 +1316,7 @@ public class ManageMachines extends AppCompatActivity {
                     spinneradapterEngg = new ArrayAdapter<String>(ManageMachines.this,
                             android.R.layout.simple_spinner_item, enggName);
 
-
                     spinneradapterEngg.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
 
                     spinner_responsible_engg.setAdapter(spinneradapterEngg);
 
@@ -1422,7 +1354,7 @@ public class ManageMachines extends AppCompatActivity {
                 Config_Engg.logout(ManageMachines.this);
                 Config_Engg.putSharedPreferences(ManageMachines.this, "checklogin", "status", "2");
                 finish();
-            }else if(flag == 5){
+            } else if (flag == 5) {
 
                 ScanckBar();
                 progressDialog.dismiss();
@@ -1434,17 +1366,14 @@ public class ManageMachines extends AppCompatActivity {
         }
     }
 
-
     private class AddRegionPrincipalZoneAppStatus extends AsyncTask<String, String, String> {
 
         int flag;
         String msgstatus;
-
         String LoginStatus;
         String invalid = "LoginFailed";
         ProgressDialog progressDialog;
         String RegionPrincipalAppStatus, appStatus, zone;
-
 
         @Override
         protected void onPreExecute() {
@@ -1541,7 +1470,6 @@ public class ManageMachines extends AppCompatActivity {
                         String ApproveStatusID = jsonObject2.getString("ApproveStatusID");
                         String ApproveStatusName = jsonObject2.getString("ApproveStatusName");
 
-
                         appStatusIDList.add(i + 1, ApproveStatusID);
                         //siteNameList.add(SiteName);
                         appStatusNameList.add(i + 1, ApproveStatusName);
@@ -1577,19 +1505,16 @@ public class ManageMachines extends AppCompatActivity {
                     Config_Engg.logout(ManageMachines.this);
                     Config_Engg.putSharedPreferences(ManageMachines.this, "checklogin", "status", "2");
                     finish();
-                }else if(flag == 5){
+                } else if (flag == 5) {
 
                     ScanckBar();
 
                 }
-
-
             }
             progressDialog.dismiss();
 
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -1606,10 +1531,9 @@ public class ManageMachines extends AppCompatActivity {
                 intent = new Intent(ManageMachines.this, ChangePassword.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
-            case R.id.logout:
 
+            case R.id.logout:
                 Config_Engg.logout(ManageMachines.this);
                 finish();
                 Config_Engg.putSharedPreferences(this, "checklogin", "status", "2");
@@ -1619,28 +1543,32 @@ public class ManageMachines extends AppCompatActivity {
                 intent = new Intent(ManageMachines.this, DashboardActivity.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
+
             case R.id.profile:
                 intent = new Intent(ManageMachines.this, ProfileUpdate.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_raise:
                 intent = new Intent(ManageMachines.this, RaiseComplaintActivity.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_complain:
                 intent = new Intent(ManageMachines.this, ManageComplaint.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_machines:
                 intent = new Intent(ManageMachines.this, ManageMachines.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_contact:
                 intent = new Intent(ManageMachines.this, ManageContact.class);
                 startActivity(intent);

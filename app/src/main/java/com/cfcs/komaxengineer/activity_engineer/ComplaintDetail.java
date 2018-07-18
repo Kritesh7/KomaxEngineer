@@ -41,7 +41,7 @@ public class ComplaintDetail extends AppCompatActivity {
 
     String complainno = "", status = "";
 
-    LinearLayout  maincontainer;
+    LinearLayout maincontainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,15 +101,10 @@ public class ComplaintDetail extends AppCompatActivity {
         String complain_detail_value;
         ProgressDialog progressDialog;
         String ComplaintDetail, ComplainSubordinate;
-
         JSONArray complainSub;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
-
         TextView txt_sub_engineer_name;
-
         int count = 0;
 
         @Override
@@ -136,7 +131,6 @@ public class ComplaintDetail extends AppCompatActivity {
                 SoapObject result = (SoapObject) envelope.bodyIn;
                 if (result != null) {
                     complain_detail_value = result.getProperty(0).toString();
-
                     Object json = new JSONTokener(complain_detail_value).nextValue();
                     if (json instanceof JSONObject) {
                         JSONObject object = new JSONObject(complain_detail_value);
@@ -288,7 +282,7 @@ public class ComplaintDetail extends AppCompatActivity {
                 Config_Engg.putSharedPreferences(ComplaintDetail.this, "checklogin", "status", "2");
                 finish();
 
-            }else if(flag == 5){
+            } else if (flag == 5) {
 
                 ScanckBar();
                 progressDialog.dismiss();
@@ -321,7 +315,6 @@ public class ComplaintDetail extends AppCompatActivity {
 
         // Changing message text color
         snackbar.setActionTextColor(Color.RED);
-
         snackbar.show();
 
     }
@@ -341,10 +334,9 @@ public class ComplaintDetail extends AppCompatActivity {
                 intent = new Intent(ComplaintDetail.this, ChangePassword.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
-            case R.id.logout:
 
+            case R.id.logout:
                 Config_Engg.logout(ComplaintDetail.this);
                 finish();
                 Config_Engg.putSharedPreferences(this, "checklogin", "status", "2");
@@ -354,28 +346,32 @@ public class ComplaintDetail extends AppCompatActivity {
                 intent = new Intent(ComplaintDetail.this, DashboardActivity.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
+
             case R.id.profile:
                 intent = new Intent(ComplaintDetail.this, ProfileUpdate.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_raise:
                 intent = new Intent(ComplaintDetail.this, RaiseComplaintActivity.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_complain:
                 intent = new Intent(ComplaintDetail.this, ManageComplaint.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_machines:
                 intent = new Intent(ComplaintDetail.this, ManageMachines.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_contact:
                 intent = new Intent(ComplaintDetail.this, ManageContact.class);
                 startActivity(intent);
@@ -390,7 +386,6 @@ public class ComplaintDetail extends AppCompatActivity {
         }
         return (super.onOptionsItemSelected(item));
     }
-
 
     @Override
     public void onBackPressed() {

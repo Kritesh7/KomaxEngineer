@@ -47,7 +47,6 @@ public class EngineerWorkStatusUpdate extends AppCompatActivity {
 
     ArrayList<EngineerWorkStatusDataModel> engineerWorkStatusDataModelList = new ArrayList<EngineerWorkStatusDataModel>();
 
-
     String[] ComplainNo;
     String[] EngWorkStatus;
     String[] Remark;
@@ -117,7 +116,6 @@ public class EngineerWorkStatusUpdate extends AppCompatActivity {
 
     }
 
-
     @Override
     public void onBackPressed() {
 
@@ -127,7 +125,6 @@ public class EngineerWorkStatusUpdate extends AppCompatActivity {
         super.onBackPressed();
     }
 
-
     private class EngineerWorkStatusUpdateListAsy extends AsyncTask<String, String, String> {
 
         String msgstatus;
@@ -136,13 +133,10 @@ public class EngineerWorkStatusUpdate extends AppCompatActivity {
         String LoginStatus;
         String invalid = "LoginFailed";
         ProgressDialog progressDialog;
-
         String EngineerWorkStatusList, StatusList;
         String status = "";
 
-
         public EngineerWorkStatusUpdate engineerWorkStatusUpdate;
-
 
         @Override
         protected void onPreExecute() {
@@ -213,7 +207,6 @@ public class EngineerWorkStatusUpdate extends AppCompatActivity {
                                     engineerWorkStatusDataModel.setSpareNo(jsonObject1.getString("SpareNo").toString());
                                     engineerWorkStatusDataModel.setIsEditDelete(jsonObject1.getString("IsEditDelete").toString());
 
-
                                     // Add this object into the ArrayList myList
 
                                     engineerWorkStatusDataModelList.add(engineerWorkStatusDataModel);
@@ -282,13 +275,12 @@ public class EngineerWorkStatusUpdate extends AppCompatActivity {
                             Config_Engg.logout(EngineerWorkStatusUpdate.this);
                             Config_Engg.putSharedPreferences(EngineerWorkStatusUpdate.this, "checklogin", "status", "2");
                             finish();
-                        }else if(flag == 5){
+                        } else if (flag == 5) {
 
                             ScanckBar();
 
                             progressDialog.dismiss();
                         }
-
 
                     }
                 }
@@ -338,10 +330,9 @@ public class EngineerWorkStatusUpdate extends AppCompatActivity {
                 intent = new Intent(EngineerWorkStatusUpdate.this, ChangePassword.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
-            case R.id.logout:
 
+            case R.id.logout:
                 Config_Engg.logout(EngineerWorkStatusUpdate.this);
                 finish();
                 Config_Engg.putSharedPreferences(this, "checklogin", "status", "2");
@@ -351,28 +342,32 @@ public class EngineerWorkStatusUpdate extends AppCompatActivity {
                 intent = new Intent(EngineerWorkStatusUpdate.this, DashboardActivity.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
+
             case R.id.profile:
                 intent = new Intent(EngineerWorkStatusUpdate.this, ProfileUpdate.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_raise:
                 intent = new Intent(EngineerWorkStatusUpdate.this, RaiseComplaintActivity.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_complain:
                 intent = new Intent(EngineerWorkStatusUpdate.this, ManageComplaint.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_machines:
                 intent = new Intent(EngineerWorkStatusUpdate.this, ManageMachines.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_contact:
                 intent = new Intent(EngineerWorkStatusUpdate.this, ManageContact.class);
                 startActivity(intent);

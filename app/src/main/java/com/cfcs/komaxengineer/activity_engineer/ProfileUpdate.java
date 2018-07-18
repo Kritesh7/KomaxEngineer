@@ -43,14 +43,13 @@ public class ProfileUpdate extends AppCompatActivity {
     private static String SOAP_ACTION2 = "http://cfcs.co.in/AppEngineerMyProfileUpdate";
     private static String METHOD_NAME2 = "AppEngineerMyProfileUpdate";
 
-
     TextView txt_eng_name, txt_region, txt_designation, txt_mail;
     EditText txt_mobile, txt_phone_no, txt_state, txt_city, txt_user_name, txt_address, txt_pin_code;
     Button btn_update;
 
     LinearLayout maincontainer;
 
-    TextView tv_mobile_no,tv_state,tv_city,tv_user_name,tv_address,tv_pin_code;
+    TextView tv_mobile_no, tv_state, tv_city, tv_user_name, tv_address, tv_pin_code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,34 +70,33 @@ public class ProfileUpdate extends AppCompatActivity {
 
         SimpleSpanBuilder ssbMobile = new SimpleSpanBuilder();
         ssbMobile.appendWithSpace("Mobile No");
-        ssbMobile.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbMobile.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_mobile_no.setText(ssbMobile.build());
 
         SimpleSpanBuilder ssbState = new SimpleSpanBuilder();
         ssbState.appendWithSpace("State");
-        ssbState.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbState.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_state.setText(ssbState.build());
 
         SimpleSpanBuilder ssbCity = new SimpleSpanBuilder();
         ssbCity.appendWithSpace("City");
-        ssbCity.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbCity.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_city.setText(ssbCity.build());
 
         SimpleSpanBuilder ssbUserName = new SimpleSpanBuilder();
         ssbUserName.appendWithSpace("User Name");
-        ssbUserName.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbUserName.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_user_name.setText(ssbUserName.build());
 
         SimpleSpanBuilder ssbAddress = new SimpleSpanBuilder();
         ssbAddress.appendWithSpace("Address");
-        ssbAddress.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbAddress.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_address.setText(ssbAddress.build());
 
         SimpleSpanBuilder ssbPinCode = new SimpleSpanBuilder();
         ssbPinCode.appendWithSpace("Pin Code");
-        ssbPinCode.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbPinCode.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_pin_code.setText(ssbPinCode.build());
-
 
         txt_eng_name = findViewById(R.id.txt_eng_name);
         txt_region = findViewById(R.id.txt_region);
@@ -114,7 +112,6 @@ public class ProfileUpdate extends AppCompatActivity {
         btn_update = findViewById(R.id.btn_update);
 
         maincontainer = findViewById(R.id.maincontainer);
-
 
         Config_Engg.isOnline(ProfileUpdate.this);
         if (Config_Engg.internetStatus == true) {
@@ -193,16 +190,14 @@ public class ProfileUpdate extends AppCompatActivity {
         int flag;
         String jsonValue;
         String msgstatus;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
         ProgressDialog progressDialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = ProgressDialog.show(ProfileUpdate.this,"Loading","Please wait...",true,false);
+            progressDialog = ProgressDialog.show(ProfileUpdate.this, "Loading", "Please wait...", true, false);
         }
 
         @Override
@@ -247,9 +242,8 @@ public class ProfileUpdate extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                flag =5;
+                flag = 5;
             }
-
 
             return msgstatus;
         }
@@ -300,7 +294,7 @@ public class ProfileUpdate extends AppCompatActivity {
                     startActivity(i);
                     finish();
 
-                }else if(flag == 5){
+                } else if (flag == 5) {
 
                     ScanckBar();
                     btn_update.setEnabled(false);
@@ -330,15 +324,12 @@ public class ProfileUpdate extends AppCompatActivity {
                         }
                         btn_update.setEnabled(true);
 
-
                     }
                 });
 
         // Changing message text color
         snackbar.setActionTextColor(Color.RED);
-
         snackbar.show();
-
     }
 
     @Override
@@ -356,10 +347,9 @@ public class ProfileUpdate extends AppCompatActivity {
                 intent = new Intent(ProfileUpdate.this, ChangePassword.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
-            case R.id.logout:
 
+            case R.id.logout:
                 Config_Engg.logout(ProfileUpdate.this);
                 finish();
                 Config_Engg.putSharedPreferences(this, "checklogin", "status", "2");
@@ -369,28 +359,32 @@ public class ProfileUpdate extends AppCompatActivity {
                 intent = new Intent(ProfileUpdate.this, DashboardActivity.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
+
             case R.id.profile:
                 intent = new Intent(ProfileUpdate.this, ProfileUpdate.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_raise:
                 intent = new Intent(ProfileUpdate.this, RaiseComplaintActivity.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_complain:
                 intent = new Intent(ProfileUpdate.this, ManageComplaint.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_machines:
                 intent = new Intent(ProfileUpdate.this, ManageMachines.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_contact:
                 intent = new Intent(ProfileUpdate.this, ManageContact.class);
                 startActivity(intent);
@@ -419,9 +413,7 @@ public class ProfileUpdate extends AppCompatActivity {
         int flag = 0;
         String jsonValue;
         String status = "";
-
         String msgstatus;
-
         String LoginStatus;
         String invalid = "LoginFailed";
 
@@ -433,7 +425,6 @@ public class ProfileUpdate extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-
 
             String EngineerID = Config_Engg.getSharedPreferences(ProfileUpdate.this, "pref_Engg", "EngineerID", "");
             String AuthCode = Config_Engg.getSharedPreferences(ProfileUpdate.this, "pref_Engg", "AuthCode", "");
@@ -511,7 +502,7 @@ public class ProfileUpdate extends AppCompatActivity {
                             Intent i = new Intent(ProfileUpdate.this, LoginActivity.class);
                             startActivity(i);
                             finish();
-                        }else if(flag == 5){
+                        } else if (flag == 5) {
                             ScanckBar();
                             btn_update.setEnabled(false);
 

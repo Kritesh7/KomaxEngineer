@@ -9,6 +9,8 @@ import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
@@ -60,7 +62,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
     private static String METHOD_NAME1 = "AppEngineerComplainEditDetail";
     private static String URL = Config_Engg.BASE_URL + "Engineer/WebApi/EngineerWebService.asmx?";
 
-
     private static String SOAP_ACTION2 = "http://cfcs.co.in/AppEngineerComplaintAddInitialData";
     private static String METHOD_NAME2 = "AppEngineerComplaintAddInitialData";
 
@@ -79,15 +80,14 @@ public class RaiseComplaintActivity extends AppCompatActivity {
     private static String SOAP_ACTION7 = "http://cfcs.co.in/AppEngineerComplainInsUpdt";
     private static String METHOD_NAME7 = "AppEngineerComplainInsUpdt";
 
-
     EditText txt_problem_title, txt_problem_description, txt_problem_date, txt_complain_date,
             txt_expected_date, txt_new_person_name, txt_mail, txt_new_customer_mobile,
-            txt_other_contact,txt_country_code;
+            txt_other_contact, txt_country_code;
     Spinner spinner_customer_name, spinner_plant, spinner_machine_model, spinner_machine_serial, spinner_complaint_type, spinner_work_status,
             spinner_status, spinner_existing_customer_contacts;
     Button btn_submit, btn_clear, btn_update;
 
-    TextView txt_complaint_no, txt_region, asm_txt_show,txt_header;
+    TextView txt_complaint_no, txt_region, asm_txt_show, txt_header;
 
     CheckBox check_customer, check_internal;
 
@@ -136,7 +136,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
     ArrayAdapter<String> spinneradapterContact;
     ArrayAdapter<String> spinneradapterWorkStatus;
 
-
     String ParentCustomerNameUpdate = "";
     String SaleIDUpdate = "";
     String ComplaintTypeUdate = "";
@@ -146,8 +145,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
     String checkBoxCustomerValue;
     String checkBoxInternalValue;
 
-
-    String ContactPersonNameUpdate ="";
+    String ContactPersonNameUpdate = "";
 
     String ContactPersonMobileUpdate = "";
 
@@ -155,16 +153,29 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
     String ContactPersonContactNoUpdate = "";
 
+    String ContactPersonConutryUpdate ="";
+
     int seletedValue = 1;
 
-    String problemTitle = "", problemDesc = "", otherContact = "", ProblemoccurAtDate = "", complaintDate = "", expectedDate = "", newpersonName = "", mailID = "",
+    String problemTitle = "", problemDesc = "", otherContact = "", ProblemoccurAtDate = "", complaintDate = "", expectedDate = "", newpersonName = "", mailID = "",countryCode="",
             mobile = "";
 
     LinearLayout maincontainer;
 
     int checkConatct = 0;
 
-    TextView tv_request_title,tv_customer_name,tv_plant,tv_machine_serial,tv_service_request_type,tv_problem_occurrence,tv_service_request_date,tv_mobile_no;
+    TextView tv_request_title, tv_customer_name, tv_plant, tv_machine_serial, tv_service_request_type, tv_problem_occurrence, tv_service_request_date, tv_mobile_no;
+
+    String date_time1;
+    int mYear;
+    int mMonth;
+    int mDay;
+    int mHour;
+    int mMinute;
+    int dateTimeStatus;
+    int dateTimePickerStattus;
+
+    boolean changing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,47 +196,45 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         tv_service_request_date = findViewById(R.id.tv_service_request_date);
         tv_mobile_no = findViewById(R.id.tv_mobile_no);
 
-
         SimpleSpanBuilder ssbrequesttitle = new SimpleSpanBuilder();
         ssbrequesttitle.appendWithSpace("Request Title");
-        ssbrequesttitle.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbrequesttitle.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_request_title.setText(ssbrequesttitle.build());
 
         SimpleSpanBuilder ssbCustomerName = new SimpleSpanBuilder();
         ssbCustomerName.appendWithSpace("Customer Name");
-        ssbCustomerName.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbCustomerName.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_customer_name.setText(ssbCustomerName.build());
 
         SimpleSpanBuilder ssbplant = new SimpleSpanBuilder();
         ssbplant.appendWithSpace("Plant");
-        ssbplant.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbplant.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_plant.setText(ssbplant.build());
 
         SimpleSpanBuilder ssbMachineSerial = new SimpleSpanBuilder();
         ssbMachineSerial.appendWithSpace("Machine Sr. No.");
-        ssbMachineSerial.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbMachineSerial.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_machine_serial.setText(ssbMachineSerial.build());
 
         SimpleSpanBuilder ssbServicerequestType = new SimpleSpanBuilder();
-        ssbServicerequestType.appendWithSpace("Machine Sr. No.");
-        ssbServicerequestType.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbServicerequestType.appendWithSpace("Service Request Type");
+        ssbServicerequestType.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_service_request_type.setText(ssbServicerequestType.build());
 
         SimpleSpanBuilder ssbprobleOccur = new SimpleSpanBuilder();
         ssbprobleOccur.appendWithSpace("Problem Occurrence Date/Time");
-        ssbprobleOccur.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbprobleOccur.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_problem_occurrence.setText(ssbprobleOccur.build());
 
         SimpleSpanBuilder ssbServiceRequestDate = new SimpleSpanBuilder();
         ssbServiceRequestDate.appendWithSpace("Service Request Date Time");
-        ssbServiceRequestDate.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbServiceRequestDate.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_service_request_date.setText(ssbServiceRequestDate.build());
 
-        SimpleSpanBuilder ssbMobileNo = new SimpleSpanBuilder();
-        ssbMobileNo.appendWithSpace("Mobile No");
-        ssbMobileNo.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
-        tv_mobile_no.setText(ssbMobileNo.build());
-
+//        SimpleSpanBuilder ssbMobileNo = new SimpleSpanBuilder();
+//        ssbMobileNo.appendWithSpace("Mobile No");
+//        ssbMobileNo.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
+//        tv_mobile_no.setText(ssbMobileNo.build());
 
         txt_problem_title = findViewById(R.id.txt_problem_title);
         txt_problem_description = findViewById(R.id.txt_problem_description);
@@ -347,13 +356,11 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                         plantName = new ArrayList<String>();
                         plantName.add(0, "Select");
 
-
                         ArrayAdapter<String> spinneradapterMachine = new ArrayAdapter<String>(RaiseComplaintActivity.this,
                                 android.R.layout.simple_spinner_item, plantName);
                         spinneradapterMachine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinner_plant.setAdapter(spinneradapterMachine);
                     }
-
 
                 } else {
                     Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", RaiseComplaintActivity.this);
@@ -393,21 +400,18 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                         spinneradapterMachine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinner_machine_serial.setAdapter(spinneradapterMachine);
 
-
-                        if(status != 1){
+                        if (status != 1) {
 
                             contactIDList = new ArrayList<String>();
                             contactIDList.add(0, "00000000-0000-0000-0000-000000000000");
                             contactNameList = new ArrayList<String>();
                             contactNameList.add(0, "Select");
 
-
                             ArrayAdapter<String> spinneradapterCcontact = new ArrayAdapter<String>(RaiseComplaintActivity.this,
                                     android.R.layout.simple_spinner_item, contactNameList);
                             spinneradapterMachine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinner_existing_customer_contacts.setAdapter(spinneradapterCcontact);
                         }
-
 
                     }
 
@@ -448,7 +452,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", RaiseComplaintActivity.this);
                 }
 
-
             }
 
             @Override
@@ -468,7 +471,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     long SelectedContact = parent.getSelectedItemId();
                     SelectedContactID = contactIDList.get((int) SelectedContact);
 
-                    if(checkConatct == 1 && status == 1){
+                    if (checkConatct == 1 && status == 1) {
 
                         txt_new_person_name.setText(ContactPersonNameUpdate);
 
@@ -476,38 +479,42 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
                         txt_new_customer_mobile.setText(ContactPersonMobileUpdate);
 
+                        txt_country_code.setText(ContactPersonConutryUpdate);
+
                         txt_mail.setText(ContactPersonMailIDUpdate);
 
                         txt_other_contact.setText(ContactPersonContactNoUpdate);
 
+                    }
+                    if (checkConatct > 1 && status == 1) {
 
-                    }if(checkConatct > 1 && status == 1) {
-
-                        if(SelectedContact != 0){
+                        if (SelectedContact != 0) {
 
                             new AddContactChange().execute();
 
-                        }else{
+                        } else {
 
                             txt_new_person_name.setText("");
                             txt_new_person_name.setEnabled(true);
                             txt_mail.setText("");
                             txt_new_customer_mobile.setText("");
                             txt_other_contact.setText("");
+                            txt_country_code.setText("");
                         }
 
-                    }else {
+                    } else {
 
-                        if(SelectedContact != 0 && status != 1){
+                        if (SelectedContact != 0 && status != 1) {
 
-                         new AddContactChange().execute();
+                            new AddContactChange().execute();
 
-                        }else if(status != 1) {
+                        } else if (status != 1) {
                             txt_new_person_name.setText("");
                             txt_new_person_name.setEnabled(true);
                             txt_mail.setText("");
                             txt_new_customer_mobile.setText("");
                             txt_other_contact.setText("");
+                            txt_country_code.setText("");
                         }
 
                     }
@@ -576,12 +583,14 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 Config_Engg.isOnline(RaiseComplaintActivity.this);
                 if (Config_Engg.internetStatus == true) {
 
-
                     int customerPos = spinner_customer_name.getSelectedItemPosition();
                     int plantPos = spinner_plant.getSelectedItemPosition();
                     int serialPos = spinner_machine_serial.getSelectedItemPosition();
                     int complaintTypePos = spinner_complaint_type.getSelectedItemPosition();
                     int workStatusPos = spinner_work_status.getSelectedItemPosition();
+
+                    String checkmobile = txt_new_customer_mobile.getText().toString().trim();
+                    String code = txt_country_code.getText().toString().trim();
 
                     if (txt_problem_title.getText().toString().equalsIgnoreCase("")) {
                         Config_Engg.alertBox("Please Enter Your Problem Title ",
@@ -609,17 +618,55 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                                 RaiseComplaintActivity.this);
                         spinner_machine_model.requestFocus();
                     } else if (!txt_mail.getText().toString().equalsIgnoreCase("") && !isValidMail(txt_mail.getText().toString())) {
-                            Config_Engg.alertBox("Please Enter Vaild Email",
-                                    RaiseComplaintActivity.this);
-                            txt_mail.requestFocus();
-                    }else if(txt_country_code.getText().toString().equalsIgnoreCase("")){
-                        Config_Engg.alertBox("Please Enter Country Code",RaiseComplaintActivity.this);
-                        txt_country_code.requestFocus();
-                    } else if (!isValidMobile(txt_new_customer_mobile.getText().toString().trim())) {
-                        Config_Engg.alertBox("Please Enter Mobile No",
+                        Config_Engg.alertBox("Please Enter Vaild Email",
                                 RaiseComplaintActivity.this);
-                        txt_new_customer_mobile.requestFocus();
-                    } else {
+                        txt_mail.requestFocus();
+                    } else if(checkmobile.compareTo("") != 0 || code.compareTo("") !=0){
+
+                        if (checkmobile.compareTo("") != 0 && !isValidMobile(txt_new_customer_mobile.getText().toString().trim())) {
+                            Config_Engg.alertBox("Please Enter Vaild Mobile No.",
+                                    RaiseComplaintActivity.this);
+                            txt_new_customer_mobile.requestFocus();
+                        } else if (checkmobile.compareTo("") == 0) {
+                            Config_Engg.alertBox("Please Enter Mobile No.", RaiseComplaintActivity.this);
+                            txt_new_customer_mobile.requestFocus();
+                        }else if (code.compareTo("") == 0) {
+                            Config_Engg.alertBox("Please Enter Country Code", RaiseComplaintActivity.this);
+                            txt_country_code.requestFocus();
+                        }else {
+                            long SelectedComplaintType = spinner_complaint_type.getSelectedItemId();
+                            SelectedComplaintTypeID = transactionIDList.get((int) SelectedComplaintType);
+
+                            long SelectedWorkStatus = spinner_work_status.getSelectedItemId();
+                            SelectedWorkStatusID = engWorkStatusIDList.get((int) SelectedWorkStatus);
+
+                            if (check_customer.isChecked()) {
+                                checkBoxCustomerValue = "True";
+                            } else {
+                                checkBoxCustomerValue = "False";
+                            }
+
+                            if (check_internal.isChecked()) {
+                                checkBoxInternalValue = "True";
+                            } else {
+                                checkBoxInternalValue = "False";
+                            }
+
+                            problemTitle = txt_problem_title.getText().toString().trim();
+                            problemDesc = txt_problem_description.getText().toString().trim();
+                            ProblemoccurAtDate = txt_problem_date.getText().toString().trim();
+                            complaintDate = txt_complain_date.getText().toString().trim();
+                            expectedDate = txt_expected_date.getText().toString().trim();
+                            newpersonName = txt_new_person_name.getText().toString().trim();
+                            mailID = txt_mail.getText().toString().trim();
+                            countryCode = txt_country_code.getText().toString().trim();
+                            mobile = txt_new_customer_mobile.getText().toString().trim();
+                            otherContact = txt_other_contact.getText().toString().trim();
+
+                            new RaiseComplaintSubmit().execute();
+
+                        }
+                    }  else {
 
                         long SelectedComplaintType = spinner_complaint_type.getSelectedItemId();
                         SelectedComplaintTypeID = transactionIDList.get((int) SelectedComplaintType);
@@ -639,7 +686,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                             checkBoxInternalValue = "False";
                         }
 
-
                         problemTitle = txt_problem_title.getText().toString().trim();
                         problemDesc = txt_problem_description.getText().toString().trim();
                         ProblemoccurAtDate = txt_problem_date.getText().toString().trim();
@@ -647,17 +693,40 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                         expectedDate = txt_expected_date.getText().toString().trim();
                         newpersonName = txt_new_person_name.getText().toString().trim();
                         mailID = txt_mail.getText().toString().trim();
+                        countryCode = txt_country_code.getText().toString().trim();
                         mobile = txt_new_customer_mobile.getText().toString().trim();
                         otherContact = txt_other_contact.getText().toString().trim();
 
                         new RaiseComplaintSubmit().execute();
                     }
 
-
                 } else {
                     Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", RaiseComplaintActivity.this);
                 }
             }
+        });
+
+
+
+        txt_country_code.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!changing && txt_country_code.getText().toString().startsWith("0")){
+                    changing = true;
+                    txt_country_code.setText(txt_country_code.getText().toString().replace("0", ""));
+                }
+                changing = false;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
         });
 
 
@@ -668,12 +737,14 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 Config_Engg.isOnline(RaiseComplaintActivity.this);
                 if (Config_Engg.internetStatus == true) {
 
-
                     int customerPos = spinner_customer_name.getSelectedItemPosition();
                     int plantPos = spinner_plant.getSelectedItemPosition();
                     int serialPos = spinner_machine_serial.getSelectedItemPosition();
                     int complaintTypePos = spinner_complaint_type.getSelectedItemPosition();
                     int workStatusPos = spinner_work_status.getSelectedItemPosition();
+
+                    String checkmobile = txt_new_customer_mobile.getText().toString().trim();
+                    String code = txt_country_code.getText().toString().trim();
 
                     if (txt_problem_title.getText().toString().equalsIgnoreCase("")) {
                         Config_Engg.alertBox("Please Enter Your Problem Title ",
@@ -700,14 +771,55 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                         Config_Engg.alertBox("Please Select Your Work Status ",
                                 RaiseComplaintActivity.this);
                         spinner_work_status.requestFocus();
-                    }  else if (!txt_mail.getText().toString().equalsIgnoreCase("") && !isValidMail(txt_mail.getText().toString())) {
+                    } else if (!txt_mail.getText().toString().equalsIgnoreCase("") && !isValidMail(txt_mail.getText().toString())) {
                         Config_Engg.alertBox("Please Enter Vaild Email",
                                 RaiseComplaintActivity.this);
                         txt_mail.requestFocus();
-                    } else if (!isValidMobile(txt_new_customer_mobile.getText().toString().trim())) {
-                        Config_Engg.alertBox("Please Enter Vaild Mobile No.",
-                                RaiseComplaintActivity.this);
-                        txt_new_customer_mobile.requestFocus();
+                    } else if(checkmobile.compareTo("") != 0 || code.compareTo("") !=0){
+
+                        if (checkmobile.compareTo("") != 0 && !isValidMobile(txt_new_customer_mobile.getText().toString().trim())) {
+                            Config_Engg.alertBox("Please Enter Vaild Mobile No.",
+                                    RaiseComplaintActivity.this);
+                            txt_new_customer_mobile.requestFocus();
+                        } else if (checkmobile.compareTo("") == 0) {
+                            Config_Engg.alertBox("Please Enter Mobile No.", RaiseComplaintActivity.this);
+                            txt_new_customer_mobile.requestFocus();
+                        }else if (code.compareTo("") == 0) {
+                            Config_Engg.alertBox("Please Enter Country Code", RaiseComplaintActivity.this);
+                            txt_country_code.requestFocus();
+                        }else {
+                            long SelectedComplaintType = spinner_complaint_type.getSelectedItemId();
+                            SelectedComplaintTypeID = transactionIDList.get((int) SelectedComplaintType);
+
+                            long SelectedWorkStatus = spinner_work_status.getSelectedItemId();
+                            SelectedWorkStatusID = engWorkStatusIDList.get((int) SelectedWorkStatus);
+
+                            if (check_customer.isChecked()) {
+                                checkBoxCustomerValue = "True";
+                            } else {
+                                checkBoxCustomerValue = "False";
+                            }
+
+                            if (check_internal.isChecked()) {
+                                checkBoxInternalValue = "True";
+                            } else {
+                                checkBoxInternalValue = "False";
+                            }
+
+                            problemTitle = txt_problem_title.getText().toString().trim();
+                            problemDesc = txt_problem_description.getText().toString().trim();
+                            ProblemoccurAtDate = txt_problem_date.getText().toString().trim();
+                            complaintDate = txt_complain_date.getText().toString().trim();
+                            expectedDate = txt_expected_date.getText().toString().trim();
+                            newpersonName = txt_new_person_name.getText().toString().trim();
+                            mailID = txt_mail.getText().toString().trim();
+                            countryCode = txt_country_code.getText().toString().trim();
+                            mobile = txt_new_customer_mobile.getText().toString().trim();
+                            otherContact = txt_other_contact.getText().toString().trim();
+
+                            new RaiseComplaintSubmit().execute();
+
+                        }
                     } else {
 
                         long SelectedComplaintType = spinner_complaint_type.getSelectedItemId();
@@ -728,7 +840,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                             checkBoxInternalValue = "False";
                         }
 
-
                         problemTitle = txt_problem_title.getText().toString().trim();
                         problemDesc = txt_problem_description.getText().toString().trim();
                         ProblemoccurAtDate = txt_problem_date.getText().toString().trim();
@@ -736,12 +847,12 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                         expectedDate = txt_expected_date.getText().toString().trim();
                         newpersonName = txt_new_person_name.getText().toString().trim();
                         mailID = txt_mail.getText().toString().trim();
+                        countryCode = txt_country_code.getText().toString().trim();
                         mobile = txt_new_customer_mobile.getText().toString().trim();
                         otherContact = txt_other_contact.getText().toString().trim();
 
                         new RaiseComplaintSubmit().execute();
                     }
-
 
                 } else {
                     Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", RaiseComplaintActivity.this);
@@ -767,6 +878,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 txt_expected_date.setText("");
                 txt_new_person_name.setText("");
                 txt_mail.setText("");
+                txt_country_code.setText("");
                 txt_new_customer_mobile.setText("");
                 txt_other_contact.setText("");
                 check_customer.setChecked(false);
@@ -811,19 +923,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         return check;
     }
 
-    String date_time1;
-    int mYear;
-    int mMonth;
-    int mDay;
-
-    int mHour;
-    int mMinute;
-    int dateTimeStatus;
-    int dateTimePickerStattus;
-
-
     public void datePicker(int DateTimeStatus) {
-
 
         this.dateTimeStatus = DateTimeStatus;
         // Get Current Date
@@ -832,14 +932,13 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,android.R.style.Theme_Holo_Dialog,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Dialog,
                 new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
                         // date_time = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-
 
                         c.set(Calendar.YEAR, year);
                         c.set(Calendar.MONTH, monthOfYear);
@@ -858,7 +957,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-
     private void tiemPicker(final int dateTimeStatus, String date_time) {
         this.dateTimePickerStattus = dateTimeStatus;
         this.date_time1 = date_time;
@@ -868,7 +966,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         mMinute = c.get(Calendar.MINUTE);
 
         // Launch Time Picker Dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,android.R.style.Theme_Holo_Dialog,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Dialog,
                 new TimePickerDialog.OnTimeSetListener() {
 
                     @Override
@@ -876,7 +974,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
                         int hour = hourOfDay;
                         int minutes = minute;
-
 
                         String timeSet = "";
                         if (hour > 12) {
@@ -931,10 +1028,9 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 intent = new Intent(RaiseComplaintActivity.this, ChangePassword.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
-            case R.id.logout:
 
+            case R.id.logout:
                 Config_Engg.logout(RaiseComplaintActivity.this);
                 finish();
                 Config_Engg.putSharedPreferences(this, "checklogin", "status", "2");
@@ -944,18 +1040,20 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 intent = new Intent(RaiseComplaintActivity.this, DashboardActivity.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
+
             case R.id.profile:
                 intent = new Intent(RaiseComplaintActivity.this, ProfileUpdate.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_raise:
                 intent = new Intent(RaiseComplaintActivity.this, RaiseComplaintActivity.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_complain:
                 intent = new Intent(RaiseComplaintActivity.this, ManageComplaint.class);
                 startActivity(intent);
@@ -966,6 +1064,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_contact:
                 intent = new Intent(RaiseComplaintActivity.this, ManageContact.class);
                 startActivity(intent);
@@ -983,11 +1082,11 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(status == 1){
+        if (status == 1) {
             Intent intent = new Intent(RaiseComplaintActivity.this, ManageComplaint.class);
             startActivity(intent);
             finish();
-        }else {
+        } else {
             Intent intent = new Intent(RaiseComplaintActivity.this, DashboardActivity.class);
             startActivity(intent);
             finish();
@@ -996,19 +1095,15 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
     }
 
-
     private class UpdateComplaint extends AsyncTask<String, String, String> {
         int flag;
         String msgstatus;
         String complain_detail_value;
         ProgressDialog progressDialog;
         String ComplaintDetail;
-
         JSONArray complainSub;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
         int count = 0;
 
         @Override
@@ -1067,7 +1162,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                                 flag = 1;
                             }
                         }
-
                     }
 
                 } else {
@@ -1082,7 +1176,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
             }
             return complain_detail_value;
         }
-
 
         @Override
         protected void onPostExecute(String complain_detail_value) {
@@ -1125,7 +1218,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                         }
                     }
 
-
                     if (index > 0) {
 
                         String customerString = customerNameList.get((int) index);
@@ -1136,7 +1228,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                         }
                     }
 
-
                     ParentCustomerNameUpdate = jsonObject.getString("CustomerID").toString();
 
                     SaleIDUpdate = jsonObject.getString("SaleID").toString();
@@ -1145,20 +1236,17 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
                     ContactPersonIDUpdate = jsonObject.getString("ContactPersonID").toString();
 
-                     ContactPersonNameUpdate = jsonObject.getString("ContactPersonName").toString();
+                    ContactPersonNameUpdate = jsonObject.getString("ContactPersonName").toString();
 
+                    ContactPersonConutryUpdate = jsonObject.getString("CountryCode").toString();
 
-                     ContactPersonMobileUpdate = jsonObject.getString("ContactPersonMobile").toString();
+                    ContactPersonMobileUpdate = jsonObject.getString("ContactPersonMobile").toString();
 
+                    ContactPersonMailIDUpdate = jsonObject.getString("ContactPersonMailID").toString();
 
-                     ContactPersonMailIDUpdate = jsonObject.getString("ContactPersonMailID").toString();
-
-
-                     ContactPersonContactNoUpdate = jsonObject.getString("ContactPersonContactNo").toString();
-
+                    ContactPersonContactNoUpdate = jsonObject.getString("ContactPersonContactNo").toString();
 
                     WorkStatusIDUpdate1 = jsonObject.getString("WorkStatusID").toString();
-
 
                     int index1 = -1;
                     for (int i = 0; i < engWorkStatusIDList.size(); i++) {
@@ -1196,7 +1284,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 Config_Engg.putSharedPreferences(RaiseComplaintActivity.this, "checklogin", "status", "2");
                 finish();
 
-            }else if(flag == 5){
+            } else if (flag == 5) {
                 ScanckBar();
                 btn_submit.setEnabled(false);
                 btn_update.setEnabled(false);
@@ -1214,7 +1302,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         String msgstatus;
         String initialData, customerList, transactionList, engWorkStatusList;
         ProgressDialog progressDialog;
-
         String LoginStatus;
         String invalid = "LoginFailed";
 
@@ -1278,7 +1365,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
                     }
 
-
                 } else {
                     JSONArray jsonArray = new JSONArray(initialData);
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
@@ -1307,12 +1393,10 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     customerNameList = new ArrayList<String>();
                     customerNameList.add(0, "Select");
 
-
                     for (int i = 0; i < jsonArray2.length(); i++) {
                         JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
                         String CustomerID = jsonObject2.getString("CustomerID");
                         String CustomerName = jsonObject2.getString("CustomerName");
-
 
                         customerIDList.add(i + 1, CustomerID);
                         //siteNameList.add(SiteName);
@@ -1348,14 +1432,12 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     spinneradapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner_complaint_type.setAdapter(spinneradapterTrans);
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //Log.e("Error is here", e.toString());
                 }
 
                 if (status == 1) {
-
 
                     try {
                         JSONArray jsonArray2 = new JSONArray(engWorkStatusList);
@@ -1377,12 +1459,10 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                         spinner_work_status.setAdapter(spinneradapterWorkStatus);
                         spinner_work_status.setSelection(2);
 
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                         //Log.e("Error is here", e.toString());
                     }
-
 
                 } else {
 
@@ -1396,7 +1476,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     engWorkStatusNameList.add(1, "To be assigned");
                     engWorkStatusNameList.add(2, "Accepted");
                     engWorkStatusNameList.add(3, "Completed");
-
 
                     ArrayAdapter<String> spinneradapterStatus = new ArrayAdapter<String>(RaiseComplaintActivity.this,
                             android.R.layout.simple_spinner_item, engWorkStatusNameList);
@@ -1417,7 +1496,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     Config_Engg.logout(RaiseComplaintActivity.this);
                     Config_Engg.putSharedPreferences(RaiseComplaintActivity.this, "checklogin", "status", "2");
                     finish();
-                }else if(flag == 5){
+                } else if (flag == 5) {
 
                     ScanckBar();
                     btn_submit.setEnabled(false);
@@ -1441,8 +1520,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-
-                        if(status == 1){
+                        if (status == 1) {
 
                             complaint_view.setVisibility(View.VISIBLE);
                             region_view.setVisibility(View.VISIBLE);
@@ -1458,7 +1536,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                             btn_submit.setEnabled(true);
                             btn_update.setEnabled(true);
                             btn_clear.setEnabled(true);
-                        }else {
+                        } else {
 
                             new AddInitialData().execute();
                             btn_submit.setEnabled(true);
@@ -1480,12 +1558,9 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         int flag;
         String msgstatus;
         String machine_detail, machine_list;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
         ProgressDialog progressDialog;
-
         int count = 0;
 
         @Override
@@ -1605,7 +1680,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 Config_Engg.logout(RaiseComplaintActivity.this);
                 Config_Engg.putSharedPreferences(RaiseComplaintActivity.this, "checklogin", "status", "2");
                 finish();
-            }else if(flag == 5){
+            } else if (flag == 5) {
 
                 ScanckBar();
                 btn_submit.setEnabled(false);
@@ -1618,17 +1693,14 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         }
     }
 
-
     private class AddMachineSerial extends AsyncTask<String, String, String> {
 
         int flag;
         String msgstatus;
         String machine_serial_detail_value, machineList, contactList;
         ProgressDialog progressDialog;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
         int countMachine = 0;
         int countContact = 0;
 
@@ -1718,13 +1790,11 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     machineSerialName = new ArrayList<String>();
                     machineSerialName.add(0, "Select");
 
-
                     for (int i = 0; i < jsonArray2.length(); i++) {
                         countMachine += 1;
                         JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
                         String SaleID = jsonObject2.getString("SaleID");
                         String ModelName = jsonObject2.getString("ModelName");
-
 
                         machineSerialID.add(i + 1, SaleID);
                         //siteNameList.add(SiteName);
@@ -1734,7 +1804,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     spinneradapterMachine = new ArrayAdapter<String>(RaiseComplaintActivity.this, android.R.layout.simple_spinner_item, machineSerialName);
                     spinneradapterMachine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner_machine_serial.setAdapter(spinneradapterMachine);
-
 
                     int index = -1;
                     for (int i = 0; i < machineSerialID.size(); i++) {
@@ -1756,7 +1825,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
                         spinner_machine_serial.setSelection(1);
                     }
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1819,8 +1887,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 Config_Engg.putSharedPreferences(RaiseComplaintActivity.this, "checklogin", "status", "2");
                 finish();
 
-
-            }else if(flag == 5){
+            } else if (flag == 5) {
                 ScanckBar();
                 btn_submit.setEnabled(false);
                 btn_update.setEnabled(false);
@@ -1831,17 +1898,14 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         }
     }
 
-
     private class AddMachineChange extends AsyncTask<String, String, String> {
 
         int flag;
         String msgstatus;
         String machine_change_detail_value, machineList;
         ProgressDialog progressDialog;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
         int countMachine = 0;
         int countContact = 0;
 
@@ -1891,7 +1955,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                flag =5;
+                flag = 5;
             }
             return null;
         }
@@ -1904,7 +1968,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 Config_Engg.toastShow(msgstatus, RaiseComplaintActivity.this);
             } else if (flag == 2) {
                 try {
-//
 
                     JSONArray jsonArray2 = new JSONArray(machine_change_detail_value);
                     JSONObject jsonObject2 = jsonArray2.getJSONObject(0);
@@ -1950,7 +2013,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
                     }
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //Log.e("Error is here", e.toString());
@@ -1966,7 +2028,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 Config_Engg.putSharedPreferences(RaiseComplaintActivity.this, "checklogin", "status", "2");
                 finish();
 
-            }else if(flag == 5){
+            } else if (flag == 5) {
                 ScanckBar();
                 btn_submit.setEnabled(false);
                 btn_update.setEnabled(false);
@@ -1978,17 +2040,14 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         }
     }
 
-
     private class AddContactChange extends AsyncTask<String, String, String> {
 
         int flag;
         String msgstatus;
         String contact_change_detail_value, contactChangeList;
         ProgressDialog progressDialog;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
 
         @Override
         protected void onPreExecute() {
@@ -2048,18 +2107,18 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 Config_Engg.toastShow(msgstatus, RaiseComplaintActivity.this);
             } else if (flag == 2) {
                 try {
-//
                     JSONArray jsonArray2 = new JSONArray(contact_change_detail_value);
                     JSONObject jsonObject2 = jsonArray2.getJSONObject(0);
                     String ContactPersonName = jsonObject2.getString("ContactPersonName");
                     String Email = jsonObject2.getString("Email");
                     String Phone = jsonObject2.getString("Phone");
+                    String Code = jsonObject2.getString("CountryCode");
 
                     txt_new_person_name.setText(ContactPersonName);
                     txt_new_person_name.setEnabled(false);
                     txt_mail.setText(Email);
+                    txt_country_code.setText(Code);
                     txt_new_customer_mobile.setText(Phone);
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -2075,8 +2134,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 Config_Engg.putSharedPreferences(RaiseComplaintActivity.this, "checklogin", "status", "2");
                 finish();
 
-
-            }else if(flag ==5 ){
+            } else if (flag == 5) {
                 ScanckBar();
                 btn_submit.setEnabled(false);
                 btn_update.setEnabled(false);
@@ -2088,14 +2146,11 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         }
     }
 
-
     private class RaiseComplaintSubmit extends AsyncTask<String, String, String> {
         int flag;
         String jsonValue, msg;
-
         String LoginStatus;
         String invalid = "LoginFailed";
-
         ProgressDialog progressDialog;
 
         @Override
@@ -2127,13 +2182,13 @@ public class RaiseComplaintActivity extends AppCompatActivity {
             request.addProperty("ContactPersonID", SelectedContactID);
             request.addProperty("ContactPersonName", newpersonName);
             request.addProperty("ContactPersonMailID", mailID);
+            request.addProperty("CountryCode",countryCode);
             request.addProperty("ContactPersonMobile", mobile);
             request.addProperty("ContactPersonContactNo", otherContact);
             request.addProperty("MailToCustomer", checkBoxCustomerValue);
             request.addProperty("MailToInternal", checkBoxInternalValue);
             request.addProperty("EngineerID", EngineerID);
             request.addProperty("AuthCode", AuthCode);
-
 
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.setOutputSoapObject(request);
@@ -2165,7 +2220,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                flag =5;
+                flag = 5;
             }
             return null;
         }
@@ -2189,7 +2244,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     Config_Engg.logout(RaiseComplaintActivity.this);
                     Config_Engg.putSharedPreferences(RaiseComplaintActivity.this, "checklogin", "status", "2");
                     finish();
-                }else if (flag == 5) {
+                } else if (flag == 5) {
                     ScanckBar();
                     btn_submit.setEnabled(false);
                     btn_update.setEnabled(false);

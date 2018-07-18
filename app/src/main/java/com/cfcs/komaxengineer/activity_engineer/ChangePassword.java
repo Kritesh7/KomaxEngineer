@@ -44,7 +44,7 @@ public class ChangePassword extends AppCompatActivity {
     ProgressDialog progressDialog;
     LinearLayout maincontainer;
 
-    TextView tv_old_pass,tv_new_pass,tv_confirm_pass;
+    TextView tv_old_pass, tv_new_pass, tv_confirm_pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,18 +62,18 @@ public class ChangePassword extends AppCompatActivity {
 
         SimpleSpanBuilder ssbOldPass = new SimpleSpanBuilder();
         ssbOldPass.appendWithSpace("Old Password");
-        ssbOldPass.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbOldPass.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_old_pass.setText(ssbOldPass.build());
 
 
         SimpleSpanBuilder ssbNewPass = new SimpleSpanBuilder();
         ssbNewPass.appendWithSpace("New Password");
-        ssbNewPass.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbNewPass.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_new_pass.setText(ssbNewPass.build());
 
         SimpleSpanBuilder ssbConfirm = new SimpleSpanBuilder();
         ssbConfirm.appendWithSpace("Confirm Password");
-        ssbConfirm.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbConfirm.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_confirm_pass.setText(ssbConfirm.build());
 
         txt_old_paasword = findViewById(R.id.txt_old_password);
@@ -147,7 +147,6 @@ public class ChangePassword extends AppCompatActivity {
         String jsonValue;
         String status = "";
         String msgstatus;
-
         String LoginStatus;
         String invalid = "LoginFailed";
         String valid = "success";
@@ -229,7 +228,7 @@ public class ChangePassword extends AppCompatActivity {
                     Config_Engg.logout(ChangePassword.this);
                     Config_Engg.putSharedPreferences(ChangePassword.this, "checklogin", "status", "2");
                     finish();
-                } else if(flag == 5){
+                } else if (flag == 5) {
                     ScanckBar();
                     btn_submit.setEnabled(false);
                     progressDialog.dismiss();
@@ -252,13 +251,11 @@ public class ChangePassword extends AppCompatActivity {
 
                         btn_submit.setEnabled(true);
 
-
                     }
                 });
 
         // Changing message text color
         snackbar.setActionTextColor(Color.RED);
-
         snackbar.show();
 
     }
@@ -278,10 +275,9 @@ public class ChangePassword extends AppCompatActivity {
                 intent = new Intent(ChangePassword.this, ChangePassword.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
-            case R.id.logout:
 
+            case R.id.logout:
                 Config_Engg.logout(ChangePassword.this);
                 finish();
                 Config_Engg.putSharedPreferences(this, "checklogin", "status", "2");
@@ -298,21 +294,25 @@ public class ChangePassword extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_raise:
                 intent = new Intent(ChangePassword.this, RaiseComplaintActivity.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_complain:
                 intent = new Intent(ChangePassword.this, ManageComplaint.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_machines:
                 intent = new Intent(ChangePassword.this, ManageMachines.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_contact:
                 intent = new Intent(ChangePassword.this, ManageContact.class);
                 startActivity(intent);
@@ -327,7 +327,6 @@ public class ChangePassword extends AppCompatActivity {
         }
         return (super.onOptionsItemSelected(item));
     }
-
 
     @Override
     public void onBackPressed() {

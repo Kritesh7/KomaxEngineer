@@ -15,8 +15,8 @@ import com.cfcs.komaxengineer.LoginActivity;
 
 public class Config_Engg {
 
-//      public static String BASE_URL = "http://192.168.1.200:8080/";
-      public static String BASE_URL = "https://app.komaxindia.co.in/";
+//          public static String BASE_URL = "http://192.168.1.200:8080/";
+    public static String BASE_URL = "https://app.komaxindia.co.in/";
 
     public static boolean internetStatus = false;
 
@@ -41,7 +41,6 @@ public class Config_Engg {
         editor.commit();
         return null;
     }
-
 
     public static void alertBox(String s, Context c) {
         AlertDialog.Builder altDialog = new AlertDialog.Builder(c);
@@ -78,7 +77,6 @@ public class Config_Engg {
     }
 
     public static void logout(Context c) {
-
         Config_Engg.putSharedPreferences(c, "pref_Engg", "AuthCode", "");
         //   Config_Engg.putSharedPreferences(c, "pref_Engg", "Password1", "");
         //  Config_Engg.putSharedPreferences(c, "pref_Customer", "ContactPersonId", "");
@@ -87,6 +85,5 @@ public class Config_Engg {
         c.startActivity(intent);
         Config_Engg.toastShow("Successfully Loged Out", c);
     }
-
 
 }

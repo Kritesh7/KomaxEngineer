@@ -581,6 +581,31 @@
                             android:background="#e0e0e0"
                             android:elevation=".5dp" />
 
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/existing_customer_contact"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+
+                        <Spinner
+                            android:id="@+id/spinner_existing_customer_contacts"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/spinner_back"
+                            android:gravity="center_vertical"
+                            android:minHeight="30dp"
+                            android:padding="0dp"
+                            android:popupBackground="#fff"
+                            android:spinnerMode="dropdown"
+                            android:textSize="15sp" />
+
                         <TextView
                             android:id="@+id/tv_sign_by_name"
                             android:layout_width="wrap_content"
@@ -613,19 +638,43 @@
                             android:textStyle="bold" />
 
 
-                        <EditText
-                            android:id="@+id/txt_sign_by_mobile"
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/edit_text_box_enable_disable"
-                            android:drawablePadding="10dp"
-                            android:ems="10"
-                            android:hint="Sign By Mobile No."
-                            android:inputType="number"
-                            android:maxLength="10"
-                            android:padding="10dp"
-                            android:textSize="15sp" />
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/txt_country_code"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/edit_text_box_enable_disable"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:hint="Code"
+                                android:inputType="number"
+                                android:padding="10dp"
+                                android:textSize="15sp"
+                                android:layout_weight="8"
+                                android:maxLength="5"/>
+
+                            <EditText
+                                android:id="@+id/txt_sign_by_mobile"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/edit_text_box_enable_disable"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:hint="Sign By Mobile No."
+                                android:inputType="number"
+                                android:padding="10dp"
+                                android:textSize="15sp"
+                                android:layout_weight="2"
+                                android:layout_marginLeft="10dp"/>
+
+                        </LinearLayout>
 
 
                         <TextView

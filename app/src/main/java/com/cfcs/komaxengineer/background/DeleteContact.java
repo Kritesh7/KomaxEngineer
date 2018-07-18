@@ -28,7 +28,6 @@ public class DeleteContact extends AsyncTask<String, String, String> {
     int flag;
     Context context;
     ProgressDialog progressDialog;
-
     String LoginStatus;
     String invalid = "LoginFailed";
 
@@ -36,12 +35,10 @@ public class DeleteContact extends AsyncTask<String, String, String> {
         this.context = context;
     }
 
-
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         progressDialog = ProgressDialog.show(context, "", "Please wait...", true, false, null);
-
     }
 
     @Override
@@ -51,7 +48,6 @@ public class DeleteContact extends AsyncTask<String, String, String> {
         ContactPersonId = params[0];
         EngineerID = params[1];
         AuthCode = params[2];
-
 
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
         request.addProperty("ContactPersonId", ContactPersonId);
@@ -111,7 +107,6 @@ public class DeleteContact extends AsyncTask<String, String, String> {
             Config_Engg.toastShow(msgstatus, context);
             Intent i = new Intent(context, LoginActivity.class);
             context.startActivity(i);
-
         }
         progressDialog.dismiss();
 

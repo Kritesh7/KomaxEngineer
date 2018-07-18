@@ -54,6 +54,7 @@ public class ForgetPasswordActivity extends Activity {
             public void onClick(View view) {
                 Intent i = new Intent(ForgetPasswordActivity.this, LoginActivity.class);
                 startActivity(i);
+                finish();
             }
         });
 
@@ -146,7 +147,7 @@ public class ForgetPasswordActivity extends Activity {
 
                     Toast.makeText(getApplicationContext(), msgstatus, Toast.LENGTH_LONG).show();
 
-            }else if (flag == 5){
+                } else if (flag == 5) {
                     ScanckBar();
                     btn_forgetpassword.setEnabled(false);
                     progressDialog.dismiss();
@@ -171,7 +172,6 @@ public class ForgetPasswordActivity extends Activity {
 
         // Changing message text color
         snackbar.setActionTextColor(Color.RED);
-
         snackbar.show();
 
     }

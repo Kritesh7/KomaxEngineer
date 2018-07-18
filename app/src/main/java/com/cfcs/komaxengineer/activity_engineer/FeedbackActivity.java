@@ -44,7 +44,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
     LinearLayout maincontainer;
 
-    TextView tv_subject,tv_message;
+    TextView tv_subject, tv_message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +61,12 @@ public class FeedbackActivity extends AppCompatActivity {
 
         SimpleSpanBuilder ssbSubject = new SimpleSpanBuilder();
         ssbSubject.appendWithSpace("Subject");
-        ssbSubject.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbSubject.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_subject.setText(ssbSubject.build());
 
         SimpleSpanBuilder ssbMessage = new SimpleSpanBuilder();
         ssbMessage.appendWithSpace("Message");
-        ssbMessage.append("*",new ForegroundColorSpan(Color.RED),new RelativeSizeSpan(1));
+        ssbMessage.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_message.setText(ssbMessage.build());
 
         txt_subject = findViewById(R.id.txt_subject);
@@ -97,7 +97,6 @@ public class FeedbackActivity extends AppCompatActivity {
                         new FeedbackActivityAsy().execute();
                     }
 
-
                 } else {
                     Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", FeedbackActivity.this);
                 }
@@ -122,10 +121,9 @@ public class FeedbackActivity extends AppCompatActivity {
                 intent = new Intent(FeedbackActivity.this, ChangePassword.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
-            case R.id.logout:
 
+            case R.id.logout:
                 Config_Engg.logout(FeedbackActivity.this);
                 finish();
                 Config_Engg.putSharedPreferences(this, "checklogin", "status", "2");
@@ -142,11 +140,13 @@ public class FeedbackActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_raise:
                 intent = new Intent(FeedbackActivity.this, RaiseComplaintActivity.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_complain:
                 intent = new Intent(FeedbackActivity.this, ManageComplaint.class);
                 startActivity(intent);
@@ -157,6 +157,7 @@ public class FeedbackActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_contact:
                 intent = new Intent(FeedbackActivity.this, ManageContact.class);
                 startActivity(intent);
@@ -238,7 +239,7 @@ public class FeedbackActivity extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                flag =5;
+                flag = 5;
             }
             return null;
         }
@@ -259,7 +260,7 @@ public class FeedbackActivity extends AppCompatActivity {
                 Config_Engg.logout(FeedbackActivity.this);
                 Config_Engg.putSharedPreferences(FeedbackActivity.this, "checklogin", "status", "2");
                 finish();
-            }else if(flag == 5){
+            } else if (flag == 5) {
 
                 ScanckBar();
                 btn_submit_feedback.setEnabled(false);
@@ -284,7 +285,6 @@ public class FeedbackActivity extends AppCompatActivity {
 
         // Changing message text color
         snackbar.setActionTextColor(Color.RED);
-
         snackbar.show();
 
     }
