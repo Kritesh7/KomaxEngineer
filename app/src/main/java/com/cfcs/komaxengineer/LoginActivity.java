@@ -79,6 +79,9 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
 
+                userName = txt_user_name.getText().toString().trim();
+                userPass = txt_user_pass.getText().toString().trim();
+
                 if (userName.compareTo("") != 0 && userPass.compareTo("") != 0) {
 
                     Config_Engg.isOnline(LoginActivity.this);
