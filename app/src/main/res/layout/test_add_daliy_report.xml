@@ -139,7 +139,10 @@
                             android:padding="10dp"
                             android:textColor="#000000"
                             android:textColorHint="#999"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:overScrollMode="always"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"/>
 
 
                         <TextView
@@ -166,7 +169,10 @@
                             android:padding="10dp"
                             android:textColor="#000000"
                             android:textColorHint="#999"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:overScrollMode="always"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -190,7 +196,10 @@
                             android:padding="10dp"
                             android:textColor="#000000"
                             android:textColorHint="#999"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:overScrollMode="always"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"/>
 
 
 
@@ -303,7 +312,10 @@
                             android:padding="10dp"
                             android:textColor="#000000"
                             android:textColorHint="#999"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:overScrollMode="always"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"/>
 
                     </LinearLayout>
 
@@ -698,42 +710,6 @@
                             android:padding="10dp"
                             android:textSize="15sp" />
 
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="Add Customer Remark"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <EditText
-                            android:id="@+id/txt_add_customer_remark"
-                            android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/edit_text_box_enable_disable"
-                            android:clickable="true"
-                            android:ems="10"
-                            android:gravity="top"
-                            android:hint="Add Customer Remark"
-                            android:padding="10dp"
-                            android:textColor="#000000"
-                            android:textColorHint="#999"
-                            android:textSize="15sp" />
-
-                        <Button
-                            android:id="@+id/btn_add_sign"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/button_background"
-                            android:text="Add Signature"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-
                     </LinearLayout>
 
 
@@ -766,7 +742,6 @@
                             android:padding="10dp">
 
                             <!--android:background="?attr/selectableItemBackground"-->
-
 
                             <Button
                                 android:id="@+id/btn_spare_search"
@@ -819,54 +794,19 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:orientation="vertical"
-                            android:layout_gravity="center"
-                            android:gravity="center">
-                            <Button
-                                android:id="@+id/btn_attachment"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/button_background"
-                                android:text="Upload Service Report"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/txt_image_show"
-                                android:textSize="20dp"
-                                android:text="No Image"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
                             android:layout_marginTop="10dp"
                             android:gravity="center"
                             android:orientation="horizontal">
 
                             <Button
-                                android:id="@+id/btn_update_daily_report"
+                                android:id="@+id/btn_preview"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:background="@drawable/mybutton"
-                                android:text="Update"
+                                android:text="Preview"
                                 android:textColor="@color/white" />
-
-                            <Button
-                                android:id="@+id/btn_add_daily_report"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="5dp"
-                                android:background="@drawable/mybutton"
-                                android:text="Submit"
-                                android:textColor="@color/white" />
-
 
                             <Button
                                 android:id="@+id/btn_clear"
@@ -876,6 +816,8 @@
                                 android:background="@drawable/mybutton"
                                 android:text="@string/clear"
                                 android:textColor="@color/white" />
+
+
 
 
                         </LinearLayout>

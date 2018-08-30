@@ -12,7 +12,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
-
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="false"
@@ -33,9 +32,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"
+        <activity
+            android:name=".LoginActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity_engineer.DashboardActivity"
             android:configChanges="orientation|screenSize"
@@ -142,8 +142,9 @@
 
         <receiver android:name=".broadcastReciever.CustomerBroadcastReciever" />
 
-        <service android:name=".broadcastReciever.AutoNofity"
-            android:process=":whatever"/>
+        <service
+            android:name=".broadcastReciever.AutoNofity"
+            android:process=":whatever" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -152,9 +153,14 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
 
+        <activity android:name=".activity_engineer.AddDailyReportPreview"
+            android:configChanges="orientation|screenSize"
+            android:label=""
+            android:theme="@style/InnerTheme"
+            android:windowSoftInputMode="stateHidden"></activity>
     </application>
 
 </manifest>

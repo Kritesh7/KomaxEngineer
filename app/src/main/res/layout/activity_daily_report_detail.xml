@@ -83,28 +83,21 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
 
                                 <TextView
-
-                                    android:layout_width="0dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="4.5"
                                     android:text="Observation"
                                     android:textStyle="bold" />
 
-                                <TextView
 
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text=":"
-                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/txt_work_done_plant"
-
-                                    android:layout_width="0dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="4.5"
                                     android:text="" />
@@ -120,28 +113,23 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
+                                android:layout_marginTop="10dp"
+                                android:orientation="vertical">
 
                                 <TextView
 
-                                    android:layout_width="0dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="4.5"
                                     android:text="Action Take"
                                     android:textStyle="bold" />
 
-                                <TextView
 
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text=":"
-                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/txt_work_detail"
 
-                                    android:layout_width="0dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="4.5"
                                     android:text="" />
@@ -157,28 +145,22 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
+                                android:layout_marginTop="10dp"
+                                android:orientation="vertical">
 
                                 <TextView
 
-                                    android:layout_width="0dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="4.5"
                                     android:text="Other Remark"
                                     android:textStyle="bold" />
 
-                                <TextView
 
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text=":"
-                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/txt_suggestion"
-
-                                    android:layout_width="0dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="4.5"
                                     android:text="" />
@@ -194,28 +176,21 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
+                                android:layout_marginTop="10dp"
+                                android:orientation="vertical">
 
                                 <TextView
 
-                                    android:layout_width="0dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="4.5"
                                     android:text="Reason Not Closed"
                                     android:textStyle="bold" />
 
-                                <TextView
-
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text=":"
-                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/txt_reason_close"
-
-                                    android:layout_width="0dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="4.5"
                                     android:text="" />
@@ -603,27 +578,21 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
+                                android:layout_marginTop="10dp"
+                                android:orientation="vertical">
 
                                 <TextView
 
-                                    android:layout_width="0dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="4.5"
                                     android:text="Customer Remark"
                                     android:textStyle="bold" />
 
-                                <TextView
-
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text=":"
-                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/txt_customer_remark"
-                                    android:layout_width="0dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="4.5"
                                     android:text="" />

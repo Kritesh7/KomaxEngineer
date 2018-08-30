@@ -7,6 +7,8 @@
     android:background="#efefef"
     tools:context=".activity_engineer.AddDailyReport">
 
-    <include layout="@layout/test_add_daliy_report" />
+    <include layout="@layout/activity_add_daily_report_preview" />
+
+    <include layout="@layout/bottomsheet" />
 
 </android.support.design.widget.CoordinatorLayout>
