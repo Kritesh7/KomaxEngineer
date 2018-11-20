@@ -50,6 +50,9 @@ public class LoginActivity extends Activity {
 
     Snackbar snackbar;
 
+    String PhoneModel = "";
+    String AndroidVersion ="";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,11 @@ public class LoginActivity extends Activity {
 
                 userName = txt_user_name.getText().toString().trim();
                 userPass = txt_user_pass.getText().toString().trim();
+
+                // Device model
+                 PhoneModel = android.os.Build.MODEL;
+                // Android version
+                 AndroidVersion = android.os.Build.VERSION.RELEASE;
 
                 if (userName.compareTo("") != 0 && userPass.compareTo("") != 0) {
 
@@ -139,6 +147,8 @@ public class LoginActivity extends Activity {
             request.addProperty("UserName", userName);
             request.addProperty("Password", userPass);
             request.addProperty("AuthCode", AuthCode);
+            request.addProperty("BrandName", PhoneModel);
+            request.addProperty("ClientVersion", AndroidVersion);
 
             SoapSerializationEnvelope envelop = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelop.setOutputSoapObject(request);

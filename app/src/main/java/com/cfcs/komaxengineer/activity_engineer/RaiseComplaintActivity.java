@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -80,9 +81,10 @@ public class RaiseComplaintActivity extends AppCompatActivity {
     private static String SOAP_ACTION7 = "http://cfcs.co.in/AppEngineerComplainInsUpdt";
     private static String METHOD_NAME7 = "AppEngineerComplainInsUpdt";
 
-    EditText txt_problem_title, txt_problem_description, txt_problem_date, txt_complain_date,
-            txt_expected_date, txt_new_person_name, txt_mail, txt_new_customer_mobile,
+    EditText txt_problem_title, txt_problem_description,
+            txt_new_person_name, txt_mail, txt_new_customer_mobile,
             txt_other_contact, txt_country_code;
+    TextView txt_problem_date,txt_complain_date,txt_expected_date;
     Spinner spinner_customer_name, spinner_plant, spinner_machine_model, spinner_machine_serial, spinner_complaint_type, spinner_work_status,
             spinner_status, spinner_existing_customer_contacts;
     Button btn_submit, btn_clear, btn_update;
@@ -141,6 +143,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
     String ComplaintTypeUdate = "";
     String ContactPersonIDUpdate = "";
     String WorkStatusIDUpdate1 = "";
+    String ComplainServiceTypeID = "";
 
     String checkBoxCustomerValue;
     String checkBoxInternalValue;
@@ -415,7 +418,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
                     }
 
-
                 } else {
                     Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", RaiseComplaintActivity.this);
                 }
@@ -561,10 +563,10 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
                 switch (checkedId) {
                     case R.id.radio_off_site:
-                        seletedValue = 1;
+                        seletedValue = 2;
                         break;
                     case R.id.radio_on_site:
-                        seletedValue = 2;
+                        seletedValue = 1;
                         break;
                 }
             }
@@ -1076,6 +1078,11 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return (true);
+
+            case R.id.download_file:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://app.komaxindia.co.in/Engineer/Engineer-User-Manual.pdf"));
+                startActivity(browserIntent);
+                return (true);
         }
         return (super.onOptionsItemSelected(item));
     }
@@ -1247,6 +1254,14 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     ContactPersonContactNoUpdate = jsonObject.getString("ContactPersonContactNo").toString();
 
                     WorkStatusIDUpdate1 = jsonObject.getString("WorkStatusID").toString();
+
+                    ComplainServiceTypeID = jsonObject.getString("ComplainServiceTypeID").toString();
+
+                    if(ComplainServiceTypeID.compareTo("1") == 0){
+                        radio_on_site.setChecked(true);
+                    }else {
+                        radio_off_site.setChecked(true);
+                    }
 
                     int index1 = -1;
                     for (int i = 0; i < engWorkStatusIDList.size(); i++) {
@@ -2124,7 +2139,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     e.printStackTrace();
                     //Log.e("Error is here", e.toString());
                 }
-                progressDialog.dismiss();
             } else if (flag == 3) {
                 Config_Engg.toastShow("No Response", RaiseComplaintActivity.this);
 //

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -63,9 +64,6 @@ public class NewMachine extends AppCompatActivity {
     private static String SOAP_ACTION4 = "http://cfcs.co.in/AppEngineerddlPrincipalRegionAppStatus";
     private static String METHOD_NAME4 = "AppEngineerddlPrincipalRegionAppStatus";
 
-    private static String SOAP_ACTION5 = "http://cfcs.co.in/AppEngineerddlArea";
-    private static String METHOD_NAME5 = "AppEngineerddlArea";
-
     private static String SOAP_ACTION6 = "http://cfcs.co.in/AppEngineerddlModel";
     private static String METHOD_NAME6 = "AppEngineerddlModel";
 
@@ -101,30 +99,29 @@ public class NewMachine extends AppCompatActivity {
 
     String SelctedCustomerID;
     String SelctedPlantID;
-    String SelctedZoneID;
     String SelctedPrincipalID;
     String SelectedWarrantyAmcID;
     String SelectedModelID;
     String SelectedEnggID;
-    String SelectedAreaID;
+
 
     ArrayAdapter<String> spinneradapterTrans;
     ArrayAdapter<String> spinneradapterCustomer;
     ArrayAdapter<String> spinneradapterPlant;
     ArrayAdapter<String> spinneradapterPrincipal;
-    ArrayAdapter<String> spinneradapterZone;
-    ArrayAdapter<String> spinneradapterArea;
     ArrayAdapter<String> spinneradapterModel;
     ArrayAdapter<String> spinneradapterEngg;
     ArrayAdapter<String> spinneradapterEnggS;
 
-    Spinner spinner_customer_name, spinner_plant, spinner_warranty_amc, spinner_installation_region, spinner_installation_area,
+    Spinner spinner_customer_name, spinner_plant, spinner_warranty_amc,
             spinner_principal, spinner_machine_model, spinner_primary_respon, spinner_secondary_respon;
 
     LinearLayout warranty_llout_hideShow, amc_llout_hideShow;
 
-    EditText txt_date_of_supply, txt_date_install, txt_warranty_s_date, txt_warranty_e_date, txt_amc_start_date,
-            txt_amc_end_date, txt_machine_serial, txt_sw_version, txt_product_key, txt_office_file_no, txt_amc_file_no, txt_comment;
+    EditText txt_machine_serial, txt_sw_version, txt_product_key, txt_office_file_no, txt_amc_file_no, txt_comment;
+
+    TextView txt_date_of_supply, txt_date_install, txt_warranty_s_date, txt_warranty_e_date, txt_amc_start_date,
+            txt_amc_end_date;
 
     Button btn_submit, btn_clear, btn_update;
 
@@ -137,7 +134,6 @@ public class NewMachine extends AppCompatActivity {
     String isEditDelete = "";
 
     String PlantIdUpdate = "";
-    String AreaIDUpdate = "";
     String ModelIDUpdate = "";
 
     LinearLayout maincontainer;
@@ -162,8 +158,6 @@ public class NewMachine extends AppCompatActivity {
 
         tv_customer_name = findViewById(R.id.tv_customer_name);
         tv_plant = findViewById(R.id.tv_plant);
-        tv_installation_region = findViewById(R.id.tv_installation_region);
-        tv_installation_area = findViewById(R.id.tv_installation_area);
         tv_warrantyAMC = findViewById(R.id.tv_warrantyAMC);
         tv_machine_mode = findViewById(R.id.tv_machine_mode);
         tv_machine_serial = findViewById(R.id.tv_machine_serial);
@@ -178,15 +172,7 @@ public class NewMachine extends AppCompatActivity {
         ssbPlant.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_plant.setText(ssbPlant.build());
 
-        SimpleSpanBuilder ssbInstallRegion = new SimpleSpanBuilder();
-        ssbInstallRegion.appendWithSpace("Installation Region");
-        ssbInstallRegion.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
-        tv_installation_region.setText(ssbInstallRegion.build());
 
-        SimpleSpanBuilder ssbInstallArea = new SimpleSpanBuilder();
-        ssbInstallArea.appendWithSpace("Installation Area");
-        ssbInstallArea.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
-        tv_installation_area.setText(ssbInstallArea.build());
 
         SimpleSpanBuilder ssbwarranty = new SimpleSpanBuilder();
         ssbwarranty.appendWithSpace("Warranty Amc Status");
@@ -206,8 +192,6 @@ public class NewMachine extends AppCompatActivity {
         spinner_customer_name = findViewById(R.id.spinner_customer_name);
         spinner_plant = findViewById(R.id.spinner_plant);
         spinner_warranty_amc = findViewById(R.id.spinner_warranty_amc);
-        spinner_installation_region = findViewById(R.id.spinner_installation_region);
-        spinner_installation_area = findViewById(R.id.spinner_installation_area);
         spinner_principal = findViewById(R.id.spinner_principal);
         spinner_machine_model = findViewById(R.id.spinner_machine_model);
         warranty_llout_hideShow = findViewById(R.id.warranty_llout_hideShow);
@@ -369,43 +353,6 @@ public class NewMachine extends AppCompatActivity {
             }
         });
 
-        spinner_installation_region.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                Config_Engg.isOnline(NewMachine.this);
-                if (Config_Engg.internetStatus == true) {
-
-                    long SelectedZone = parent.getSelectedItemId();
-                    SelctedZoneID = zoneIDList.get((int) SelectedZone);
-                    if (SelectedZone != 0) {
-                        new AddArea().execute();
-
-                    } else {
-
-                        areaID = new ArrayList<String>();
-                        areaID.add(0, "");
-                        areaName = new ArrayList<String>();
-                        areaName.add(0, "Select");
-
-                        ArrayAdapter<String> spinneradapterArea = new ArrayAdapter<String>(NewMachine.this,
-                                android.R.layout.simple_spinner_item, areaName);
-                        spinneradapterArea.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner_installation_area.setAdapter(spinneradapterArea);
-                    }
-
-
-                } else {
-                    Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", NewMachine.this);
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         spinner_principal.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -508,8 +455,6 @@ public class NewMachine extends AppCompatActivity {
 
                     int customerPos = spinner_customer_name.getSelectedItemPosition();
                     int plantPos = spinner_plant.getSelectedItemPosition();
-                    int regionPos = spinner_installation_region.getSelectedItemPosition();
-                    int areaPos = spinner_installation_area.getSelectedItemPosition();
                     int modelPos = spinner_machine_model.getSelectedItemPosition();
                     int workAMCPos = spinner_warranty_amc.getSelectedItemPosition();
 
@@ -558,14 +503,6 @@ public class NewMachine extends AppCompatActivity {
                         Config_Engg.alertBox("Please Select Your Plant ",
                                 NewMachine.this);
                         spinner_plant.requestFocus();
-                    } else if (regionPos == 0) {
-                        Config_Engg.alertBox("Please Select Your Region ",
-                                NewMachine.this);
-                        spinner_installation_region.requestFocus();
-                    } else if (areaPos == 0) {
-                        Config_Engg.alertBox("Please Select Your Area ",
-                                NewMachine.this);
-                        spinner_installation_area.requestFocus();
                     } else if (modelPos == 0) {
                         Config_Engg.alertBox("Please Select YourModel ",
                                 NewMachine.this);
@@ -590,8 +527,6 @@ public class NewMachine extends AppCompatActivity {
                         long SelectedEnggS = spinner_secondary_respon.getSelectedItemId();
                         SelectedEnggID = enggSecondaryID.get((int) SelectedEnggS);
 
-                        long SelectedArea = spinner_installation_area.getSelectedItemId();
-                        SelectedAreaID = areaID.get((int) SelectedArea);
 
                         dateOfSupply = txt_date_of_supply.getText().toString();
                         dateOfInstallation = txt_date_install.getText().toString();
@@ -627,8 +562,6 @@ public class NewMachine extends AppCompatActivity {
 
                     int customerPos = spinner_customer_name.getSelectedItemPosition();
                     int plantPos = spinner_plant.getSelectedItemPosition();
-                    int regionPos = spinner_installation_region.getSelectedItemPosition();
-                    int areaPos = spinner_installation_area.getSelectedItemPosition();
                     int modelPos = spinner_machine_model.getSelectedItemPosition();
                     int workAMCPos = spinner_warranty_amc.getSelectedItemPosition();
 
@@ -677,15 +610,7 @@ public class NewMachine extends AppCompatActivity {
                         Config_Engg.alertBox("Please Select Your Plant ",
                                 NewMachine.this);
                         spinner_plant.requestFocus();
-                    } else if (regionPos == 0) {
-                        Config_Engg.alertBox("Please Select Your Region ",
-                                NewMachine.this);
-                        spinner_installation_region.requestFocus();
-                    } else if (areaPos == 0) {
-                        Config_Engg.alertBox("Please Select Your Area ",
-                                NewMachine.this);
-                        spinner_installation_area.requestFocus();
-                    } else if (modelPos == 0) {
+                    }  else if (modelPos == 0) {
                         Config_Engg.alertBox("Please Select YourModel ",
                                 NewMachine.this);
                         spinner_machine_model.requestFocus();
@@ -709,8 +634,6 @@ public class NewMachine extends AppCompatActivity {
                         long SelectedEnggS = spinner_secondary_respon.getSelectedItemId();
                         SelectedEnggID = enggSecondaryID.get((int) SelectedEnggS);
 
-                        long SelectedArea = spinner_installation_area.getSelectedItemId();
-                        SelectedAreaID = areaID.get((int) SelectedArea);
 
                         dateOfSupply = txt_date_of_supply.getText().toString();
                         dateOfInstallation = txt_date_install.getText().toString();
@@ -741,8 +664,6 @@ public class NewMachine extends AppCompatActivity {
             public void onClick(View v) {
                 spinner_customer_name.setSelection(0);
                 spinner_plant.setSelection(0);
-                spinner_installation_region.setSelection(0);
-                spinner_installation_area.setSelection(0);
                 spinner_principal.setSelection(0);
                 spinner_machine_model.setSelection(0);
                 txt_machine_serial.setText("");
@@ -1225,8 +1146,6 @@ public class NewMachine extends AppCompatActivity {
                         JSONObject object = new JSONObject(RegionPrincipalAppStatus);
                         JSONArray principaljsonArray = object.getJSONArray("Principal");
                         principal = principaljsonArray.toString();
-                        JSONArray zoneArray = object.getJSONArray("Zone");
-                        zone = zoneArray.toString();
                         if (RegionPrincipalAppStatus.compareTo("true") == 0) {
                             JSONArray jsonArray = new JSONArray(RegionPrincipalAppStatus);
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
@@ -1304,31 +1223,6 @@ public class NewMachine extends AppCompatActivity {
                     //Log.e("Error is here", e.toString());
                 }
 
-                try {
-
-                    JSONArray jsonArray2 = new JSONArray(zone);
-                    zoneIDList = new ArrayList<String>();
-                    zoneIDList.add(0, "");
-                    zoneNameList = new ArrayList<String>();
-                    zoneNameList.add(0, "Select");
-                    for (int i = 0; i < jsonArray2.length(); i++) {
-                        JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
-                        String ZoneID = jsonObject2.getString("ZoneID");
-                        String ZoneName = jsonObject2.getString("ZoneName");
-
-                        zoneIDList.add(ZoneID);
-                        zoneNameList.add(ZoneName);
-                    }
-
-                    spinneradapterZone = new ArrayAdapter<String>(NewMachine.this, android.R.layout.simple_spinner_item, zoneNameList);
-                    spinneradapterZone.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinner_installation_region.setAdapter(spinneradapterZone);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    //Log.e("Error is here", e.toString());
-                }
-
                 //  fillListDialog.dismiss();
             } else if (flag == 3) {
                 Config_Engg.toastShow("No Response", NewMachine.this);
@@ -1355,146 +1249,6 @@ public class NewMachine extends AppCompatActivity {
         }
     }
 
-    private class AddArea extends AsyncTask<String, String, String> {
-
-        int flag;
-        String msgstatus;
-        String area_detail, area_list;
-        ProgressDialog progressDialog;
-        String LoginStatus;
-        String invalid = "LoginFailed";
-        int count = 0;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = ProgressDialog.show(NewMachine.this, "Loading", "Please Wait...", true, false);
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-
-            String EngineerID = Config_Engg.getSharedPreferences(NewMachine.this, "pref_Engg", "EngineerID", "");
-            String AuthCode = Config_Engg.getSharedPreferences(NewMachine.this, "pref_Engg", "AuthCode", "");
-            String SeletedZoneID = SelctedZoneID;
-            SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME5);
-            request.addProperty("EngineerID", EngineerID);
-            request.addProperty("AuthCode", AuthCode);
-            request.addProperty("ZoneID", SeletedZoneID);
-
-            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-            envelope.setOutputSoapObject(request);
-            envelope.dotNet = true;
-            try {
-                HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
-                androidHttpTransport.call(SOAP_ACTION5, envelope);
-                SoapObject result = (SoapObject) envelope.bodyIn;
-                if (result != null) {
-                    area_detail = result.getProperty(0).toString();
-                    JSONArray jsonArray = new JSONArray(area_detail);
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-                    area_list = jsonArray.toString();
-                    if (jsonObject.has("status")) {
-
-                        LoginStatus = jsonObject.getString("status");
-                        msgstatus = jsonObject.getString("MsgNotification");
-                        if (LoginStatus.equals(invalid)) {
-
-                            flag = 4;
-                        } else {
-
-                            flag = 1;
-                        }
-                    } else {
-                        flag = 2;
-                    }
-                } else {
-                    flag = 3;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                flag = 5;
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            if (flag == 1) {
-                Config_Engg.toastShow(msgstatus, NewMachine.this);
-            } else if (flag == 2) {
-                try {
-
-                    // Add value in Plant List Status Spinner
-                    JSONArray jsonArray2 = new JSONArray(area_list);
-                    areaID = new ArrayList<String>();
-                    areaID.add(0, "");
-                    areaName = new ArrayList<String>();
-                    areaName.add(0, "Select");
-                    for (int i = 0; i < jsonArray2.length(); i++) {
-                        count += 1;
-                        JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
-                        String AreaID = jsonObject2.getString("AreaID");
-                        String AreaName = jsonObject2.getString("AreaName");
-
-                        areaID.add(i + 1, AreaID);
-                        areaName.add(i + 1, AreaName);
-                    }
-
-                    spinneradapterArea = new ArrayAdapter<String>(NewMachine.this,
-                            android.R.layout.simple_spinner_item, areaName);
-                    spinneradapterArea.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinner_installation_area.setAdapter(spinneradapterArea);
-
-                    int index = -1;
-                    for (int i = 0; i < areaID.size(); i++) {
-                        if (areaID.get(i).equals(AreaIDUpdate)) {
-                            index = i;
-                            break;
-                        }
-                    }
-
-                    if (index > 0) {
-
-                        String AreaString = areaName.get((int) index);
-                        if (!AreaString.equalsIgnoreCase("")) {
-                            int spinnerpos = spinneradapterArea.getPosition(AreaString);
-                            spinner_installation_area.setSelection(spinnerpos);
-                        }
-                    } else if (count == 1) {
-
-                        spinner_installation_area.setSelection(1);
-                    }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    //Log.e("Error is here", e.toString());
-                }
-
-                //  fillListDialog.dismiss();
-            } else if (flag == 3) {
-                Config_Engg.toastShow("No Response", NewMachine.this);
-
-            } else if (flag == 4) {
-
-                Config_Engg.toastShow(msgstatus, NewMachine.this);
-                Config_Engg.logout(NewMachine.this);
-                Config_Engg.putSharedPreferences(NewMachine.this, "checklogin", "status", "2");
-                finish();
-            } else if (flag == 5) {
-                ScanckBar();
-                btn_update.setEnabled(false);
-                btn_submit.setEnabled(false);
-                btn_clear.setEnabled(false);
-            }
-
-            progressDialog.dismiss();
-
-        }
-    }
 
     private class AddModel extends AsyncTask<String, String, String> {
 
@@ -1853,8 +1607,6 @@ public class NewMachine extends AppCompatActivity {
             request.addProperty("KomaxFileNo", fileNo);
             request.addProperty("AMCFileNo", AMCFileNo);
             request.addProperty("SecondPersonID", SelectedEnggID);
-            request.addProperty("ZoneID", SelctedZoneID);
-            request.addProperty("AreaID", SelectedAreaID);
             request.addProperty("EngineerID", EngineerID);
             request.addProperty("AuthCode", AuthCode);
 
@@ -2045,27 +1797,8 @@ public class NewMachine extends AppCompatActivity {
 
                     PlantIdUpdate = jsonObject.getString("CustomerID").toString();
 
-                    String ZoneIDUpdate = jsonObject.getString("ZoneID").toString();
 
-                    int indexZone = -1;
-                    for (int i = 0; i < zoneIDList.size(); i++) {
-                        if (zoneIDList.get(i).equals(ZoneIDUpdate)) {
-                            indexZone = i;
-                            break;
-                        }
-                    }
-
-                    if (indexZone > 0) {
-
-                        String ZoneString = zoneNameList.get((int) indexZone);
-
-                        if (!ZoneString.equalsIgnoreCase("")) {
-                            int spinnerpos = spinneradapterZone.getPosition(ZoneString);
-                            spinner_installation_region.setSelection(spinnerpos);
-                        }
-                    }
-
-                    AreaIDUpdate = jsonObject.getString("AreaID").toString();
+                    ModelIDUpdate = jsonObject.getString("ModelID").toString();
 
                     String PrincipleIDUpdate = jsonObject.getString("PrincipleID").toString();
 
@@ -2087,7 +1820,6 @@ public class NewMachine extends AppCompatActivity {
                         }
                     }
 
-                    ModelIDUpdate = jsonObject.getString("ModelID").toString();
 
                     String TransactionTypeIDUpdate = jsonObject.getString("TransactionType").toString();
 
@@ -2250,6 +1982,11 @@ public class NewMachine extends AppCompatActivity {
                 intent = new Intent(NewMachine.this, FeedbackActivity.class);
                 startActivity(intent);
                 finish();
+                return (true);
+
+            case R.id.download_file:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://app.komaxindia.co.in/Engineer/Engineer-User-Manual.pdf"));
+                startActivity(browserIntent);
                 return (true);
         }
         return (super.onOptionsItemSelected(item));

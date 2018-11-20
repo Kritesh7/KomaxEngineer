@@ -3,6 +3,7 @@ package com.cfcs.komaxengineer.activity_engineer;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -228,7 +229,6 @@ public class ProfileUpdate extends AppCompatActivity {
                         LoginStatus = jsonObject.getString("status");
                         msgstatus = jsonObject.getString("MsgNotification");
                         if (LoginStatus.equals(invalid)) {
-
                             flag = 4;
                         } else {
 
@@ -395,6 +395,11 @@ public class ProfileUpdate extends AppCompatActivity {
                 intent = new Intent(ProfileUpdate.this, FeedbackActivity.class);
                 startActivity(intent);
                 finish();
+                return (true);
+
+            case R.id.download_file:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://app.komaxindia.co.in/Engineer/Engineer-User-Manual.pdf"));
+                startActivity(browserIntent);
                 return (true);
         }
         return (super.onOptionsItemSelected(item));

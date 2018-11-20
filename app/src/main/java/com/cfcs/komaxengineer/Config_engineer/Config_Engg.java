@@ -15,8 +15,9 @@ import com.cfcs.komaxengineer.LoginActivity;
 
 public class Config_Engg {
 
-//          public static String BASE_URL = "http://192.168.1.200:8080/";
+
     public static String BASE_URL = "https://app.komaxindia.co.in/";
+
 
     public static boolean internetStatus = false;
 

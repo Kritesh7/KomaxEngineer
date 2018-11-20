@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -1121,6 +1122,11 @@ public class ManageContact extends AppCompatActivity {
                 intent = new Intent(ManageContact.this, FeedbackActivity.class);
                 startActivity(intent);
                 finish();
+                return (true);
+
+            case R.id.download_file:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://app.komaxindia.co.in/Engineer/Engineer-User-Manual.pdf"));
+                startActivity(browserIntent);
                 return (true);
         }
         return (super.onOptionsItemSelected(item));

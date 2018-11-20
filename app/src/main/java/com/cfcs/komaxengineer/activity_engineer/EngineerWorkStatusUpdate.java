@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -378,6 +379,11 @@ public class EngineerWorkStatusUpdate extends AppCompatActivity {
                 intent = new Intent(EngineerWorkStatusUpdate.this, FeedbackActivity.class);
                 startActivity(intent);
                 finish();
+                return (true);
+
+            case R.id.download_file:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://app.komaxindia.co.in/Engineer/Engineer-User-Manual.pdf"));
+                startActivity(browserIntent);
                 return (true);
         }
         return (super.onOptionsItemSelected(item));

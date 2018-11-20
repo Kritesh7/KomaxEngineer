@@ -25,7 +25,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="7dp"
-                android:text="Add Daily Report"
+                android:text="Add Daily Report Preview"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -125,24 +125,19 @@
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
-                        <EditText
+                        <TextView
                             android:id="@+id/txt_work_done_plant"
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/edit_text_box_enable_disable"
-                            android:clickable="true"
                             android:ems="10"
                             android:gravity="top"
                             android:hint="Observation"
                             android:padding="10dp"
                             android:textColor="#000000"
                             android:textColorHint="#999"
-                            android:textSize="15sp"
-                            android:overScrollMode="always"
-                            android:scrollbarStyle="insideInset"
-                            android:scrollbars="vertical"/>
+                            android:textSize="15sp" />
 
 
                         <TextView
@@ -155,24 +150,19 @@
                             android:textStyle="bold" />
 
 
-                        <EditText
+                        <TextView
                             android:id="@+id/txt_work_detail"
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/edit_text_box_enable_disable"
-                            android:clickable="true"
                             android:ems="10"
                             android:gravity="top"
                             android:hint="Action Taken"
                             android:padding="10dp"
                             android:textColor="#000000"
                             android:textColorHint="#999"
-                            android:textSize="15sp"
-                            android:overScrollMode="always"
-                            android:scrollbarStyle="insideInset"
-                            android:scrollbars="vertical"/>
+                            android:textSize="15sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -182,26 +172,20 @@
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
-                        <EditText
+
+                        <TextView
                             android:id="@+id/txt_suggestion"
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/edit_text_box_enable_disable"
-                            android:clickable="true"
                             android:ems="10"
                             android:gravity="top"
                             android:hint="Other Remark"
                             android:padding="10dp"
                             android:textColor="#000000"
                             android:textColorHint="#999"
-                            android:textSize="15sp"
-                            android:overScrollMode="always"
-                            android:scrollbarStyle="insideInset"
-                            android:scrollbars="vertical"/>
-
-
+                            android:textSize="15sp" />
 
 
                     </LinearLayout>
@@ -277,10 +261,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/edit_text_box_enable_disable"
                                 android:clickable="true"
                                 android:drawablePadding="10dp"
-                                android:drawableRight="@drawable/ic_calender"
                                 android:editable="false"
                                 android:hint="NextFollow Up"
                                 android:padding="10dp" />
@@ -297,25 +279,19 @@
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
-
-                        <EditText
+                        <TextView
                             android:id="@+id/txt_reason_close"
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/edit_text_box_enable_disable"
-                            android:clickable="true"
                             android:ems="10"
                             android:gravity="top"
                             android:hint="Reason For Not Close"
                             android:padding="10dp"
                             android:textColor="#000000"
                             android:textColorHint="#999"
-                            android:textSize="15sp"
-                            android:overScrollMode="always"
-                            android:scrollbarStyle="insideInset"
-                            android:scrollbars="vertical"/>
+                            android:textSize="15sp" />
 
                     </LinearLayout>
 
@@ -356,7 +332,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Expense/Travel Details"
+                                android:text="Service/Travel Details"
                                 android:textStyle="bold|italic" />
 
 
@@ -405,140 +381,33 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <EditText
+                            <TextView
                                 android:id="@+id/txt_service"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/edit_text_box_enable_disable"
                                 android:clickable="true"
                                 android:drawablePadding="10dp"
-                                android:drawableRight="@drawable/ic_calender"
                                 android:hint="Service Time"
                                 android:inputType="number"
                                 android:maxLength="5"
                                 android:padding="10dp" />
 
-                            <EditText
+                            <TextView
                                 android:id="@+id/txt_travel"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/edit_text_box_enable_disable"
                                 android:clickable="true"
                                 android:drawablePadding="10dp"
-                                android:drawableRight="@drawable/ic_calender"
                                 android:hint="Travel Time"
                                 android:inputType="number"
                                 android:maxLength="5"
                                 android:padding="10dp" />
                         </LinearLayout>
 
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="Service Charge"
-                                android:textSize="15sp"
-                                android:textStyle="bold"
-                                android:layout_weight="1"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="Travel Cost"
-                                android:textSize="15sp"
-                                android:textStyle="bold"
-                                android:layout_weight="1"/>
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/txt_add_service_charge"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:background="@drawable/edit_text_box_enable_disable"
-                                android:drawablePadding="10dp"
-                                android:ems="10"
-                                android:hint="Service Charge Amount"
-                                android:inputType="number"
-                                android:padding="10dp"
-                                android:textSize="15sp"
-                                android:layout_weight="1"/>
-
-                            <EditText
-                                android:id="@+id/txt_engg_travel_cost"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:background="@drawable/edit_text_box_enable_disable"
-                                android:drawablePadding="10dp"
-                                android:ems="10"
-                                android:hint="Travel Cost"
-                                android:inputType="number"
-                                android:padding="10dp"
-                                android:textSize="15sp"
-                                android:layout_weight="1"/>
-                        </LinearLayout>
-
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="Engieer Other Expense"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <EditText
-                            android:id="@+id/txt_engg_other_exp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/edit_text_box_enable_disable"
-                            android:drawablePadding="10dp"
-                            android:ems="10"
-                            android:hint="Engieer Other Expense"
-                            android:inputType="number"
-                            android:padding="10dp"
-                            android:textSize="15sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="Engieer Expense Details"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <EditText
-                            android:id="@+id/txt_engg_exp_detail"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/edit_text_box_enable_disable"
-                            android:drawablePadding="10dp"
-                            android:ems="10"
-                            android:hint="Engieer Other Expense Details"
-                            android:inputType="text"
-                            android:padding="10dp"
-                            android:textSize="15sp" />
 
 
                     </LinearLayout>
@@ -569,148 +438,102 @@
 
                         <!--android:background="?attr/selectableItemBackground"-->
 
-
                         <LinearLayout
+                            android:id="@+id/llSpareParts"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp">
+                            android:layout_marginTop="5dp"
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
                             <TextView
-
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
                                 android:layout_weight="1"
-                                android:text="Auth Sign Details"
-                                android:textStyle="bold|italic" />
+                                android:text="Spare Parts"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="5dp"
+                                android:background="#e0e0e0"
+                                android:elevation=".5dp" />
+
+                            <LinearLayout
+                                android:id="@+id/llSparePartsLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                            </LinearLayout>
 
 
                         </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="5dp"
-                            android:background="#e0e0e0"
-                            android:elevation=".5dp" />
-
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="@string/existing_customer_contact"
+                            android:text="Add Customer Remark"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
-
-                        <Spinner
-                            android:id="@+id/spinner_existing_customer_contacts"
+                        <EditText
+                            android:id="@+id/txt_add_customer_remark"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
+                            android:layout_height="100dp"
                             android:layout_marginTop="5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/spinner_back"
-                            android:gravity="center_vertical"
-                            android:minHeight="30dp"
-                            android:padding="0dp"
-                            android:popupBackground="#fff"
-                            android:spinnerMode="dropdown"
-                            android:textSize="15sp" />
-
-                        <TextView
-                            android:id="@+id/tv_sign_by_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="Sign By Name"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <EditText
-                            android:id="@+id/txt_sign_by_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:background="@drawable/edit_text_box_enable_disable"
-                            android:drawablePadding="10dp"
+                            android:clickable="true"
                             android:ems="10"
-                            android:hint="Sign By Name"
-                            android:inputType="text"
+                            android:gravity="top"
+                            android:hint="Add Customer Remark"
                             android:padding="10dp"
+                            android:textColor="#000000"
+                            android:textColorHint="#999"
                             android:textSize="15sp" />
 
 
-                        <TextView
-                            android:layout_width="wrap_content"
+
+                        <Button
+                            android:id="@+id/btn_add_sign"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Sign By Mobile No."
+                            android:background="@drawable/button_background"
+                            android:text="Add Signature"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
 
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/txt_country_code"
+                            <Button
+                                android:id="@+id/btn_attachment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:background="@drawable/edit_text_box_enable_disable"
-                                android:drawablePadding="10dp"
-                                android:ems="10"
-                                android:hint="Code"
-                                android:inputType="number"
-                                android:padding="10dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/button_background"
+                                android:text="Upload Service Report"
                                 android:textSize="15sp"
-                                android:layout_weight="8"
-                                android:maxLength="5"/>
+                                android:textStyle="bold" />
 
-                            <EditText
-                                android:id="@+id/txt_sign_by_mobile"
-                                android:layout_width="match_parent"
+                            <TextView
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:background="@drawable/edit_text_box_enable_disable"
-                                android:drawablePadding="10dp"
-                                android:ems="10"
-                                android:hint="Sign By Mobile No."
-                                android:inputType="number"
-                                android:padding="10dp"
-                                android:textSize="15sp"
-                                android:layout_weight="2"
-                                android:layout_marginLeft="10dp"/>
-
-                        </LinearLayout>
+                                android:id="@+id/txt_image_show"
+                                android:textSize="20dp"
+                                android:text="No Image"
+                                android:gravity="center"
+                                android:layout_gravity="center"/>
 
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="Sign By E-mail id"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <EditText
-                            android:id="@+id/txt_sign_by_email"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/edit_text_box_enable_disable"
-                            android:drawablePadding="10dp"
-                            android:ems="10"
-                            android:hint="Sign By E-mail id"
-                            android:inputType="textEmailAddress"
-                            android:padding="10dp"
-                            android:textSize="15sp" />
 
                     </LinearLayout>
+
+
 
 
                 </android.support.v7.widget.CardView>
@@ -735,88 +558,32 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-
-                            android:clickable="true"
-                            android:orientation="vertical"
-                            android:padding="10dp">
-
-                            <!--android:background="?attr/selectableItemBackground"-->
-
-                            <Button
-                                android:id="@+id/btn_spare_search"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/button_background"
-                                android:text="Used Spare Part(s)"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:id="@+id/llSpareParts"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:orientation="vertical"
-                                android:visibility="gone">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_weight="1"
-                                    android:text="Spare Parts"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="1dp"
-                                    android:layout_marginTop="5dp"
-                                    android:background="#e0e0e0"
-                                    android:elevation=".5dp" />
-
-                                <LinearLayout
-                                    android:id="@+id/llSparePartsLayout"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical">
-
-                                </LinearLayout>
-
-
-                            </LinearLayout>
-
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
                             android:layout_marginTop="10dp"
                             android:gravity="center"
                             android:orientation="horizontal">
 
+
+
                             <Button
-                                android:id="@+id/btn_preview"
+                                android:id="@+id/btn_add_daily_report"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:background="@drawable/mybutton"
+                                android:text="Submit"
+                                android:textColor="@color/white" />
+
+
+                            <Button
+                                android:id="@+id/btn_back"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:background="@drawable/mybutton"
-                                android:text="Preview"
+                                android:text="Back"
                                 android:textColor="@color/white" />
-
-                            <Button
-                                android:id="@+id/btn_clear"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:background="@drawable/mybutton"
-                                android:text="@string/clear"
-                                android:textColor="@color/white" />
-
 
 
 

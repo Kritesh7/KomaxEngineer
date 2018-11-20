@@ -12,6 +12,7 @@ import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +31,7 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
+import java.net.URI;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -50,6 +52,7 @@ public class DashboardActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.logo_komax);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
+
         //initiate widgets
         btn_raise_complain = findViewById(R.id.btn_raise_complain);
         btn_manage_complain = findViewById(R.id.btn_manage_complain);
@@ -57,6 +60,9 @@ public class DashboardActivity extends AppCompatActivity {
         btn_manage_contact = findViewById(R.id.btn_manage_contact);
         btn_feedback = findViewById(R.id.btn_feedback);
         btn_logout = findViewById(R.id.btn_logout);
+
+        // Make sure we use vector drawables
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         try {
             currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -124,7 +130,6 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
     }
-
 
     public class ForceUpdateAsync extends AsyncTask<String, String, JSONObject> {
 
@@ -243,6 +248,11 @@ public class DashboardActivity extends AppCompatActivity {
                 intent = new Intent(DashboardActivity.this, FeedbackActivity.class);
                 startActivity(intent);
                 finish();
+                return (true);
+
+            case R.id.download_file:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://app.komaxindia.co.in/Engineer/Engineer-User-Manual.pdf"));
+                startActivity(browserIntent);
                 return (true);
         }
         return (super.onOptionsItemSelected(item));

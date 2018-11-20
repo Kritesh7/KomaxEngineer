@@ -81,21 +81,21 @@ public class AddDailyReportPreview extends AppCompatActivity {
 
     String WorkDonePlant, WorkDetails, Suggestion, Causeoffailure, NextFollowUp = "", ReasonForNotClose, ServiceTime, TravelTime,
             EngieerOtherExpense, EngieerExpenseDetails, SignByName, SignByMobileNo, SignByE_mailid, CustomerRemark, CountryCode,
-            sparePartJson,SelectedSignByContactID,ReportNo,reportMode,ReportFileJson,CustomerRemarkUpdate;
+            sparePartJson, SelectedSignByContactID, ReportNo, reportMode, ReportFileJson, CustomerRemarkUpdate;
     String EngieerTravelCost = "00";
     String ServiceCharge = "00";
-    String NextFollowUpDate, NextFollowUpTime,complainno,partValue;
+    String NextFollowUpDate, NextFollowUpTime, complainno, partValue;
 
     EditText txt_add_customer_remark;
 
     TextView txt_next_follow_up, txt_service, txt_travel, txt_work_done_plant, txt_work_detail, txt_suggestion,
             txt_reason_close, txt_country_code, txt_add_service_charge, txt_engg_travel_cost, txt_engg_other_exp,
             txt_image_show, txt_sign_by_name, txt_sign_by_mobile, txt_sign_by_email,
-             txt_complaint_no;
+            txt_complaint_no;
 
-    Button btn_add_sign,btn_add_daily_report,btn_back,btn_attachment;
+    Button btn_add_sign, btn_add_daily_report, btn_back, btn_attachment;
 
-    LinearLayout llSparePartsLayout,llSpareParts,maincontainer;
+    LinearLayout llSparePartsLayout, llSpareParts, maincontainer;
 
     int currentapiVersion = 0;
 
@@ -226,7 +226,7 @@ public class AddDailyReportPreview extends AppCompatActivity {
         txt_reason_close.setText(ReasonForNotClose);
         txt_add_customer_remark.setText(CustomerRemarkUpdate);
 
-        if(sparePartJson !=null){
+        if (sparePartJson != null) {
             try {
                 JSONObject jsonObject = new JSONObject(sparePartJson);
                 JSONArray sparejsonArray = jsonObject.getJSONArray("members");
@@ -324,7 +324,6 @@ public class AddDailyReportPreview extends AppCompatActivity {
 
             }
         });
-
 
 
         btn_add_sign.setOnClickListener(new View.OnClickListener() {
@@ -491,7 +490,6 @@ public class AddDailyReportPreview extends AppCompatActivity {
 
             }
         });
-
 
 
         btn_back.setOnClickListener(new View.OnClickListener() {
@@ -852,6 +850,11 @@ public class AddDailyReportPreview extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return (true);
+
+            case R.id.download_file:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://app.komaxindia.co.in/Engineer/Engineer-User-Manual.pdf"));
+                startActivity(browserIntent);
+                return (true);
         }
         return (super.onOptionsItemSelected(item));
     }
@@ -911,7 +914,6 @@ public class AddDailyReportPreview extends AppCompatActivity {
                         } else {
                             totalFile.addAll(docPaths);
                         }
-
                     }
 
                     sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -938,7 +940,6 @@ public class AddDailyReportPreview extends AppCompatActivity {
                 String case_json = gson.toJson(diary);
                 JSONObject objImg = new JSONObject(case_json);
                 array.put(objImg);
-
             }
             Log.e("ImagesJson", " cfcs " + jsonObj.toString());
             imageJson = array.toString();
@@ -970,7 +971,6 @@ public class AddDailyReportPreview extends AppCompatActivity {
                 String case_json = gson.toJson(diary);
                 JSONObject objImg = new JSONObject(case_json);
                 array.put(objImg);
-
             }
             Log.e("ImagesJson", " cfcs " + jsonObj.toString());
             imageJson = array.toString();
@@ -1017,7 +1017,6 @@ public class AddDailyReportPreview extends AppCompatActivity {
 
         return lastVal;
     }
-
 
 
 }

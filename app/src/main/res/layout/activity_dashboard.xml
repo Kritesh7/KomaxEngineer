@@ -37,9 +37,9 @@
                         android:paddingBottom="10dp"
                         android:text="Raise Request"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="16dp" />
 
-                    <ImageView
+                    <android.support.v7.widget.AppCompatImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignParentTop="true"
@@ -68,16 +68,17 @@
                         android:singleLine="false"
                         android:text="Manage Request"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="16dp" />
 
-                    <ImageView
+                    <android.support.v7.widget.AppCompatImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignParentStart="true"
                         android:layout_marginBottom="33dp"
                         android:elevation="2dp"
                         android:padding="20dp"
-                        app:srcCompat="@drawable/ic_complaint" />
+                        app:srcCompat="@drawable/ic_complaint"
+                        android:layout_alignParentLeft="true" />
                 </RelativeLayout>
 
             </TableRow>
@@ -105,9 +106,9 @@
                         android:paddingBottom="10dp"
                         android:text="manage machines"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="16dp" />
 
-                    <ImageView
+                    <android.support.v7.widget.AppCompatImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="33dp"
@@ -134,9 +135,9 @@
                         android:singleLine="false"
                         android:text="manage contact"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="16dp" />
 
-                    <ImageView
+                    <android.support.v7.widget.AppCompatImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="33dp"
@@ -170,9 +171,9 @@
                         android:paddingBottom="10dp"
                         android:text="Service Hours"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="16dp" />
 
-                    <ImageView
+                    <android.support.v7.widget.AppCompatImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignParentStart="true"
@@ -180,7 +181,8 @@
                         android:layout_marginBottom="33dp"
                         android:elevation="2dp"
                         android:padding="20dp"
-                        app:srcCompat="@drawable/ic_service" />
+                        app:srcCompat="@drawable/ic_service"
+                        android:layout_alignParentLeft="true" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -200,9 +202,9 @@
                         android:paddingBottom="10dp"
                         android:text="Logout"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="16dp" />
 
-                    <ImageView
+                    <android.support.v7.widget.AppCompatImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignParentTop="true"

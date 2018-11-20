@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -56,7 +57,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManageMachines extends AppCompatActivity {
-
 
     private static String SOAP_ACTION1 = "http://cfcs.co.in/AppEngineerMachineSalesInfoList";
     private static String NAMESPACE = "http://cfcs.co.in/";
@@ -1579,6 +1579,11 @@ public class ManageMachines extends AppCompatActivity {
                 intent = new Intent(ManageMachines.this, FeedbackActivity.class);
                 startActivity(intent);
                 finish();
+                return (true);
+
+            case R.id.download_file:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://app.komaxindia.co.in/Engineer/Engineer-User-Manual.pdf"));
+                startActivity(browserIntent);
                 return (true);
         }
         return (super.onOptionsItemSelected(item));

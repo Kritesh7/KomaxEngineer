@@ -133,10 +133,10 @@ public class AddDailyReport extends AppCompatActivity {
     private static String METHOD_NAME4 = "ddlCustomerContactPersonByComplainNo";
 
     String complainno;
-    TextView txt_complaint_no, txt_header;
-    EditText txt_next_follow_up, txt_service, txt_travel, txt_work_done_plant, txt_work_detail, txt_suggestion,
+    TextView txt_complaint_no, txt_header, txt_next_follow_up;
+    EditText txt_service, txt_travel, txt_work_done_plant, txt_work_detail, txt_suggestion,
             txt_reason_close, txt_country_code, txt_add_service_charge, txt_engg_travel_cost, txt_engg_other_exp, txt_add_customer_remark, txt_engg_exp_detail, txt_sign_by_name, txt_sign_by_mobile, txt_sign_by_email;
-    Button btn_spare_search, btn_clear,btn_preview;
+    Button btn_spare_search, btn_clear, btn_preview;
     ListView listView_sparePart;
     String searchSparePart;
     LinearLayout llSparePartsLayout;
@@ -181,7 +181,6 @@ public class AddDailyReport extends AppCompatActivity {
     String reportMode = "";
 
     LinearLayout maincontainer;
-
 
 
     TextView tv_observation, tv_action, tv_service_time, tv_travel_time, tv_sign_by_name;
@@ -374,13 +373,12 @@ public class AddDailyReport extends AppCompatActivity {
         });
 
 
-
         txt_work_done_plant.setOnTouchListener(new View.OnTouchListener() {
 
             public boolean onTouch(View v, MotionEvent event) {
                 if (txt_work_done_plant.hasFocus()) {
                     v.getParent().requestDisallowInterceptTouchEvent(true);
-                    switch (event.getAction() & MotionEvent.ACTION_MASK){
+                    switch (event.getAction() & MotionEvent.ACTION_MASK) {
                         case MotionEvent.ACTION_SCROLL:
                             v.getParent().requestDisallowInterceptTouchEvent(false);
                             return true;
@@ -395,7 +393,7 @@ public class AddDailyReport extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (txt_work_detail.hasFocus()) {
                     v.getParent().requestDisallowInterceptTouchEvent(true);
-                    switch (event.getAction() & MotionEvent.ACTION_MASK){
+                    switch (event.getAction() & MotionEvent.ACTION_MASK) {
                         case MotionEvent.ACTION_SCROLL:
                             v.getParent().requestDisallowInterceptTouchEvent(false);
                             return true;
@@ -410,7 +408,7 @@ public class AddDailyReport extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (txt_suggestion.hasFocus()) {
                     v.getParent().requestDisallowInterceptTouchEvent(true);
-                    switch (event.getAction() & MotionEvent.ACTION_MASK){
+                    switch (event.getAction() & MotionEvent.ACTION_MASK) {
                         case MotionEvent.ACTION_SCROLL:
                             v.getParent().requestDisallowInterceptTouchEvent(false);
                             return true;
@@ -426,7 +424,7 @@ public class AddDailyReport extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (txt_reason_close.hasFocus()) {
                     v.getParent().requestDisallowInterceptTouchEvent(true);
-                    switch (event.getAction() & MotionEvent.ACTION_MASK){
+                    switch (event.getAction() & MotionEvent.ACTION_MASK) {
                         case MotionEvent.ACTION_SCROLL:
                             v.getParent().requestDisallowInterceptTouchEvent(false);
                             return true;
@@ -435,8 +433,6 @@ public class AddDailyReport extends AppCompatActivity {
                 return false;
             }
         });
-
-
 
 
         txt_next_follow_up.setOnClickListener(new View.OnClickListener() {
@@ -640,7 +636,6 @@ public class AddDailyReport extends AppCompatActivity {
 
 //                Toast.makeText(RaiseComplaintActivity.this,"Count" +" "+ checkConatct, Toast.LENGTH_LONG).show();
 
-
             }
 
             @Override
@@ -671,8 +666,8 @@ public class AddDailyReport extends AppCompatActivity {
 
                     if (addedPart.size() > 0) {
                         makeJson();
-                    }else {
-                        sparePartJson ="";
+                    } else {
+                        sparePartJson = "";
                     }
 
                     String workDonePlant = txt_work_done_plant.getText().toString().trim();
@@ -731,29 +726,29 @@ public class AddDailyReport extends AppCompatActivity {
                             CountryCode = txt_country_code.getText().toString().toString().trim();
 
 
-                            Intent i = new Intent(AddDailyReport.this,AddDailyReportPreview.class);
-                            i.putExtra("ComplainNo",complainno);
-                            i.putExtra("WorkDonePlant",WorkDonePlant);
-                            i.putExtra("WorkDetails",WorkDetails);
-                            i.putExtra("Suggestion",Suggestion);
-                            i.putExtra("NextFollowUp",NextFollowUp);
-                            i.putExtra("ReasonForNotClose",ReasonForNotClose);
-                            i.putExtra("EngieerTravelCost",EngieerTravelCost);
-                            i.putExtra("ServiceTime",ServiceTime);
-                            i.putExtra("TravelTime",TravelTime);
-                            i.putExtra("EngieerOtherExpense",EngieerOtherExpense);
-                            i.putExtra("EngieerExpenseDetails",EngieerExpenseDetails);
-                            i.putExtra("SignByName",SignByName);
-                            i.putExtra("SignByMobileNo",SignByMobileNo);
-                            i.putExtra("SignByE_mailid",SignByE_mailid);
-                            i.putExtra("ServiceCharge",ServiceCharge);
-                            i.putExtra("CountryCode",CountryCode);
-                            i.putExtra("sparePartJson",sparePartJson);
-                            i.putExtra("SelectedSignByContactID",SelectedSignByContactID);
-                            i.putExtra("reportMode",reportMode);
-                            i.putExtra("ReportNo",ReportNo);
+                            Intent i = new Intent(AddDailyReport.this, AddDailyReportPreview.class);
+                            i.putExtra("ComplainNo", complainno);
+                            i.putExtra("WorkDonePlant", WorkDonePlant);
+                            i.putExtra("WorkDetails", WorkDetails);
+                            i.putExtra("Suggestion", Suggestion);
+                            i.putExtra("NextFollowUp", NextFollowUp);
+                            i.putExtra("ReasonForNotClose", ReasonForNotClose);
+                            i.putExtra("EngieerTravelCost", EngieerTravelCost);
+                            i.putExtra("ServiceTime", ServiceTime);
+                            i.putExtra("TravelTime", TravelTime);
+                            i.putExtra("EngieerOtherExpense", EngieerOtherExpense);
+                            i.putExtra("EngieerExpenseDetails", EngieerExpenseDetails);
+                            i.putExtra("SignByName", SignByName);
+                            i.putExtra("SignByMobileNo", SignByMobileNo);
+                            i.putExtra("SignByE_mailid", SignByE_mailid);
+                            i.putExtra("ServiceCharge", ServiceCharge);
+                            i.putExtra("CountryCode", CountryCode);
+                            i.putExtra("sparePartJson", sparePartJson);
+                            i.putExtra("SelectedSignByContactID", SelectedSignByContactID);
+                            i.putExtra("reportMode", reportMode);
+                            i.putExtra("ReportNo", ReportNo);
                             if (reportMode.compareTo("true") == 0) {
-                                i.putExtra("CustomerRemarkUpdate",CustomerRemarkUpdate);
+                                i.putExtra("CustomerRemarkUpdate", CustomerRemarkUpdate);
                             }
                             startActivity(i);
 
@@ -781,29 +776,29 @@ public class AddDailyReport extends AppCompatActivity {
                         CountryCode = txt_country_code.getText().toString().toString().trim();
 
 
-                        Intent i = new Intent(AddDailyReport.this,AddDailyReportPreview.class);
-                        i.putExtra("ComplainNo",complainno);
-                        i.putExtra("WorkDonePlant",WorkDonePlant);
-                        i.putExtra("WorkDetails",WorkDetails);
-                        i.putExtra("Suggestion",Suggestion);
-                        i.putExtra("NextFollowUp",NextFollowUp);
-                        i.putExtra("ReasonForNotClose",ReasonForNotClose);
-                        i.putExtra("EngieerTravelCost",EngieerTravelCost);
-                        i.putExtra("ServiceTime",ServiceTime);
-                        i.putExtra("TravelTime",TravelTime);
-                        i.putExtra("EngieerOtherExpense",EngieerOtherExpense);
-                        i.putExtra("EngieerExpenseDetails",EngieerExpenseDetails);
-                        i.putExtra("SignByName",SignByName);
-                        i.putExtra("SignByMobileNo",SignByMobileNo);
-                        i.putExtra("SignByE_mailid",SignByE_mailid);
-                        i.putExtra("ServiceCharge",ServiceCharge);
-                        i.putExtra("CountryCode",CountryCode);
-                        i.putExtra("sparePartJson",sparePartJson);
-                        i.putExtra("SelectedSignByContactID",SelectedSignByContactID);
-                        i.putExtra("reportMode",reportMode);
-                        i.putExtra("ReportNo",ReportNo);
+                        Intent i = new Intent(AddDailyReport.this, AddDailyReportPreview.class);
+                        i.putExtra("ComplainNo", complainno);
+                        i.putExtra("WorkDonePlant", WorkDonePlant);
+                        i.putExtra("WorkDetails", WorkDetails);
+                        i.putExtra("Suggestion", Suggestion);
+                        i.putExtra("NextFollowUp", NextFollowUp);
+                        i.putExtra("ReasonForNotClose", ReasonForNotClose);
+                        i.putExtra("EngieerTravelCost", EngieerTravelCost);
+                        i.putExtra("ServiceTime", ServiceTime);
+                        i.putExtra("TravelTime", TravelTime);
+                        i.putExtra("EngieerOtherExpense", EngieerOtherExpense);
+                        i.putExtra("EngieerExpenseDetails", EngieerExpenseDetails);
+                        i.putExtra("SignByName", SignByName);
+                        i.putExtra("SignByMobileNo", SignByMobileNo);
+                        i.putExtra("SignByE_mailid", SignByE_mailid);
+                        i.putExtra("ServiceCharge", ServiceCharge);
+                        i.putExtra("CountryCode", CountryCode);
+                        i.putExtra("sparePartJson", sparePartJson);
+                        i.putExtra("SelectedSignByContactID", SelectedSignByContactID);
+                        i.putExtra("reportMode", reportMode);
+                        i.putExtra("ReportNo", ReportNo);
                         if (reportMode.compareTo("true") == 0) {
-                            i.putExtra("CustomerRemarkUpdate",CustomerRemarkUpdate);
+                            i.putExtra("CustomerRemarkUpdate", CustomerRemarkUpdate);
                         }
                         startActivity(i);
                     }
@@ -811,7 +806,6 @@ public class AddDailyReport extends AppCompatActivity {
                 } else {
                     Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", AddDailyReport.this);
                 }
-
 
 
             }
@@ -1675,6 +1669,20 @@ public class AddDailyReport extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
+
+                        Config_Engg.isOnline(AddDailyReport.this);
+                        if (Config_Engg.internetStatus == true) {
+
+                            if (reportMode.compareTo("true") == 0) {
+                                new DailyReportDetailAsy().execute();
+                            }
+
+                            new AddContactPersonDropDown().execute();
+
+                        } else {
+                            Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", AddDailyReport.this);
+                        }
+
                         btn_preview.setEnabled(true);
                         btn_clear.setEnabled(true);
 
@@ -1785,9 +1793,9 @@ public class AddDailyReport extends AppCompatActivity {
 
             } else if (flag == 5) {
                 ScanckBar();
+                btn_preview.setEnabled(false);
                 btn_clear.setEnabled(false);
                 progressDialog.dismiss();
-
             }
             progressDialog.dismiss();
         }
@@ -1854,6 +1862,10 @@ public class AddDailyReport extends AppCompatActivity {
                 intent = new Intent(AddDailyReport.this, FeedbackActivity.class);
                 startActivity(intent);
                 finish();
+                return (true);
+            case R.id.download_file:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://app.komaxindia.co.in/Engineer/Engineer-User-Manual.pdf"));
+                startActivity(browserIntent);
                 return (true);
         }
         return (super.onOptionsItemSelected(item));

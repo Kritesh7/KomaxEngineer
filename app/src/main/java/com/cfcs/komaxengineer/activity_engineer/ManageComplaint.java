@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.ConditionVariable;
 import android.support.design.widget.CoordinatorLayout;
@@ -28,6 +29,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cfcs.komaxengineer.Config_engineer.Config_Engg;
@@ -327,6 +329,10 @@ public class ManageComplaint extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return (true);
+            case R.id.download_file:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://app.komaxindia.co.in/Engineer/Engineer-User-Manual.pdf"));
+                startActivity(browserIntent);
+                return (true);
         }
         return (super.onOptionsItemSelected(item));
     }
@@ -346,7 +352,9 @@ public class ManageComplaint extends AppCompatActivity {
 
     private void showSearchPopByFab() {
 
-        final EditText txt_complaint_no, txt_complaint_date_from, txt_complaint_date_to;
+        final EditText txt_complaint_no;
+
+        final TextView txt_complaint_date_from, txt_complaint_date_to;
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();

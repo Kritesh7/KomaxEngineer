@@ -1285,6 +1285,11 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
                 startActivity(intent);
                 finish();
                 return (true);
+
+            case R.id.download_file:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://app.komaxindia.co.in/Engineer/Engineer-User-Manual.pdf"));
+                startActivity(browserIntent);
+                return (true);
         }
         return (super.onOptionsItemSelected(item));
     }
