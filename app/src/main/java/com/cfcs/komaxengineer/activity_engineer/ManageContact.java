@@ -544,7 +544,7 @@ public class ManageContact extends AppCompatActivity {
                                         AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode);
                                 contactListDataModel.setContactPersonId(jsonObject1.getString("ContactPersonId").toString());
                                 contactListDataModel.setCustomerID(jsonObject1.getString("CustomerID").toString());
-                                contactListDataModel.setSiteAddress(jsonObject1.getString("SiteAddress").toString());
+                                contactListDataModel.setSiteAddress(jsonObject1.getString("CustomerName").toString());
                                 contactListDataModel.setParentCustomerName(jsonObject1.getString("ParentCustomerName").toString());
                                 contactListDataModel.setContactPersonName(jsonObject1.getString("ContactPersonName").toString());
                                 contactListDataModel.setEmail(jsonObject1.getString("Email").toString());

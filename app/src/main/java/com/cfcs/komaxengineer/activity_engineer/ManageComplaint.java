@@ -760,8 +760,8 @@ public class ManageComplaint extends AppCompatActivity {
                                 complainListDataModel.setComplaintTitle(jsonObject1.getString("ComplaintTitle").toString());
                                 complainListDataModel.setComplainDateTimeText(jsonObject1.getString("ComplainDateTimeText").toString());
                                 complainListDataModel.setModelName(jsonObject1.getString("ModelName").toString());
-                                complainListDataModel.setCustomerName(jsonObject1.getString("CustomerName").toString());
-                                complainListDataModel.setSiteAddress(jsonObject1.getString("SiteAddress").toString());
+                                complainListDataModel.setCustomerName(jsonObject1.getString("ParentCustomerName").toString());
+                                complainListDataModel.setSiteAddress(jsonObject1.getString("CustomerName").toString());
                                 complainListDataModel.setPriorityName(jsonObject1.getString("PriorityName").toString());
                                 complainListDataModel.setTransactionTypeName(jsonObject1.getString("TransactionTypeName").toString());
                                 complainListDataModel.setEscalationShortCode(jsonObject1.getString("EscalationShortCode").toString());

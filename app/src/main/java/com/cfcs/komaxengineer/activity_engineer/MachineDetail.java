@@ -185,7 +185,7 @@ public class MachineDetail extends AppCompatActivity {
                     JSONArray jsonArray = new JSONArray(MachineDetail);
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-                    String CustomerName = jsonObject.getString("CustomerName").toString();
+                    String CustomerName = jsonObject.getString("ParentCustomerName").toString();
                     txt_customer.setText(CustomerName);
 
                     String SiteAddress = jsonObject.getString("SiteAddress").toString();

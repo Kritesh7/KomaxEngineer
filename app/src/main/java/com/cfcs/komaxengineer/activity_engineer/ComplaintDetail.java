@@ -215,7 +215,7 @@ public class ComplaintDetail extends AppCompatActivity {
                     txt_plant.setText(SiteAddress);
 
 
-                    String CustomerName = jsonObject.getString("CustomerName").toString();
+                    String CustomerName = jsonObject.getString("ParentCustomerName").toString();
                     txt_customer.setText(CustomerName);
 
 //                    String ParentCustomerName = jsonObject.getString("ParentCustomerName").toString();

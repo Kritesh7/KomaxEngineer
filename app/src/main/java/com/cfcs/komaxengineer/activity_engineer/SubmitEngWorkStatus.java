@@ -989,7 +989,6 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
                 request.addProperty("SparePart", "");
             }
 
-
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.setOutputSoapObject(request);
             envelope.dotNet = true;
@@ -1005,7 +1004,6 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
                         LoginStatus = jsonObject.getString("status");
                         msgstatus = jsonObject.getString("MsgNotification");
                         if (LoginStatus.equals(invalid)) {
-
                             flag = 4;
                         } else {
 

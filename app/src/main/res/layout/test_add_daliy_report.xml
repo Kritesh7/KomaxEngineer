@@ -562,7 +562,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-
                         android:clickable="true"
                         android:orientation="vertical"
                         android:padding="10dp">
@@ -749,7 +748,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:background="@drawable/button_background"
-                                android:text="Used Spare Part(s)"
+                                android:text="Spare Part(s) Used"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
 

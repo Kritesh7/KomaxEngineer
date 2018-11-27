@@ -1660,7 +1660,7 @@ public class AddDailyReport extends AppCompatActivity {
         return bean;
     }
 
-    private void ScanckBar() {
+    private void  ScanckBar() {
 
         Snackbar snackbar = Snackbar
                 .make(maincontainer, "Connectivity issues", Snackbar.LENGTH_LONG)

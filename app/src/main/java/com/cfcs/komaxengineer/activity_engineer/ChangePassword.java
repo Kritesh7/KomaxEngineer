@@ -236,7 +236,6 @@ public class ChangePassword extends AppCompatActivity {
                 }
             }
             progressDialog.dismiss();
-            btn_submit.setClickable(true);
             // finish();
         }
     }

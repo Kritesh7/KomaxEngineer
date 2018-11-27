@@ -267,7 +267,6 @@ public class FeedbackActivity extends AppCompatActivity {
                 Config_Engg.putSharedPreferences(FeedbackActivity.this, "checklogin", "status", "2");
                 finish();
             } else if (flag == 5) {
-
                 ScanckBar();
                 btn_submit_feedback.setEnabled(false);
                 progressDialog.dismiss();
