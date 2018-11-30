@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -38,6 +39,7 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class DailyReport extends AppCompatActivity {
 
@@ -76,9 +78,11 @@ public class DailyReport extends AppCompatActivity {
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         //Set Company logo in action bar with AppCompatActivity
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.logo_komax);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
+            Objects.requireNonNull(getSupportActionBar()).setLogo(R.drawable.logo_komax);
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+        }
 
         list = findViewById(R.id.daily_report_list_view);
 
@@ -175,7 +179,6 @@ public class DailyReport extends AppCompatActivity {
                     } else {
 
                         dailyReportList.clear();
-
                         DailyReportNo = new String[jsonArray.length()];
                         Workdone = new String[jsonArray.length()];
                         ComplainNo = new String[jsonArray.length()];
@@ -195,8 +198,9 @@ public class DailyReport extends AppCompatActivity {
                                         .getJSONObject(i);
 
                                 DailyReportDataModel dailyReportDataModel = new DailyReportDataModel(AuthCode, AuthCode, AuthCode, AuthCode,
-                                        AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode);
+                                        AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode, AuthCode,AuthCode);
                                 dailyReportDataModel.setDailyReportNo(jsonObject1.getString("DailyReportNo").toString());
+                                dailyReportDataModel.setDailyReportPrintNo(jsonObject1.getString("DailyReportPrintNo").toString());
                                 dailyReportDataModel.setWorkdone(jsonObject1.getString("Workdone").toString());
                                 dailyReportDataModel.setComplainNo(jsonObject1.getString("ComplainNo").toString());
                                 dailyReportDataModel.setDailyReportDateText(jsonObject1.getString("DailyReportDateText").toString());

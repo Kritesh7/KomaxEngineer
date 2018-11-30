@@ -23,9 +23,11 @@ public class DailyReportDataModel {
 
     private String Traveltime;
 
+    private  String DailyReportPrintNo;
+
     public DailyReportDataModel(String Servicetime, String NextFollowUpTimeText, String DailyReportDateText, String IsDelete,
                                 String ComplainNo, String IsEdit, String Workdone, String Workdone1, String NextFollowUpDateText,
-                                String DailyReportNo, String Traveltime) {
+                                String DailyReportNo, String Traveltime,String DailyReportPrintNo) {
     }
 
     public String getServicetime() {
@@ -42,6 +44,14 @@ public class DailyReportDataModel {
 
     public void setNextFollowUpTimeText(String NextFollowUpTimeText) {
         this.NextFollowUpTimeText = NextFollowUpTimeText;
+    }
+
+    public String getDailyReportPrintNo() {
+        return DailyReportPrintNo;
+    }
+
+    public void setDailyReportPrintNo(String DailyReportPrintNo) {
+        this.DailyReportPrintNo = DailyReportPrintNo;
     }
 
     public String getDailyReportDateText() {

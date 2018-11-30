@@ -86,7 +86,7 @@ public class DailyReportListAdapter extends BaseAdapter {
             mViewHolder = (DailyReportListAdapter.MyViewHolder) view.getTag();
         }
 
-        mViewHolder.txt_report_no.setText(currentListData.getDailyReportNo());
+        mViewHolder.txt_report_no.setText("Report No :" +" "+currentListData.getDailyReportPrintNo());
         mViewHolder.txt_report_date.setText(currentListData.getDailyReportDateText());
         mViewHolder.txt_work_done.setText(currentListData.getWorkdone());
         mViewHolder.txt_travel_time.setText(currentListData.getTraveltime());

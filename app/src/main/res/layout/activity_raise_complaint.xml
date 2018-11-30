@@ -87,7 +87,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="4.5"
-                                android:text="@string/complainNo"
+                                android:text="Request No"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -163,20 +163,23 @@
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
-                        <EditText
-                            android:id="@+id/txt_problem_title"
+
+                        <Spinner
+                            android:id="@+id/spinner_complain_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
                             android:layout_marginTop="5dp"
-                            android:background="@drawable/edit_text_box_enable_disable"
-                            android:drawablePadding="10dp"
-                            android:ems="10"
-                            android:hint="Service Request Title"
-                            android:inputType="text"
-                            android:padding="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/spinner_back"
+                            android:gravity="center_vertical"
+                            android:minHeight="30dp"
+                            android:padding="0dp"
+                            android:popupBackground="#fff"
+                            android:spinnerMode="dropdown"
                             android:textSize="15sp" />
 
-                        
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -316,19 +319,23 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:orientation="horizontal">
-
-                            <RadioButton
-                                android:id="@+id/radio_off_site"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Off Site" />
-
                             <RadioButton
                                 android:id="@+id/radio_on_site"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="On Site" />
 
+                            <RadioButton
+                                android:id="@+id/radio_mobile_email"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Mobile/Email" />
+
+                            <RadioButton
+                                android:id="@+id/radio_principal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Principal Support" />
 
                         </RadioGroup>
 
@@ -394,34 +401,34 @@
 
                         </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/expected_time_of_completion"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginTop="10dp"-->
+                            <!--android:text="@string/expected_time_of_completion"-->
+                            <!--android:textSize="15sp"-->
+                            <!--android:textStyle="bold" />-->
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                        <!--<LinearLayout-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:orientation="horizontal">-->
 
-                            <TextView
-                                android:id="@+id/txt_expected_date"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/edit_text_box_enable_disable"
-                                android:clickable="true"
-                                android:drawablePadding="10dp"
-                                android:drawableRight="@drawable/ic_calender"
-                                android:editable="false"
-                                android:hint="Date"
-                                android:padding="10dp" />
+                            <!--<TextView-->
+                                <!--android:id="@+id/txt_expected_date"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_marginTop="5dp"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:background="@drawable/edit_text_box_enable_disable"-->
+                                <!--android:clickable="true"-->
+                                <!--android:drawablePadding="10dp"-->
+                                <!--android:drawableRight="@drawable/ic_calender"-->
+                                <!--android:editable="false"-->
+                                <!--android:hint="Date"-->
+                                <!--android:padding="10dp" />-->
 
-                        </LinearLayout>
+                        <!--</LinearLayout>-->
 
 
                         <TextView

@@ -36,6 +36,7 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.io.InputStream;
+import java.util.Objects;
 
 public class DailyReportDetail extends AppCompatActivity {
 
@@ -47,7 +48,8 @@ public class DailyReportDetail extends AppCompatActivity {
     String dailyreportNo;
 
     TextView txt_work_done_plant, txt_work_detail, txt_suggestion, txt_cause_of_faliure, txt_next_follow_up, txt_reason_close, txt_travel_cost,
-            txt_other_exp, txt_travel_time, txt_service_time, txt_engg_exp_detail, txt_sign_by_name, txt_sign_by_mobile, txt_customer_remark, txt_sign_by_email, txt_service_charge;
+            txt_other_exp, txt_travel_time, txt_service_time, txt_engg_exp_detail, txt_sign_by_name, txt_sign_by_mobile,
+            txt_customer_remark, txt_sign_by_email, txt_service_charge,txt_daily_report_print;
 
     LinearLayout add_card_view_spare_part;
 
@@ -66,10 +68,11 @@ public class DailyReportDetail extends AppCompatActivity {
 
 
         //Set Company logo in action bar with AppCompatActivity
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.logo_komax);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
+            Objects.requireNonNull(getSupportActionBar()).setLogo(R.drawable.logo_komax);
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+        }
         txt_work_done_plant = findViewById(R.id.txt_work_done_plant);
         txt_work_detail = findViewById(R.id.txt_work_detail);
         txt_suggestion = findViewById(R.id.txt_suggestion);
@@ -85,6 +88,7 @@ public class DailyReportDetail extends AppCompatActivity {
         txt_sign_by_email = findViewById(R.id.txt_sign_by_email);
         txt_service_charge = findViewById(R.id.txt_service_charge);
         txt_customer_remark = findViewById(R.id.txt_customer_remark);
+        txt_daily_report_print = findViewById(R.id.txt_daily_report_print);
         imv_signature = findViewById(R.id.imv_signature);
         maincontainer = findViewById(R.id.maincontainer);
 
@@ -205,6 +209,9 @@ public class DailyReportDetail extends AppCompatActivity {
                 try {
                     JSONArray jsonArray = new JSONArray(DailyReportdetail);
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+                    String DailyReportPrintNo = jsonObject.getString("DailyReportPrintNo").toString();
+                    txt_daily_report_print.setText("Report No :" +" "+DailyReportPrintNo);
 
                     String Workdone = jsonObject.getString("Workdone").toString();
                     txt_work_done_plant.setText(Workdone);

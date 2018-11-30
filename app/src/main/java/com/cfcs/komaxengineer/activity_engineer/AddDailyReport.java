@@ -10,40 +10,20 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.provider.OpenableColumns;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
-import android.util.Base64;
-import android.util.Base64OutputStream;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -58,7 +38,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -66,15 +45,10 @@ import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.cfcs.komaxengineer.Config_engineer.Config_Engg;
-import com.cfcs.komaxengineer.LoginActivity;
 import com.cfcs.komaxengineer.R;
-import com.cfcs.komaxengineer.model.DecodeFileBean;
-import com.cfcs.komaxengineer.model.DecodeImageBean;
 import com.cfcs.komaxengineer.model.SparePartListDataModel;
-import com.cfcs.komaxengineer.utils.PathUtil;
 import com.cfcs.komaxengineer.utils.SimpleSpanBuilder;
 import com.google.gson.Gson;
 
@@ -87,40 +61,23 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
+import java.util.Objects;
 import java.util.regex.Pattern;
 
-import in.co.cfcs.kriteshfilepicker.FilePickerBuilder;
-import in.co.cfcs.kriteshfilepicker.FilePickerConst;
-import in.co.cfcs.kriteshfilepicker.models.sort.SortingTypes;
-import in.co.cfcs.kriteshfilepicker.utils.Orientation;
-import in.co.cfcs.kriteshsignaturepad.views.SignaturePad;
 
 public class AddDailyReport extends AppCompatActivity {
 
-    private static String SOAP_ACTION1 = "http://cfcs.co.in/AppEngineerDailyReportIns";
     private static String NAMESPACE = "http://cfcs.co.in/";
-    private static String METHOD_NAME1 = "AppEngineerDailyReportIns";
     private static String URL = Config_Engg.BASE_URL + "Engineer/WebApi/EngineerWebService.asmx?";
 
     String SOAP_ACTION2 = "http://cfcs.co.in/AppEngineerDailyReportdetails";
@@ -141,26 +98,18 @@ public class AddDailyReport extends AppCompatActivity {
     String searchSparePart;
     LinearLayout llSparePartsLayout;
     private LinearLayout llSpareParts;
-    //    HashMap<String, String> addedPart = new HashMap<String, String>();
+
     ArrayList<SparePartListDataModel> addedPart = new ArrayList<SparePartListDataModel>();
     ArrayList<String> editTextQty;
 
-    private SignaturePad mSignaturePad;
-    private PopupWindow pwindo;
-
     File file;
 
-    String ImgExtension = "", ImgString = "", pathtodeletesign = "";
     InputFilter timeFilter, timeFilterTravel;
-    private String LOG_TAG = "hELLO";
-    private boolean doneOnce = false;
 
-    String WorkDonePlant, WorkDetails, Suggestion, Causeoffailure, NextFollowUp = "", ReasonForNotClose, ServiceTime, TravelTime,
+    String WorkDonePlant, WorkDetails, Suggestion, NextFollowUp = "", ReasonForNotClose, ServiceTime, TravelTime,
             EngieerOtherExpense, EngieerExpenseDetails, SignByName, SignByMobileNo, SignByE_mailid, CustomerRemark, CountryCode;
     String EngieerTravelCost = "00";
     String ServiceCharge = "00";
-    String NextFollowUpDate, NextFollowUpTime;
-
 
     int currentapiVersion = 0;
     EditText edQuantity;
@@ -182,11 +131,9 @@ public class AddDailyReport extends AppCompatActivity {
 
     LinearLayout maincontainer;
 
-
     TextView tv_observation, tv_action, tv_service_time, tv_travel_time, tv_sign_by_name;
 
     Spinner spinner_existing_customer_contacts;
-
 
     List<String> contactIDList;
     List<String> contactNameList;
@@ -221,9 +168,11 @@ public class AddDailyReport extends AppCompatActivity {
         setContentView(R.layout.activity_add_daily_report);
 
         //Set Company logo in action bar with AppCompatActivity
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.logo_komax);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
+            Objects.requireNonNull(getSupportActionBar()).setLogo(R.drawable.logo_komax);
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+        }
 
         c = Calendar.getInstance();
 
@@ -293,7 +242,7 @@ public class AddDailyReport extends AppCompatActivity {
 
         maincontainer = findViewById(R.id.maincontainer);
 
-        currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        currentapiVersion = Build.VERSION.SDK_INT;
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -312,7 +261,7 @@ public class AddDailyReport extends AppCompatActivity {
         }
 
         Config_Engg.isOnline(AddDailyReport.this);
-        if (Config_Engg.internetStatus == true) {
+        if (Config_Engg.internetStatus) {
 
             new AddContactPersonDropDown().execute();
 
@@ -579,7 +528,7 @@ public class AddDailyReport extends AppCompatActivity {
                 checkConatct += 1;
                 Log.i("kritesh", String.valueOf(checkConatct));
                 Config_Engg.isOnline(AddDailyReport.this);
-                if (Config_Engg.internetStatus == true) {
+                if (Config_Engg.internetStatus) {
 
                     long SelectedContact = parent.getSelectedItemId();
                     SelectedContactID = contactIDList.get((int) SelectedContact);
@@ -634,8 +583,6 @@ public class AddDailyReport extends AppCompatActivity {
                     Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", AddDailyReport.this);
                 }
 
-//                Toast.makeText(RaiseComplaintActivity.this,"Count" +" "+ checkConatct, Toast.LENGTH_LONG).show();
-
             }
 
             @Override
@@ -650,7 +597,7 @@ public class AddDailyReport extends AppCompatActivity {
             public void onClick(View v) {
 
                 Config_Engg.isOnline(AddDailyReport.this);
-                if (Config_Engg.internetStatus == true) {
+                if (Config_Engg.internetStatus) {
 
                     if (allEds != null) {
                         edtQytArray = new String[allEds.size()];
@@ -814,7 +761,6 @@ public class AddDailyReport extends AppCompatActivity {
 
     }
 
-
     private boolean isValidMobile(String phone) {
         boolean check = false;
         if (!Pattern.matches("[a-zA-Z]+", phone)) {
@@ -830,7 +776,6 @@ public class AddDailyReport extends AppCompatActivity {
         }
         return check;
     }
-
 
     private class DailyReportDetailAsy extends AsyncTask<String, String, String> {
 
@@ -1021,15 +966,12 @@ public class AddDailyReport extends AppCompatActivity {
                         final String pID = addedPart.get(i).getSpareID();
                         final String pName = addedPart.get(i).getSparePartNo();
                         final String quant = addedPart.get(i).getQuantity();
-//                            final String remarks = addedPart.get(i).getSpareDesc();
-
 
                         LinearLayout.LayoutParams paramtest = new LinearLayout.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
                                 ViewGroup.LayoutParams.MATCH_PARENT,
                                 0.33f
                         );
-
 
                         final LinearLayout linearLayout = new LinearLayout(AddDailyReport.this);
                         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -1284,8 +1226,6 @@ public class AddDailyReport extends AppCompatActivity {
                         Config_Engg.alertBox("Please Enter text to search", AddDailyReport.this);
                     } else {
                         if (searchSparePart.length() > 2) {
-//                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//                            imm.hideSoftInputFromWindow(complainlistdetail.getWindowToken(), 0);
                             new SparePartsAsync().execute();
 
                         } else {
@@ -1295,12 +1235,6 @@ public class AddDailyReport extends AppCompatActivity {
                 }
             });
 
-//            imv_closed.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    alertDialog.setCancelable(true);
-//                }
-//            });
 
             alertDialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
@@ -1317,9 +1251,6 @@ public class AddDailyReport extends AppCompatActivity {
                         for (int i = 0; i < addedPart.size(); i++) {
                             final String pID = addedPart.get(i).getSpareID();
                             final String pName = addedPart.get(i).getSparePartNo();
-                            //                         final String quant = addedPart.get(i).getQuantity();
-//                            final String remarks = addedPart.get(i).getSpareDesc();
-
 
                             LinearLayout.LayoutParams paramtest = new LinearLayout.LayoutParams(
                                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -1390,15 +1321,6 @@ public class AddDailyReport extends AppCompatActivity {
                                                 llSpareParts.setVisibility(View.GONE);
                                             }
 
-//                                            addedPart.remove(pID);
-//                                            allEds.remove(pID);
-//                                            linearLayout.setVisibility(View.GONE);
-//
-//                                            if (addedPart.size() > 0) {
-//                                                llSpareParts.setVisibility(View.VISIBLE);
-//                                            } else {
-//                                                llSpareParts.setVisibility(View.GONE);
-//                                            }
                                         }
                                     });
 
@@ -1444,7 +1366,6 @@ public class AddDailyReport extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            SparePartList.setEmptyView(tvEmptyView);
             SparePartArrayList.clear();
             progressSparePart = ProgressDialog.show(AddDailyReport.this, "Loading...", "Please Wait....", true, false);
         }
@@ -1508,7 +1429,6 @@ public class AddDailyReport extends AppCompatActivity {
             if (flag == 1) {
                 Config_Engg.toastShow(msgstatus, AddDailyReport.this);
                 listView_sparePart.setAdapter(null);
-//                listView_sparePart.setEmptyView(tvEmptyView);
 
             } else {
                 if (flag == 2) {
@@ -1529,7 +1449,6 @@ public class AddDailyReport extends AppCompatActivity {
         LayoutInflater inflater;
         Context context;
 
-        //   HashMap<String, String> addedPart = new HashMap<String, String>();
 
         public SparePartListAdapter(Context context, ArrayList<SparePartListDataModel> myArrayList) {
 
@@ -1660,7 +1579,7 @@ public class AddDailyReport extends AppCompatActivity {
         return bean;
     }
 
-    private void  ScanckBar() {
+    private void ScanckBar() {
 
         Snackbar snackbar = Snackbar
                 .make(maincontainer, "Connectivity issues", Snackbar.LENGTH_LONG)
@@ -1671,7 +1590,7 @@ public class AddDailyReport extends AppCompatActivity {
 
 
                         Config_Engg.isOnline(AddDailyReport.this);
-                        if (Config_Engg.internetStatus == true) {
+                        if (Config_Engg.internetStatus) {
 
                             if (reportMode.compareTo("true") == 0) {
                                 new DailyReportDetailAsy().execute();
@@ -1695,7 +1614,6 @@ public class AddDailyReport extends AppCompatActivity {
         snackbar.show();
 
     }
-
 
     private class AddContactChange extends AsyncTask<String, String, String> {
 
@@ -1784,7 +1702,7 @@ public class AddDailyReport extends AppCompatActivity {
                 progressDialog.dismiss();
             } else if (flag == 3) {
                 Config_Engg.toastShow("No Response", AddDailyReport.this);
-//
+
             } else if (flag == 4) {
                 Config_Engg.toastShow(msgstatus, AddDailyReport.this);
                 Config_Engg.logout(AddDailyReport.this);
@@ -1801,7 +1719,6 @@ public class AddDailyReport extends AppCompatActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -1817,8 +1734,8 @@ public class AddDailyReport extends AppCompatActivity {
                 intent = new Intent(AddDailyReport.this, ChangePassword.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
+
             case R.id.logout:
 
                 Config_Engg.logout(AddDailyReport.this);
@@ -1830,28 +1747,32 @@ public class AddDailyReport extends AppCompatActivity {
                 intent = new Intent(AddDailyReport.this, DashboardActivity.class);
                 startActivity(intent);
                 finish();
-
                 return (true);
+
             case R.id.profile:
                 intent = new Intent(AddDailyReport.this, ProfileUpdate.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_raise:
                 intent = new Intent(AddDailyReport.this, RaiseComplaintActivity.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_complain:
                 intent = new Intent(AddDailyReport.this, ManageComplaint.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_machines:
                 intent = new Intent(AddDailyReport.this, ManageMachines.class);
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.btn_contact:
                 intent = new Intent(AddDailyReport.this, ManageContact.class);
                 startActivity(intent);
@@ -1863,6 +1784,7 @@ public class AddDailyReport extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return (true);
+
             case R.id.download_file:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://app.komaxindia.co.in/Engineer/Engineer-User-Manual.pdf"));
                 startActivity(browserIntent);
@@ -1879,7 +1801,6 @@ public class AddDailyReport extends AppCompatActivity {
         finish();
         super.onBackPressed();
     }
-
 
     private class AddContactPersonDropDown extends AsyncTask<String, String, String> {
 
@@ -2010,12 +1931,10 @@ public class AddDailyReport extends AppCompatActivity {
                         ///  spinner_existing_customer_contacts.setSelection(1);
                     }
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     flag = 5;
                 }
-
                 progressDialog.dismiss();
             } else if (flag == 3) {
                 Config_Engg.toastShow("No Response", AddDailyReport.this);

@@ -3,11 +3,14 @@ package com.cfcs.komaxengineer.activity_engineer;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,6 +18,7 @@ import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +57,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -81,19 +86,19 @@ public class RaiseComplaintActivity extends AppCompatActivity {
     private static String SOAP_ACTION7 = "http://cfcs.co.in/AppEngineerComplainInsUpdt";
     private static String METHOD_NAME7 = "AppEngineerComplainInsUpdt";
 
-    EditText txt_problem_title, txt_problem_description,
+    EditText txt_problem_description,
             txt_new_person_name, txt_mail, txt_new_customer_mobile,
             txt_other_contact, txt_country_code;
-    TextView txt_problem_date,txt_complain_date,txt_expected_date;
+    TextView txt_problem_date, txt_complain_date;
     Spinner spinner_customer_name, spinner_plant, spinner_machine_model, spinner_machine_serial, spinner_complaint_type, spinner_work_status,
-            spinner_status, spinner_existing_customer_contacts;
+            spinner_status, spinner_existing_customer_contacts, spinner_complain_title;
     Button btn_submit, btn_clear, btn_update;
 
     TextView txt_complaint_no, txt_region, asm_txt_show, txt_header;
 
     CheckBox check_customer, check_internal;
 
-    RadioButton radio_off_site, radio_on_site;
+    RadioButton radio_mobile_email, radio_on_site, radio_principal;
 
     RadioGroup radio_group;
 
@@ -105,6 +110,9 @@ public class RaiseComplaintActivity extends AppCompatActivity {
     int status = 0;
 
     Calendar c;
+
+    List<String> complainTitleIDList;
+    List<String> complainTitleNameList;
 
     List<String> customerIDList;
     List<String> customerNameList;
@@ -130,7 +138,10 @@ public class RaiseComplaintActivity extends AppCompatActivity {
     String SelectedContactID;
     String SelectedComplaintTypeID;
     String SelectedWorkStatusID;
+    String SelectedComplainTitleID;
+    String SelectedProblemTitle;
 
+    ArrayAdapter<String> spinneradapterComplainTitle;
     ArrayAdapter<String> spinneradapterTrans;
     ArrayAdapter<String> spinneradapterCustomer;
     ArrayAdapter<String> spinneradapterMachine;
@@ -156,11 +167,11 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
     String ContactPersonContactNoUpdate = "";
 
-    String ContactPersonConutryUpdate ="";
+    String ContactPersonConutryUpdate = "";
 
     int seletedValue = 1;
 
-    String problemTitle = "", problemDesc = "", otherContact = "", ProblemoccurAtDate = "", complaintDate = "", expectedDate = "", newpersonName = "", mailID = "",countryCode="",
+    String problemTitle = "", problemDesc = "", otherContact = "", ProblemoccurAtDate = "", complaintDate = "", newpersonName = "", mailID = "", countryCode = "",
             mobile = "";
 
     LinearLayout maincontainer;
@@ -186,9 +197,11 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         setContentView(R.layout.activity_raise_complaint);
 
         //Set Company logo in action bar with AppCompatActivity
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.logo_komax);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
+            Objects.requireNonNull(getSupportActionBar()).setLogo(R.drawable.logo_komax);
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+        }
 
         tv_request_title = findViewById(R.id.tv_request_title);
         tv_customer_name = findViewById(R.id.tv_customer_name);
@@ -239,11 +252,10 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 //        ssbMobileNo.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
 //        tv_mobile_no.setText(ssbMobileNo.build());
 
-        txt_problem_title = findViewById(R.id.txt_problem_title);
+        spinner_complain_title = findViewById(R.id.spinner_complain_title);
         txt_problem_description = findViewById(R.id.txt_problem_description);
         txt_problem_date = findViewById(R.id.txt_problem_date);
         txt_complain_date = findViewById(R.id.txt_complain_date);
-        txt_expected_date = findViewById(R.id.txt_expected_date);
         spinner_existing_customer_contacts = findViewById(R.id.spinner_existing_customer_contacts);
         txt_new_person_name = findViewById(R.id.txt_new_person_name);
         txt_mail = findViewById(R.id.txt_mail);
@@ -261,8 +273,9 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         spinner_status = findViewById(R.id.spinner_status);
         check_customer = findViewById(R.id.check_customer);
         check_internal = findViewById(R.id.check_internal);
-        radio_off_site = findViewById(R.id.radio_off_site);
         radio_on_site = findViewById(R.id.radio_on_site);
+        radio_mobile_email = findViewById(R.id.radio_mobile_email);
+        radio_principal = findViewById(R.id.radio_principal);
         radio_group = findViewById(R.id.radio_group);
         spinner_work_status_hide = findViewById(R.id.spinner_work_status_hide);
         spinner_work_status_hide_spinner = findViewById(R.id.spinner_work_status_hide_spinner);
@@ -292,7 +305,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
         txt_header.setText("Raise Service Request");
 
-        radio_off_site.setChecked(true);
+        radio_on_site.setChecked(true);
 
         Config_Engg.isOnline(RaiseComplaintActivity.this);
         if (Config_Engg.internetStatus == true) {
@@ -330,15 +343,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
             }
         });
 
-        txt_expected_date.setOnClickListener(new View.OnClickListener() {
-            int DateTimeStatus = 2;
-
-            @Override
-            public void onClick(View view) {
-
-                datePicker(DateTimeStatus);
-            }
-        });
 
         spinner_customer_name.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -562,11 +566,17 @@ public class RaiseComplaintActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
                 switch (checkedId) {
-                    case R.id.radio_off_site:
-                        seletedValue = 2;
-                        break;
+
                     case R.id.radio_on_site:
                         seletedValue = 1;
+                        break;
+
+                    case R.id.radio_mobile_email:
+                        seletedValue = 2;
+                        break;
+
+                    case R.id.radio_principal:
+                        seletedValue = 3;
                         break;
                 }
             }
@@ -585,6 +595,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 Config_Engg.isOnline(RaiseComplaintActivity.this);
                 if (Config_Engg.internetStatus == true) {
 
+                    int problemTitle = spinner_complain_title.getSelectedItemPosition();
                     int customerPos = spinner_customer_name.getSelectedItemPosition();
                     int plantPos = spinner_plant.getSelectedItemPosition();
                     int serialPos = spinner_machine_serial.getSelectedItemPosition();
@@ -594,10 +605,10 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     String checkmobile = txt_new_customer_mobile.getText().toString().trim();
                     String code = txt_country_code.getText().toString().trim();
 
-                    if (txt_problem_title.getText().toString().equalsIgnoreCase("")) {
-                        Config_Engg.alertBox("Please Enter Your Problem Title ",
+                    if (problemTitle == 0) {
+                        Config_Engg.alertBox("Please Enter Your Request Title ",
                                 RaiseComplaintActivity.this);
-                        txt_problem_title.requestFocus();
+                        spinner_complain_title.requestFocus();
                         //focusOnView();
                     } else if (customerPos == 0) {
                         Config_Engg.alertBox("Please Select Your Customer Name ",
@@ -623,7 +634,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                         Config_Engg.alertBox("Please Enter Vaild Email",
                                 RaiseComplaintActivity.this);
                         txt_mail.requestFocus();
-                    } else if(checkmobile.compareTo("") != 0 || code.compareTo("") !=0){
+                    } else if (checkmobile.compareTo("") != 0 || code.compareTo("") != 0) {
 
                         if (checkmobile.compareTo("") != 0 && !isValidMobile(txt_new_customer_mobile.getText().toString().trim())) {
                             Config_Engg.alertBox("Please Enter Vaild Mobile No.",
@@ -632,10 +643,15 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                         } else if (checkmobile.compareTo("") == 0) {
                             Config_Engg.alertBox("Please Enter Mobile No.", RaiseComplaintActivity.this);
                             txt_new_customer_mobile.requestFocus();
-                        }else if (code.compareTo("") == 0) {
+                        } else if (code.compareTo("") == 0) {
                             Config_Engg.alertBox("Please Enter Country Code", RaiseComplaintActivity.this);
                             txt_country_code.requestFocus();
-                        }else {
+                        } else {
+
+                            long SelectedProblemTitleID = spinner_complain_title.getSelectedItemId();
+                            SelectedComplainTitleID = complainTitleIDList.get((int) SelectedProblemTitleID);
+                            SelectedProblemTitle = spinner_complain_title.getSelectedItem().toString();
+
                             long SelectedComplaintType = spinner_complaint_type.getSelectedItemId();
                             SelectedComplaintTypeID = transactionIDList.get((int) SelectedComplaintType);
 
@@ -654,11 +670,9 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                                 checkBoxInternalValue = "False";
                             }
 
-                            problemTitle = txt_problem_title.getText().toString().trim();
                             problemDesc = txt_problem_description.getText().toString().trim();
                             ProblemoccurAtDate = txt_problem_date.getText().toString().trim();
                             complaintDate = txt_complain_date.getText().toString().trim();
-                            expectedDate = txt_expected_date.getText().toString().trim();
                             newpersonName = txt_new_person_name.getText().toString().trim();
                             mailID = txt_mail.getText().toString().trim();
                             countryCode = txt_country_code.getText().toString().trim();
@@ -668,7 +682,11 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                             new RaiseComplaintSubmit().execute();
 
                         }
-                    }  else {
+                    } else {
+
+                        long SelectedProblemTitleID = spinner_complain_title.getSelectedItemId();
+                        SelectedComplainTitleID = complainTitleIDList.get((int) SelectedProblemTitleID);
+                        SelectedProblemTitle = spinner_complain_title.getSelectedItem().toString();
 
                         long SelectedComplaintType = spinner_complaint_type.getSelectedItemId();
                         SelectedComplaintTypeID = transactionIDList.get((int) SelectedComplaintType);
@@ -688,11 +706,9 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                             checkBoxInternalValue = "False";
                         }
 
-                        problemTitle = txt_problem_title.getText().toString().trim();
                         problemDesc = txt_problem_description.getText().toString().trim();
                         ProblemoccurAtDate = txt_problem_date.getText().toString().trim();
                         complaintDate = txt_complain_date.getText().toString().trim();
-                        expectedDate = txt_expected_date.getText().toString().trim();
                         newpersonName = txt_new_person_name.getText().toString().trim();
                         mailID = txt_mail.getText().toString().trim();
                         countryCode = txt_country_code.getText().toString().trim();
@@ -709,12 +725,11 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         });
 
 
-
         txt_country_code.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!changing && txt_country_code.getText().toString().startsWith("0")){
+                if (!changing && txt_country_code.getText().toString().startsWith("0")) {
                     changing = true;
                     txt_country_code.setText(txt_country_code.getText().toString().replace("0", ""));
                 }
@@ -739,6 +754,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 Config_Engg.isOnline(RaiseComplaintActivity.this);
                 if (Config_Engg.internetStatus == true) {
 
+                    int probleTitle = spinner_complain_title.getSelectedItemPosition();
                     int customerPos = spinner_customer_name.getSelectedItemPosition();
                     int plantPos = spinner_plant.getSelectedItemPosition();
                     int serialPos = spinner_machine_serial.getSelectedItemPosition();
@@ -748,10 +764,10 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     String checkmobile = txt_new_customer_mobile.getText().toString().trim();
                     String code = txt_country_code.getText().toString().trim();
 
-                    if (txt_problem_title.getText().toString().equalsIgnoreCase("")) {
-                        Config_Engg.alertBox("Please Enter Your Problem Title ",
+                    if (probleTitle == 0) {
+                        Config_Engg.alertBox("Please Enter Your Request Title ",
                                 RaiseComplaintActivity.this);
-                        txt_problem_title.requestFocus();
+                        spinner_complain_title.requestFocus();
                         //focusOnView();
                     } else if (customerPos == 0) {
                         Config_Engg.alertBox("Please Select Your Customer Name ",
@@ -777,7 +793,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                         Config_Engg.alertBox("Please Enter Vaild Email",
                                 RaiseComplaintActivity.this);
                         txt_mail.requestFocus();
-                    } else if(checkmobile.compareTo("") != 0 || code.compareTo("") !=0){
+                    } else if (checkmobile.compareTo("") != 0 || code.compareTo("") != 0) {
 
                         if (checkmobile.compareTo("") != 0 && !isValidMobile(txt_new_customer_mobile.getText().toString().trim())) {
                             Config_Engg.alertBox("Please Enter Vaild Mobile No.",
@@ -786,10 +802,14 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                         } else if (checkmobile.compareTo("") == 0) {
                             Config_Engg.alertBox("Please Enter Mobile No.", RaiseComplaintActivity.this);
                             txt_new_customer_mobile.requestFocus();
-                        }else if (code.compareTo("") == 0) {
+                        } else if (code.compareTo("") == 0) {
                             Config_Engg.alertBox("Please Enter Country Code", RaiseComplaintActivity.this);
                             txt_country_code.requestFocus();
-                        }else {
+                        } else {
+                            long SelectedProblemTitleID = spinner_complain_title.getSelectedItemId();
+                            SelectedComplainTitleID = complainTitleIDList.get((int) SelectedProblemTitleID);
+                            SelectedProblemTitle = spinner_complain_title.getSelectedItem().toString();
+
                             long SelectedComplaintType = spinner_complaint_type.getSelectedItemId();
                             SelectedComplaintTypeID = transactionIDList.get((int) SelectedComplaintType);
 
@@ -808,11 +828,9 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                                 checkBoxInternalValue = "False";
                             }
 
-                            problemTitle = txt_problem_title.getText().toString().trim();
                             problemDesc = txt_problem_description.getText().toString().trim();
                             ProblemoccurAtDate = txt_problem_date.getText().toString().trim();
                             complaintDate = txt_complain_date.getText().toString().trim();
-                            expectedDate = txt_expected_date.getText().toString().trim();
                             newpersonName = txt_new_person_name.getText().toString().trim();
                             mailID = txt_mail.getText().toString().trim();
                             countryCode = txt_country_code.getText().toString().trim();
@@ -823,6 +841,10 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
                         }
                     } else {
+
+                        long SelectedProblemTitleID = spinner_complain_title.getSelectedItemId();
+                        SelectedComplainTitleID = complainTitleIDList.get((int) SelectedProblemTitleID);
+                        SelectedProblemTitle = spinner_complain_title.getSelectedItem().toString();
 
                         long SelectedComplaintType = spinner_complaint_type.getSelectedItemId();
                         SelectedComplaintTypeID = transactionIDList.get((int) SelectedComplaintType);
@@ -842,11 +864,9 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                             checkBoxInternalValue = "False";
                         }
 
-                        problemTitle = txt_problem_title.getText().toString().trim();
                         problemDesc = txt_problem_description.getText().toString().trim();
                         ProblemoccurAtDate = txt_problem_date.getText().toString().trim();
                         complaintDate = txt_complain_date.getText().toString().trim();
-                        expectedDate = txt_expected_date.getText().toString().trim();
                         newpersonName = txt_new_person_name.getText().toString().trim();
                         mailID = txt_mail.getText().toString().trim();
                         countryCode = txt_country_code.getText().toString().trim();
@@ -867,7 +887,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                txt_problem_title.setText("");
+                spinner_complain_title.setSelection(0);
                 txt_problem_description.setText("");
                 spinner_customer_name.setSelection(0);
                 spinner_plant.setSelection(0);
@@ -877,7 +897,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 spinner_work_status.setSelection(0);
                 txt_problem_date.setText("");
                 txt_complain_date.setText("");
-                txt_expected_date.setText("");
                 txt_new_person_name.setText("");
                 txt_mail.setText("");
                 txt_country_code.setText("");
@@ -885,7 +904,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 txt_other_contact.setText("");
                 check_customer.setChecked(false);
                 check_internal.setChecked(false);
-                txt_problem_title.requestFocus();
+                spinner_complain_title.requestFocus();
             }
         });
     }
@@ -1004,8 +1023,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                             txt_problem_date.setText(date_time1 + " " + aTime);
                         } else if (dateTimePickerStattus == 1) {
                             txt_complain_date.setText(date_time1 + " " + aTime);
-                        } else if (dateTimePickerStattus == 2) {
-                            txt_expected_date.setText(date_time1 + " " + aTime);
                         }
 
 
@@ -1200,8 +1217,24 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     String Region = jsonObject.getString("ZoneName").toString();
                     txt_region.setText(Region);
 
-                    String ProblemTitle = jsonObject.getString("ComplaintTitle").toString();
-                    txt_problem_title.setText(ProblemTitle);
+                    String ProblemTitle = jsonObject.getString("ComplaintTitleID").toString();
+                    int indexp = -1;
+                    for (int i = 0; i < complainTitleIDList.size(); i++) {
+                        if (complainTitleIDList.get(i).equals(ProblemTitle)) {
+                            indexp = i;
+                            break;
+                        }
+                    }
+
+                    if (indexp > 0) {
+
+                        String customerString = complainTitleNameList.get((int) indexp);
+
+                        if (!customerString.equalsIgnoreCase("")) {
+                            int spinnerpos = spinneradapterComplainTitle.getPosition(customerString);
+                            spinner_complain_title.setSelection(spinnerpos);
+                        }
+                    }
 
                     String Description = jsonObject.getString("Description").toString();
                     txt_problem_description.setText(Description);
@@ -1211,9 +1244,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
                     String TimeOfOccuranceDateTimeText = jsonObject.getString("TimeOfOccuranceDateTimeText").toString();
                     txt_problem_date.setText(TimeOfOccuranceDateTimeText);
-
-                    String RectifiedDateTimeText = jsonObject.getString("RectifiedDateTimeText").toString();
-                    txt_expected_date.setText(RectifiedDateTimeText);
 
                     String CustomerID = jsonObject.getString("ParentCustomerID").toString();
 
@@ -1257,10 +1287,12 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
                     ComplainServiceTypeID = jsonObject.getString("ComplainServiceTypeID").toString();
 
-                    if(ComplainServiceTypeID.compareTo("1") == 0){
+                    if (ComplainServiceTypeID.compareTo("1") == 0) {
                         radio_on_site.setChecked(true);
-                    }else {
-                        radio_off_site.setChecked(true);
+                    } else if (ComplainServiceTypeID.compareTo("2") == 0) {
+                        radio_mobile_email.setChecked(true);
+                    } else {
+                        radio_principal.setChecked(true);
                     }
 
                     int index1 = -1;
@@ -1283,8 +1315,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                             spinner_work_status_hide_spinner.setVisibility(View.GONE);
                         }
                     }
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1315,7 +1345,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
         int flag;
         String msgstatus;
-        String initialData, customerList, transactionList, engWorkStatusList;
+        String initialData, customerList, transactionList, engWorkStatusList, complainTitleList;
         ProgressDialog progressDialog;
         String LoginStatus;
         String invalid = "LoginFailed";
@@ -1345,6 +1375,8 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     Object json = new JSONTokener(initialData).nextValue();
                     if (json instanceof JSONObject) {
                         JSONObject object = new JSONObject(initialData);
+                        JSONArray probleTitleArray = object.getJSONArray("ComplainTitle");
+                        complainTitleList = probleTitleArray.toString();
                         JSONArray plantjsonArray = object.getJSONArray("CustomerEngineerWise");
                         customerList = plantjsonArray.toString();
                         JSONArray trancsonArray = object.getJSONArray("TransactionType");
@@ -1402,6 +1434,31 @@ public class RaiseComplaintActivity extends AppCompatActivity {
             } else if (flag == 2) {
                 try {
 //
+                    JSONArray jsonArray2 = new JSONArray(complainTitleList);
+                    complainTitleIDList = new ArrayList<String>();
+                    complainTitleIDList.add(0, "");
+                    complainTitleNameList = new ArrayList<String>();
+                    complainTitleNameList.add(0, "Select");
+
+                    for (int i = 0; i < jsonArray2.length(); i++) {
+                        JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
+                        String ComplaintTitleID = jsonObject2.getString("ComplaintTitleID");
+                        String ComplaintTitleName = jsonObject2.getString("ComplaintTitleName");
+
+                        complainTitleIDList.add(i + 1, ComplaintTitleID);
+                        complainTitleNameList.add(i + 1, ComplaintTitleName);
+                    }
+
+                    spinneradapterComplainTitle = new ArrayAdapter<String>(RaiseComplaintActivity.this, android.R.layout.simple_spinner_item, complainTitleNameList);
+                    spinneradapterComplainTitle.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner_complain_title.setAdapter(spinneradapterComplainTitle);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                }
+
+                try {
                     JSONArray jsonArray2 = new JSONArray(customerList);
                     customerIDList = new ArrayList<String>();
                     customerIDList.add(0, "");
@@ -1414,7 +1471,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                         String CustomerName = jsonObject2.getString("CustomerName");
 
                         customerIDList.add(i + 1, CustomerID);
-                        //siteNameList.add(SiteName);
                         customerNameList.add(i + 1, CustomerName);
                     }
 
@@ -1988,6 +2044,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                     JSONObject jsonObject2 = jsonArray2.getJSONObject(0);
                     String TransactionType = jsonObject2.getString("TransactionType");
                     String AMCMsg = jsonObject2.getString("AMCMsg");
+                    String OpenComplainMsg = jsonObject2.getString("OpenComplainMsg");
                     asm_txt_show.setText(AMCMsg);
 
                     int index = -1;
@@ -2028,6 +2085,10 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
                     }
 
+                    if(OpenComplainMsg.compareTo("") != 0){
+                        OpenAlertMsg(OpenComplainMsg);
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //Log.e("Error is here", e.toString());
@@ -2035,7 +2096,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             } else if (flag == 3) {
                 Config_Engg.toastShow("No Response", RaiseComplaintActivity.this);
-//
             } else if (flag == 4) {
 
                 Config_Engg.toastShow(msgstatus, RaiseComplaintActivity.this);
@@ -2053,6 +2113,23 @@ public class RaiseComplaintActivity extends AppCompatActivity {
             }
             progressDialog.dismiss();
         }
+    }
+
+    private void OpenAlertMsg(String openComplainMsg) {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(RaiseComplaintActivity.this,
+                R.style.LibAppTheme));
+
+        alertDialogBuilder.setTitle(RaiseComplaintActivity.this.getString(R.string.notification));
+        alertDialogBuilder.setMessage(openComplainMsg);
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        alertDialogBuilder.show();
+
     }
 
     private class AddContactChange extends AsyncTask<String, String, String> {
@@ -2165,6 +2242,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         String jsonValue, msg;
         String LoginStatus;
         String invalid = "LoginFailed";
+        String valid = "success";
         ProgressDialog progressDialog;
 
         @Override
@@ -2182,21 +2260,21 @@ public class RaiseComplaintActivity extends AppCompatActivity {
 
             SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME7);
             request.addProperty("ComplainNo", complainno);
-            request.addProperty("ComplaintTitle", problemTitle);
+            request.addProperty("ComplaintTitle", SelectedProblemTitle);
             request.addProperty("Description", problemDesc);
             request.addProperty("CustomerID", SelctedCustomerID);
             request.addProperty("SiteID", SelctedPlantID);
             request.addProperty("SaleID", SelctedMachineID);
+            request.addProperty("ComplaintTitleID", SelectedComplainTitleID);
             request.addProperty("ComplaintType", SelectedComplaintTypeID);
             request.addProperty("ComplainServiceTypeID", seletedValue);
             request.addProperty("TimeOfOccurance", ProblemoccurAtDate);
             request.addProperty("ComplainTime", complaintDate);
-            request.addProperty("Rectifieddate", expectedDate);
             request.addProperty("WorkStatusID", SelectedWorkStatusID);
             request.addProperty("ContactPersonID", SelectedContactID);
             request.addProperty("ContactPersonName", newpersonName);
             request.addProperty("ContactPersonMailID", mailID);
-            request.addProperty("CountryCode",countryCode);
+            request.addProperty("CountryCode", countryCode);
             request.addProperty("ContactPersonMobile", mobile);
             request.addProperty("ContactPersonContactNo", otherContact);
             request.addProperty("MailToCustomer", checkBoxCustomerValue);
@@ -2222,9 +2300,12 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                         if (LoginStatus.equals(invalid)) {
 
                             flag = 4;
-                        } else {
+
+                        } else if (LoginStatus.equals(valid)) {
 
                             flag = 2;
+                        }else {
+                            flag = 1;
                         }
                     } else {
                         flag = 1;

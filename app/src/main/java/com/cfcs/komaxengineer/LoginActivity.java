@@ -177,7 +177,6 @@ public class LoginActivity extends Activity {
                         Config_Engg.putSharedPreferences(LoginActivity.this, "pref_Engg", "AuthCode", AuthCode);
                         Config_Engg.putSharedPreferences(LoginActivity.this, "pref_Engg", "PendingFeedback", "1");
 
-                        // Config_Engg.getSharedPreferenceRemove(LoginActivity.this,"pref_Engg","Password");
                     }
                 } else {
                     flag = 3;

@@ -73,6 +73,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import in.co.cfcs.kriteshfilepicker.FilePickerBuilder;
 import in.co.cfcs.kriteshfilepicker.FilePickerConst;
@@ -158,9 +159,11 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_submit_eng_work_status);
 
         //Set Company logo in action bar with AppCompatActivity
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.logo_komax);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
+            Objects.requireNonNull(getSupportActionBar()).setLogo(R.drawable.logo_komax);
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+        }
 
         tv_status = findViewById(R.id.tv_status);
 

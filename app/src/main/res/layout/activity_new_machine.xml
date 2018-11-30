@@ -157,7 +157,7 @@
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
-                        <Spinner
+                        <in.co.cfcs.kriteshspinnerserachlib.SearchableSpinner
                             android:id="@+id/spinner_machine_model"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -169,7 +169,6 @@
                             android:padding="0dp"
                             android:popupBackground="#fff"
                             android:spinnerMode="dropdown"
-
                             android:textSize="15sp" />
 
 
@@ -247,7 +246,8 @@
                             android:layout_marginTop="10dp"
                             android:text="@string/office_file_no"
                             android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:visibility="gone"/>
 
 
                         <EditText
@@ -261,7 +261,8 @@
                             android:hint="@string/office_file_no"
                             android:inputType="text"
                             android:padding="10dp"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:visibility="gone"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -416,7 +417,6 @@
                                 android:text="Warranty Start Date"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
-
 
                             <TextView
                                 android:id="@+id/txt_warranty_s_date"
