@@ -1840,22 +1840,28 @@ public class AddDailyReport extends AppCompatActivity {
                 SoapObject result = (SoapObject) envelope.bodyIn;
                 if (result != null) {
                     contact_detail = result.getProperty(0).toString();
-                    JSONArray jsonArray = new JSONArray(contact_detail);
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-                    contact_list = jsonArray.toString();
-                    if (jsonObject.has("status")) {
+                    if(contact_detail.compareTo("[]") != 0){
+                        JSONArray jsonArray = new JSONArray(contact_detail);
+                        JSONObject jsonObject = jsonArray.getJSONObject(0);
+                        contact_list = jsonArray.toString();
+                        if (jsonObject.has("status")) {
+                            LoginStatus = jsonObject.getString("status");
+                            msgstatus = jsonObject.getString("MsgNotification");
+                            if (LoginStatus.equals(invalid)) {
+                                flag = 4;
+                            } else {
 
-                        LoginStatus = jsonObject.getString("status");
-                        msgstatus = jsonObject.getString("MsgNotification");
-                        if (LoginStatus.equals(invalid)) {
-                            flag = 4;
+                                flag = 1;
+                            }
                         } else {
-
-                            flag = 1;
+                            flag = 2;
                         }
-                    } else {
-                        flag = 2;
+
+                    }else {
+
+                        flag = 6;
                     }
+
                 } else {
                     flag = 3;
                 }
@@ -1889,7 +1895,6 @@ public class AddDailyReport extends AppCompatActivity {
 
                             ComplainByContactID = jsonObject2.getString("ComplainByContactID");
                         }
-
 
                         contactIDList.add(i + 1, ContactPersonID);
                         contactNameList.add(i + 1, ContactPersonName);
@@ -1950,6 +1955,17 @@ public class AddDailyReport extends AppCompatActivity {
                 btn_preview.setEnabled(false);
                 btn_clear.setEnabled(false);
                 progressDialog.dismiss();
+            }else if(flag == 6){
+                contactIDList = new ArrayList<String>();
+                contactIDList.add(0, "00000000-0000-0000-0000-000000000000");
+                contactNameList = new ArrayList<String>();
+                contactNameList.add(0, "New");
+
+                spinneradapterContact = new ArrayAdapter<String>(AddDailyReport.this,
+                        android.R.layout.simple_spinner_item, contactNameList);
+                spinneradapterContact.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner_existing_customer_contacts.setAdapter(spinneradapterContact);
+
             }
 
             progressDialog.dismiss();
