@@ -170,6 +170,12 @@ public class FeedbackActivity extends AppCompatActivity {
                 finish();
                 return (true);
 
+            case R.id.btn_menu_service_hour:
+                intent = new Intent(FeedbackActivity.this, ServiceHourList.class);
+                startActivity(intent);
+                finish();
+                return (true);
+
             case R.id.btn_menu_feedback:
                 intent = new Intent(FeedbackActivity.this, FeedbackActivity.class);
                 startActivity(intent);

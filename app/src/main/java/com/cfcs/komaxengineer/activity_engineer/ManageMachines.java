@@ -31,19 +31,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.cfcs.komaxengineer.Config_engineer.Config_Engg;
-import com.cfcs.komaxengineer.LoginActivity;
 import com.cfcs.komaxengineer.R;
 import com.cfcs.komaxengineer.adapter.MachineListAdapter;
 import com.cfcs.komaxengineer.model.MachineListDataModal;
-import com.cfcs.komaxengineer.utils.RecyclerItemClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -1575,6 +1570,12 @@ public class ManageMachines extends AppCompatActivity {
 
             case R.id.btn_contact:
                 intent = new Intent(ManageMachines.this, ManageContact.class);
+                startActivity(intent);
+                finish();
+                return (true);
+
+            case R.id.btn_menu_service_hour:
+                intent = new Intent(ManageMachines.this, ServiceHourList.class);
                 startActivity(intent);
                 finish();
                 return (true);

@@ -125,6 +125,10 @@ public class EngineerWorkStatusUpdate extends AppCompatActivity {
     public void onBackPressed() {
 
         Intent intent = new Intent(EngineerWorkStatusUpdate.this, ManageComplaint.class);
+        intent.putExtra("DateFrom1","");
+        intent.putExtra("DateTo1","");
+        intent.putExtra("PriorityID","0");
+        intent.putExtra("HeaderName","Open");
         startActivity(intent);
         finish();
         super.onBackPressed();
@@ -375,6 +379,12 @@ public class EngineerWorkStatusUpdate extends AppCompatActivity {
 
             case R.id.btn_contact:
                 intent = new Intent(EngineerWorkStatusUpdate.this, ManageContact.class);
+                startActivity(intent);
+                finish();
+                return (true);
+
+            case R.id.btn_menu_service_hour:
+                intent = new Intent(EngineerWorkStatusUpdate.this, ServiceHourList.class);
                 startActivity(intent);
                 finish();
                 return (true);

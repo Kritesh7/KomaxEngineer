@@ -384,6 +384,12 @@ public class ComplaintDetail extends AppCompatActivity {
                 finish();
                 return (true);
 
+            case R.id.btn_menu_service_hour:
+                intent = new Intent(ComplaintDetail.this, ServiceHourList.class);
+                startActivity(intent);
+                finish();
+                return (true);
+
             case R.id.btn_menu_feedback:
                 intent = new Intent(ComplaintDetail.this, FeedbackActivity.class);
                 startActivity(intent);
@@ -402,6 +408,10 @@ public class ComplaintDetail extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(ComplaintDetail.this, ManageComplaint.class);
         intent.putExtra("status", status);
+        intent.putExtra("DateFrom1","");
+        intent.putExtra("DateTo1","");
+        intent.putExtra("PriorityID","0");
+        intent.putExtra("HeaderName","Open");
         startActivity(intent);
         finish();
         super.onBackPressed();

@@ -13,11 +13,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,12 +25,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cfcs.komaxengineer.Config_engineer.Config_Engg;
-import com.cfcs.komaxengineer.LoginActivity;
 import com.cfcs.komaxengineer.R;
-import com.cfcs.komaxengineer.adapter.ComplaintListAdapter;
-import com.cfcs.komaxengineer.model.ComplaintDataModel;
 import com.cfcs.komaxengineer.utils.SimpleSpanBuilder;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -1041,6 +1035,12 @@ public class NewContact extends AppCompatActivity {
 
             case R.id.btn_contact:
                 intent = new Intent(NewContact.this, ManageContact.class);
+                startActivity(intent);
+                finish();
+                return (true);
+
+            case R.id.btn_menu_service_hour:
+                intent = new Intent(NewContact.this, ServiceHourList.class);
                 startActivity(intent);
                 finish();
                 return (true);

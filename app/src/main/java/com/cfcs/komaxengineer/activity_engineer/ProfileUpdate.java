@@ -395,6 +395,12 @@ public class ProfileUpdate extends AppCompatActivity {
                 finish();
                 return (true);
 
+            case R.id.btn_menu_service_hour:
+                intent = new Intent(ProfileUpdate.this, ServiceHourList.class);
+                startActivity(intent);
+                finish();
+                return (true);
+
             case R.id.btn_menu_feedback:
                 intent = new Intent(ProfileUpdate.this, FeedbackActivity.class);
                 startActivity(intent);

@@ -27,10 +27,11 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="7dp"
-                android:text="Manage Request"
+                android:text="Manage Request (Open)"
                 android:textColor="@color/white"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:id="@+id/txt_header"/>
 
         </LinearLayout>
 
@@ -56,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="25dp"
         android:layout_marginRight="16dp"
         android:clipToPadding="false"
         android:gravity="center_vertical"
@@ -85,7 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="30dp"
         android:layout_marginRight="16dp"
         android:clipToPadding="false"
         android:gravity="center_vertical"
@@ -114,7 +115,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="38dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginRight="6dp"
         android:clipToPadding="false"
         android:gravity="center_vertical"

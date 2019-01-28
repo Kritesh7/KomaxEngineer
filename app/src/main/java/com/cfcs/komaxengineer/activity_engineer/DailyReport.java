@@ -109,7 +109,7 @@ public class DailyReport extends AppCompatActivity {
         });
 
         Config_Engg.isOnline(DailyReport.this);
-        if (Config_Engg.internetStatus == true) {
+        if (Config_Engg.internetStatus) {
 
             new DailyReportAsy().execute();
 
@@ -123,6 +123,10 @@ public class DailyReport extends AppCompatActivity {
     public void onBackPressed() {
 
         Intent intent = new Intent(DailyReport.this, ManageComplaint.class);
+        intent.putExtra("DateFrom1","");
+        intent.putExtra("DateTo1","");
+        intent.putExtra("PriorityID","0");
+        intent.putExtra("HeaderName","Open");
         startActivity(intent);
         finish();
         super.onBackPressed();
@@ -348,6 +352,12 @@ public class DailyReport extends AppCompatActivity {
 
             case R.id.btn_contact:
                 intent = new Intent(DailyReport.this, ManageContact.class);
+                startActivity(intent);
+                finish();
+                return (true);
+
+            case R.id.btn_menu_service_hour:
+                intent = new Intent(DailyReport.this, ServiceHourList.class);
                 startActivity(intent);
                 finish();
                 return (true);

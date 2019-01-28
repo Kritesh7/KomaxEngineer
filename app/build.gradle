@@ -6,7 +6,7 @@ android {
 
             keyAlias 'KomaxEngineer'
             keyPassword '@cfCs#420Qk'
-            storeFile file('D:/Android KeyStore/KeyStore/KomaxEngineer/KomaxEngineer.jks')
+            storeFile file('/Users/pankajchopra/Documents/KriteshProject/Android KeyStore/KeyStore/KomaxEngineer/KomaxEngineer.jks')
             storePassword 'Cfcs@502#89kQ'
 
         }
@@ -16,8 +16,8 @@ android {
         applicationId "com.cfcs.komaxengineer"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 10
-        versionName "3.0"
+        versionCode 11
+        versionName "3.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -54,4 +54,5 @@ dependencies {
     implementation project(':kriteshspinnerserachlib')
     implementation project(':kriteshsignaturepad')
     implementation project(':kriteshfilepicker')
+    implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
 }

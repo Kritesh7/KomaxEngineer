@@ -1,17 +1,13 @@
 package com.cfcs.komaxengineer.activity_engineer;
 
-import android.animation.Animator;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,7 +26,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cfcs.komaxengineer.Config_engineer.Config_Engg;
-import com.cfcs.komaxengineer.LoginActivity;
 import com.cfcs.komaxengineer.R;
 import com.cfcs.komaxengineer.utils.SimpleSpanBuilder;
 
@@ -84,11 +79,6 @@ public class NewMachine extends AppCompatActivity {
     List<String> principalIDList;
     List<String> principalNameList;
 
-    List<String> zoneIDList;
-    List<String> zoneNameList;
-
-    List<String> areaID;
-    List<String> areaName;
 
     List<String> modelID;
     List<String> modelName;
@@ -1290,26 +1280,33 @@ public class NewMachine extends AppCompatActivity {
                 SoapObject result = (SoapObject) envelope.bodyIn;
                 if (result != null) {
                     model_detail = result.getProperty(0).toString();
-                    JSONArray jsonArray = new JSONArray(model_detail);
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-                    model_list = jsonArray.toString();
-                    if (jsonObject.has("status")) {
+                    if(model_detail.compareTo("[]") != 0) {
+                        JSONArray jsonArray = new JSONArray(model_detail);
+                        JSONObject jsonObject = jsonArray.getJSONObject(0);
+                        model_list = jsonArray.toString();
+                        if (jsonObject.has("status")) {
 
-                        LoginStatus = jsonObject.getString("status");
-                        msgstatus = jsonObject.getString("MsgNotification");
-                        if (LoginStatus.equals(invalid)) {
+                            LoginStatus = jsonObject.getString("status");
+                            msgstatus = jsonObject.getString("MsgNotification");
+                            if (LoginStatus.equals(invalid)) {
 
-                            flag = 4;
+                                flag = 4;
+                            } else {
+
+                                flag = 1;
+                            }
                         } else {
-
-                            flag = 1;
+                            flag = 2;
                         }
-                    } else {
-                        flag = 2;
+
+                    }else {
+                        flag = 6;
                     }
+
                 } else {
                     flag = 3;
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
                 flag = 5;
@@ -1386,6 +1383,19 @@ public class NewMachine extends AppCompatActivity {
                 btn_update.setEnabled(false);
                 btn_submit.setEnabled(false);
                 btn_clear.setEnabled(false);
+            } else if (flag == 6){
+
+                modelID = new ArrayList<String>();
+                modelID.add(0, "");
+                modelName = new ArrayList<String>();
+                modelName.add(0, "Select");
+
+
+                spinneradapterModel = new ArrayAdapter<String>(NewMachine.this,
+                        android.R.layout.simple_spinner_item, modelName);
+                spinneradapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner_machine_model.setAdapter(spinneradapterModel);
+
             }
 
             progressDialog.dismiss();
@@ -1978,6 +1988,12 @@ public class NewMachine extends AppCompatActivity {
 
             case R.id.btn_contact:
                 intent = new Intent(NewMachine.this, ManageContact.class);
+                startActivity(intent);
+                finish();
+                return (true);
+
+            case R.id.btn_menu_service_hour:
+                intent = new Intent(NewMachine.this, ServiceHourList.class);
                 startActivity(intent);
                 finish();
                 return (true);

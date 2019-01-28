@@ -93,7 +93,7 @@ public class ManageComplaint extends AppCompatActivity {
 
     ListView list;
 
-    Spinner spinner_customer, spinner_plant, spinner_work_status, spinner_status;
+    Spinner spinner_customer, spinner_plant, spinner_work_status, spinner_status,spinner_priority;
 
     List<String> customerIDList;
     List<String> customerNameList;
@@ -107,9 +107,15 @@ public class ManageComplaint extends AppCompatActivity {
     List<String> statusIDList;
     List<String> statusNameList;
 
+    List<String> priorityIdList;
+    List<String> priorityNameList;
+
+
     ArrayAdapter<String> spinneradapterCustomer;
     ArrayAdapter<String> spinneradapterPlant;
     ArrayAdapter<String> spinneradapterWorkStatus;
+    ArrayAdapter<String> spinneradapterPriority;
+
 
     String SelctedCustomerID;
 
@@ -131,6 +137,12 @@ public class ManageComplaint extends AppCompatActivity {
 
     AlertDialog dialog;
 
+    String DateFrom1 = "", DateTo1 = "",priorityID="",HeaderName="";
+
+    Bundle extras;
+
+    TextView txt_header;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,6 +154,27 @@ public class ManageComplaint extends AppCompatActivity {
             Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
             Objects.requireNonNull(getSupportActionBar()).setLogo(R.drawable.logo_komax);
             getSupportActionBar().setDisplayUseLogoEnabled(true);
+        }
+
+        txt_header = (TextView) findViewById(R.id.txt_header);
+
+        extras = getIntent().getExtras();
+        if (extras != null) {
+            DateFrom1 = extras.getString("DateFrom1");
+            priorityID = extras.getString("PriorityID");
+            DateTo1 = extras.getString("DateTo1");
+            HeaderName = extras.getString("HeaderName");
+            Config_Engg.putSharedPreferences(ManageComplaint.this, "pref_Engg", "DateFrom1", DateFrom1);
+            Config_Engg.putSharedPreferences(ManageComplaint.this, "pref_Engg", "DateTo1", DateTo1);
+            txt_header.setText("Manage Request" +" "+"("+HeaderName+")");
+        }else {
+
+            priorityID="0";
+
+            Config_Engg.getSharedPreferenceRemove(ManageComplaint.this, "pref_Engg", "DateFrom1");
+
+            Config_Engg.getSharedPreferenceRemove(ManageComplaint.this, "pref_Engg", "DateTo1");
+
         }
 
         Config_Engg.getSharedPreferenceRemove(ManageComplaint.this, "pref_Engg", "Customer");
@@ -158,6 +191,8 @@ public class ManageComplaint extends AppCompatActivity {
 
         Config_Engg.getSharedPreferenceRemove(ManageComplaint.this, "pref_Engg", "WorkStatus");
 
+        Config_Engg.getSharedPreferenceRemove(ManageComplaint.this, "pref_Engg", "Priority");
+
         list = (ListView) findViewById(R.id.complaint_list_view);
 
         status = "1";
@@ -168,7 +203,7 @@ public class ManageComplaint extends AppCompatActivity {
         Config_Engg.isOnline(ManageComplaint.this);
         if (Config_Engg.internetStatus == true) {
 
-            new ComplainListAsy(status, customerID, siteID, workStatusID).execute();
+            new ComplainListAsy(DateFrom1, DateTo1,status, customerID, siteID, workStatusID,priorityID).execute();
             new SetdataInCustomerSpinner().execute();
 
         } else {
@@ -328,6 +363,12 @@ public class ManageComplaint extends AppCompatActivity {
                 finish();
                 return (true);
 
+            case R.id.btn_menu_service_hour:
+                intent = new Intent(ManageComplaint.this, ServiceHourList.class);
+                startActivity(intent);
+                finish();
+                return (true);
+
             case R.id.btn_menu_feedback:
                 intent = new Intent(ManageComplaint.this, FeedbackActivity.class);
                 startActivity(intent);
@@ -369,6 +410,7 @@ public class ManageComplaint extends AppCompatActivity {
         spinner_customer = convertView.findViewById(R.id.spinner_customer);
         spinner_work_status = convertView.findViewById(R.id.spinner_work_status);
         spinner_status = convertView.findViewById(R.id.spinner_status);
+        spinner_priority = convertView.findViewById(R.id.spinner_priority);
 
         txt_complaint_date_from = convertView.findViewById(R.id.txt_complaint_date_from);
         txt_complaint_date_to = convertView.findViewById(R.id.txt_complaint_date_to);
@@ -382,13 +424,44 @@ public class ManageComplaint extends AppCompatActivity {
 
         myCalendar = Calendar.getInstance();
 
-        String ComparedDateFrom = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "DateFrom", "");
 
-        txt_complaint_date_from.setText(ComparedDateFrom);
 
-        String ComparedDateTo = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "DateUpto", "");
+        if (extras != null) {
 
-        txt_complaint_date_to.setText(ComparedDateTo);
+            if(DateFrom1.compareTo("") != 0 || DateTo1.compareTo("") != 0){
+                String DateFrom1 = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "DateFrom1", "");
+
+                txt_complaint_date_from.setText(DateFrom1);
+
+                String DateTo1 = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "DateTo1", "");
+
+                txt_complaint_date_to.setText(DateTo1);
+
+            }else {
+
+                String DateFrom = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "DateFrom", "");
+
+                txt_complaint_date_from.setText(DateFrom);
+
+                String DateUpto = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "DateUpto", "");
+
+                txt_complaint_date_to.setText(DateUpto);
+            }
+
+
+        } else {
+
+            String DateFrom = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "DateFrom", "");
+
+            txt_complaint_date_from.setText(DateFrom);
+
+            String DateUpto = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "DateUpto", "");
+
+            txt_complaint_date_to.setText(DateUpto);
+        }
+
+
+
 
         String ComparedComplainNo = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "ComplainNo", "");
 
@@ -396,6 +469,9 @@ public class ManageComplaint extends AppCompatActivity {
 
         String ComparedCustomerName = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "Customer", "");
         String ComparedWorkStatusName = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "WorkStatus", "");
+
+        String ComparedPriority = Config_Engg.getSharedPreferences(ManageComplaint.this, "pref_Engg", "Priority", "");
+
 
         spinner_customer.setAdapter(spinneradapterCustomer);
 
@@ -412,6 +488,15 @@ public class ManageComplaint extends AppCompatActivity {
 
             int spinnerPosition = spinneradapterWorkStatus.getPosition(ComparedWorkStatusName);
             spinner_work_status.setSelection(spinnerPosition);
+
+        }
+
+        spinner_priority.setAdapter(spinneradapterPriority);
+
+        if (!ComparedPriority.equalsIgnoreCase("")) {
+
+            int spinnerPosition = spinneradapterPriority.getPosition(ComparedPriority);
+            spinner_priority.setSelection(spinnerPosition);
 
         }
 
@@ -561,6 +646,7 @@ public class ManageComplaint extends AppCompatActivity {
                 String PlantID = "";
                 String WorkStatusID = "0";
                 String StatusID = "";
+                String PriorityID = "";
 
                 Config_Engg.isOnline(ManageComplaint.this);
                 if (Config_Engg.internetStatus == true) {
@@ -582,6 +668,9 @@ public class ManageComplaint extends AppCompatActivity {
                     long statusID = spinner_status.getSelectedItemId();
                     StatusID = statusIDList.get((int) statusID);
 
+                    long priorityID = spinner_priority.getSelectedItemId();
+                    PriorityID = priorityIdList.get((int) priorityID);
+
                     complainList.clear();
 
                     Config_Engg.putSharedPreferences(ManageComplaint.this, "pref_Engg", "Customer", spinner_customer.getSelectedItem().toString());
@@ -598,9 +687,13 @@ public class ManageComplaint extends AppCompatActivity {
 
                     Config_Engg.putSharedPreferences(ManageComplaint.this, "pref_Engg", "Status", spinner_status.getSelectedItem().toString());
 
+                    Config_Engg.putSharedPreferences(ManageComplaint.this, "pref_Engg", "Priority", spinner_priority.getSelectedItem().toString());
+
                     dialog.dismiss();
 
-                    new ComplainListAsy(CustomerID, complainNo, PlantID, DateFrom, DateUpto, WorkStatusID, StatusID).execute();
+                    txt_header.setText("Manage Request" +" "+"("+spinner_status.getSelectedItem().toString()+")");
+
+                    new ComplainListAsy(CustomerID, complainNo, PlantID, DateFrom, DateUpto, WorkStatusID, StatusID, PriorityID).execute();
 
                     closeFABMenu();
 
@@ -630,11 +723,24 @@ public class ManageComplaint extends AppCompatActivity {
 
                 Config_Engg.getSharedPreferenceRemove(ManageComplaint.this, "pref_Engg", "WorkStatus");
 
+                Config_Engg.getSharedPreferenceRemove(ManageComplaint.this, "pref_Engg", "Priority");
+
+                extras = getIntent().getExtras();
+                if(extras != null){
+
+                    extras.remove("DateFrom1");
+                    extras.remove("DateTo1");
+                    DateFrom1 = "";
+                    DateTo1 = "";
+                }
+
                 Config_Engg.isOnline(ManageComplaint.this);
                 if (Config_Engg.internetStatus == true) {
 
                     dialog.dismiss();
-                    new ComplainListAsy(status, customerID, siteID, workStatusID).execute();
+                    txt_header.setText("Manage Request" +" "+"(Open)");
+                    new ComplainListAsy(DateFrom1, DateTo1,status, customerID, siteID, workStatusID,priorityID).execute();
+                    new SetdataInCustomerSpinner().execute();
                     closeFABMenu();
 
                 } else {
@@ -663,17 +769,21 @@ public class ManageComplaint extends AppCompatActivity {
         String complainNo = "";
         String status = "";
         String WorkStatusID = "";
+        String PriorityID = "0";
 
         public ManageComplaint manageComplaint;
 
-        public ComplainListAsy(String status, String customerID, String siteID, String workStatusID) {
+        public ComplainListAsy(String dateFrom,String dateUpto,String status, String customerID, String siteID, String workStatusID,String priorityID) {
             this.status = status;
             this.CustomerID = customerID;
             this.SiteID = siteID;
             this.WorkStatusID = workStatusID;
+            this.PriorityID = priorityID;
+            this.DateFrom = dateFrom;
+            this.DateUpto = dateUpto;
         }
 
-        public ComplainListAsy(String customerID, String complainNo, String plantID, String dateFrom, String dateUpto, String workStatusID, String statusID) {
+        public ComplainListAsy(String customerID, String complainNo, String plantID, String dateFrom, String dateUpto, String workStatusID, String statusID, String priorityID) {
             this.CustomerID = customerID;
             this.complainNo = complainNo;
             this.SiteID = plantID;
@@ -681,6 +791,7 @@ public class ManageComplaint extends AppCompatActivity {
             this.DateUpto = dateUpto;
             this.WorkStatusID = workStatusID;
             this.status = statusID;
+            this.PriorityID = priorityID;
         }
 
 
@@ -708,6 +819,7 @@ public class ManageComplaint extends AppCompatActivity {
             request.addProperty("ComplainNo", complainNo);
             request.addProperty("WorkStatusID", WorkStatusID);
             request.addProperty("Status", status);
+            request.addProperty("PriorityID",PriorityID);
             request.addProperty("EngineerID", EngineerID);
             request.addProperty("AuthCode", AuthCode);
 
@@ -847,7 +959,7 @@ public class ManageComplaint extends AppCompatActivity {
 
                         if (Config_Engg.internetStatus == true) {
 
-                            new ComplainListAsy(status, customerID, siteID, workStatusID).execute();
+                            new ComplainListAsy(DateFrom1, DateTo1,status, customerID, siteID, workStatusID,priorityID).execute();
                             new SetdataInCustomerSpinner().execute();
 
                         } else {
@@ -867,7 +979,7 @@ public class ManageComplaint extends AppCompatActivity {
 
         int flag;
         String msgstatus;
-        String initialData, customerList, transactionList, engWorkStatusList;
+        String initialData, customerList, priorityIDList, engWorkStatusList;
         String LoginStatus;
         String invalid = "LoginFailed";
 
@@ -901,6 +1013,8 @@ public class ManageComplaint extends AppCompatActivity {
                         customerList = plantjsonArray.toString();
                         JSONArray EngWorkStatus = object.getJSONArray("EngWorkStatus");
                         engWorkStatusList = EngWorkStatus.toString();
+                        JSONArray PriorityID = object.getJSONArray("Priority");
+                        priorityIDList = PriorityID.toString();
                         if (initialData.compareTo("true") == 0) {
                             JSONArray jsonArray = new JSONArray(initialData);
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
@@ -998,6 +1112,30 @@ public class ManageComplaint extends AppCompatActivity {
                     e.printStackTrace();
                     //Log.e("Error is here", e.toString());
                 }
+
+                try {
+                    JSONArray jsonArray2 = new JSONArray(priorityIDList);
+                    priorityIdList = new ArrayList<String>();
+                    priorityIdList.add(0, "0");
+                    priorityNameList = new ArrayList<String>();
+                    priorityNameList.add(0, "Select");
+                    for (int i = 0; i < jsonArray2.length(); i++) {
+                        JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
+                        String PriorityID = jsonObject2.getString("PriorityID");
+                        String PriorityName = jsonObject2.getString("PriorityName");
+
+                        priorityIdList.add(PriorityID);
+                        priorityNameList.add(PriorityName);
+                    }
+
+                    spinneradapterPriority = new ArrayAdapter<String>(ManageComplaint.this, android.R.layout.simple_spinner_item, priorityNameList);
+                    spinneradapterPriority.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    //Log.e("Error is here", e.toString());
+                }
+
 
                 progressDialogCustomer.dismiss();
 

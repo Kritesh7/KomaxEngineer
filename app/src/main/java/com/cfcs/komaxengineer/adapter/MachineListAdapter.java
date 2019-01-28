@@ -73,7 +73,6 @@ public class MachineListAdapter extends RecyclerView.Adapter<MachineListAdapter.
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-
         View rootView = LayoutInflater.from(context).inflate(R.layout.machine_list_layout, null, false);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         rootView.setLayoutParams(lp);

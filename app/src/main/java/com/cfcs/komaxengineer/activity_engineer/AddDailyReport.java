@@ -1779,6 +1779,13 @@ public class AddDailyReport extends AppCompatActivity {
                 finish();
                 return (true);
 
+
+            case R.id.btn_menu_service_hour:
+                intent = new Intent(AddDailyReport.this, ServiceHourList.class);
+                startActivity(intent);
+                finish();
+                return (true);
+
             case R.id.btn_menu_feedback:
                 intent = new Intent(AddDailyReport.this, FeedbackActivity.class);
                 startActivity(intent);

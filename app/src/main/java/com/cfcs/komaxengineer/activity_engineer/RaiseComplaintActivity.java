@@ -247,10 +247,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
         ssbServiceRequestDate.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
         tv_service_request_date.setText(ssbServiceRequestDate.build());
 
-//        SimpleSpanBuilder ssbMobileNo = new SimpleSpanBuilder();
-//        ssbMobileNo.appendWithSpace("Mobile No");
-//        ssbMobileNo.append("*", new ForegroundColorSpan(Color.RED), new RelativeSizeSpan(1));
-//        tv_mobile_no.setText(ssbMobileNo.build());
+
 
         spinner_complain_title = findViewById(R.id.spinner_complain_title);
         txt_problem_description = findViewById(R.id.txt_problem_description);
@@ -1090,6 +1087,12 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 finish();
                 return (true);
 
+            case R.id.btn_menu_service_hour:
+                intent = new Intent(RaiseComplaintActivity.this, ServiceHourList.class);
+                startActivity(intent);
+                finish();
+                return (true);
+
             case R.id.btn_menu_feedback:
                 intent = new Intent(RaiseComplaintActivity.this, FeedbackActivity.class);
                 startActivity(intent);
@@ -1108,6 +1111,10 @@ public class RaiseComplaintActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (status == 1) {
             Intent intent = new Intent(RaiseComplaintActivity.this, ManageComplaint.class);
+            intent.putExtra("DateFrom1","");
+            intent.putExtra("DateTo1","");
+            intent.putExtra("PriorityID","0");
+            intent.putExtra("HeaderName","Open");
             startActivity(intent);
             finish();
         } else {
@@ -1433,7 +1440,6 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 Config_Engg.toastShow(msgstatus, RaiseComplaintActivity.this);
             } else if (flag == 2) {
                 try {
-//
                     JSONArray jsonArray2 = new JSONArray(complainTitleList);
                     complainTitleIDList = new ArrayList<String>();
                     complainTitleIDList.add(0, "");
@@ -2238,6 +2244,7 @@ public class RaiseComplaintActivity extends AppCompatActivity {
     }
 
     private class RaiseComplaintSubmit extends AsyncTask<String, String, String> {
+
         int flag;
         String jsonValue, msg;
         String LoginStatus;
@@ -2330,6 +2337,10 @@ public class RaiseComplaintActivity extends AppCompatActivity {
                 if (flag == 2) {
                     Config_Engg.toastShow(msg, RaiseComplaintActivity.this);
                     Intent intent = new Intent(RaiseComplaintActivity.this, ManageComplaint.class);
+                    intent.putExtra("DateFrom1","");
+                    intent.putExtra("DateTo1","");
+                    intent.putExtra("PriorityID","0");
+                    intent.putExtra("HeaderName","Open");
                     startActivity(intent);
                     finish();
                 } else if (flag == 3) {

@@ -1281,6 +1281,12 @@ public class SubmitEngWorkStatus extends AppCompatActivity implements View.OnCli
                 finish();
                 return (true);
 
+            case R.id.btn_menu_service_hour:
+                intent = new Intent(SubmitEngWorkStatus.this, ServiceHourList.class);
+                startActivity(intent);
+                finish();
+                return (true);
+
             case R.id.btn_menu_feedback:
                 intent = new Intent(SubmitEngWorkStatus.this, FeedbackActivity.class);
                 startActivity(intent);
