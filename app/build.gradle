@@ -16,8 +16,8 @@ android {
         applicationId "com.cfcs.komaxengineer"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 11
-        versionName "3.1"
+        versionCode 12
+        versionName "3.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }

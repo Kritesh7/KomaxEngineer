@@ -544,8 +544,6 @@ public class AddDailyReport extends AppCompatActivity {
                         txt_country_code.setText(CountryCodeUpdate);
 
                         txt_sign_by_email.setText(SignByMailIDUpdate);
-
-
                     }
                     if (checkConatct > 1 && reportMode.compareTo("true") == 0) {
 

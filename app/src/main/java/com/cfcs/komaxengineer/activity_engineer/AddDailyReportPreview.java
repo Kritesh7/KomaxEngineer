@@ -353,7 +353,7 @@ public class AddDailyReportPreview extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Config_Engg.isOnline(AddDailyReportPreview.this);
-                if (Config_Engg.internetStatus == true) {
+                if (Config_Engg.internetStatus) {
                     if (file.length() > 0) {
                         String signImgPath = String.valueOf(file);
                         int dotposition = signImgPath.lastIndexOf(".");
@@ -572,8 +572,6 @@ public class AddDailyReportPreview extends AppCompatActivity {
                         requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                     } else {
                         try {
-                            //DrawBitmap.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(file));
-
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                                     checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -594,20 +592,15 @@ public class AddDailyReportPreview extends AppCompatActivity {
                             Config_Engg.toastShow("Error occured during saving your sign", AddDailyReportPreview.this);
                         }
                     }
-
-
                 }
             });
 
             close_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     pwindo.dismiss();
                 }
             });
-
-
         }
 
         String imgString;
@@ -891,7 +884,6 @@ public class AddDailyReportPreview extends AppCompatActivity {
 
                     //    photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
 
-
                 }
                 break;
 
@@ -926,7 +918,6 @@ public class AddDailyReportPreview extends AppCompatActivity {
                     }
 
                     sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
                     txt_image_show.setVisibility(View.VISIBLE);
                     txt_image_show.setText(totalFile.size() + " File");
                     txt_image_show.setEnabled(false);
@@ -1023,9 +1014,6 @@ public class AddDailyReportPreview extends AppCompatActivity {
             e.printStackTrace();
         }
         lastVal = encodedFile;
-
         return lastVal;
     }
-
-
 }

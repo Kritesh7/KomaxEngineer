@@ -142,9 +142,7 @@ public class ProfileUpdate extends AppCompatActivity {
 
                     Config_Engg.isOnline(ProfileUpdate.this);
                     if (Config_Engg.internetStatus == true) {
-
                         new ProfileUpdateAsy().execute();
-
                     } else {
                         Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", ProfileUpdate.this);
                     }
@@ -152,10 +150,7 @@ public class ProfileUpdate extends AppCompatActivity {
                     if (TextUtils.isEmpty(address)) {
                         Config_Engg.alertBox("Please Enter Address", ProfileUpdate.this);
                         txt_address.requestFocus();
-//                        focusOnView();
-
                     } else if (TextUtils.isEmpty(state)) {
-
                         Config_Engg.alertBox("Please Enter State", ProfileUpdate.this);
                         txt_state.requestFocus();
                     } else if (TextUtils.isEmpty(city)) {
@@ -327,7 +322,6 @@ public class ProfileUpdate extends AppCompatActivity {
                             Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", ProfileUpdate.this);
                         }
                         btn_update.setEnabled(true);
-
                     }
                 });
 
@@ -520,10 +514,7 @@ public class ProfileUpdate extends AppCompatActivity {
                         } else if (flag == 5) {
                             ScanckBar();
                             btn_update.setEnabled(false);
-
                         }
-
-
                     }
                 }
             }

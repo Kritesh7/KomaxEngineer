@@ -129,7 +129,6 @@ public class ManageContact extends AppCompatActivity {
 
     Button btn_search_find, btn_search_clear;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,7 +162,7 @@ public class ManageContact extends AppCompatActivity {
         SearchStr = "";
 
         Config_Engg.isOnline(ManageContact.this);
-        if (Config_Engg.internetStatus == true) {
+        if (Config_Engg.internetStatus) {
 
             new ContactListAsy(customerID, siteID, approveStatusID, SearchStr).execute();
             new SetdataInCustomerSpinner().execute();
@@ -299,6 +298,9 @@ public class ManageContact extends AppCompatActivity {
 //            Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", ManageContact.this);
 //        }
 
+
+
+
         String ComparedCustomerName = Config_Engg.getSharedPreferences(ManageContact.this, "pref_Engg", "CustomerID", "");
         spinner_customer_name.setAdapter(spinneradapterCustomer);
 
@@ -347,7 +349,6 @@ public class ManageContact extends AppCompatActivity {
                         spinneradapterMachine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinner_plant.setAdapter(spinneradapterMachine);
                     }
-
 
                 } else {
                     Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", ManageContact.this);
@@ -748,7 +749,6 @@ public class ManageContact extends AppCompatActivity {
                 Config_Engg.toastShow(msgstatus, ManageContact.this);
             } else if (flag == 2) {
                 try {
-//
                     JSONArray jsonArray2 = new JSONArray(customerList);
                     customerIDList = new ArrayList<String>();
                     customerIDList.add(0, "00000000-0000-0000-0000-000000000000");
@@ -778,7 +778,6 @@ public class ManageContact extends AppCompatActivity {
                 //  fillListDialog.dismiss();
             } else if (flag == 3) {
                 Config_Engg.toastShow("No Response", ManageContact.this);
-//                fillListDialog.dismiss();
                 finish();
             } else {
                 if (flag == 4) {

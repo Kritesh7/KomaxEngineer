@@ -16,7 +16,7 @@
         app:cardElevation="10dp">
 
         <LinearLayout
-            android:id="@+id/card_view_complaint"
+            android:id="@+id/card_view_service_hour"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 

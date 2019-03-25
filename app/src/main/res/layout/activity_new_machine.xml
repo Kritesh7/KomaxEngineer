@@ -20,7 +20,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -36,10 +36,7 @@
     <!-- Heading End -->
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="0dp">
+
 
         <ScrollView
             android:layout_width="match_parent"
@@ -48,7 +45,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/traning_main_lay2"
@@ -218,6 +215,8 @@
                             android:padding="10dp"
                             android:textSize="15sp" />
 
+
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -239,6 +238,79 @@
                             android:inputType="text"
                             android:padding="10dp"
                             android:textSize="15sp" />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/counter_reading"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+
+                        <EditText
+                            android:id="@+id/txt_counter_reading"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/edit_text_box_enable_disable"
+                            android:drawablePadding="10dp"
+                            android:ems="10"
+                            android:hint="@string/counter_reading"
+                            android:inputType="text"
+                            android:padding="10dp"
+                            android:textSize="15sp" />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/voltage"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+
+                        <EditText
+                            android:id="@+id/txt_voltage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/edit_text_box_enable_disable"
+                            android:drawablePadding="10dp"
+                            android:ems="10"
+                            android:hint="@string/voltage"
+                            android:inputType="text"
+                            android:padding="10dp"
+                            android:textSize="15sp" />
+
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/hardware_code"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+
+                        <EditText
+                            android:id="@+id/txt_hardware_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/edit_text_box_enable_disable"
+                            android:drawablePadding="10dp"
+                            android:ems="10"
+                            android:hint="@string/hardware_code"
+                            android:inputType="text"
+                            android:padding="10dp"
+                            android:textSize="15sp" />
+
+
+
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -262,7 +334,7 @@
                             android:inputType="text"
                             android:padding="10dp"
                             android:textSize="15sp"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -511,11 +583,225 @@
 
                         </LinearLayout>
 
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="10dp">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/leveling_of_machine_done"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                android:layout_weight="2"/>
+
+                            <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:text="@string/y_n"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:button="@null"
+                                android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                                android:layout_weight="1"
+                                android:id="@+id/cb_leveling_of_machine"/>
+
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="10dp">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/servo_stabilizer_installed"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                android:layout_weight="2"/>
+
+                            <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:text="@string/y_n"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:button="@null"
+                                android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                                android:layout_weight="1"
+                                android:id="@+id/cb_servo_stablizer"/>
+
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="10dp">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/air_drier_installed"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                android:layout_weight="2"/>
+
+                            <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:text="@string/y_n"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:button="@null"
+                                android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                                android:layout_weight="1"
+                                android:id="@+id/cb_air_drier"/>
+
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="10dp">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/operating_manual_checked"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                android:layout_weight="2"/>
+
+                            <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:text="@string/y_n"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:button="@null"
+                                android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                                android:layout_weight="1"
+                                android:id="@+id/cb_operating_manual"/>
+
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="10dp">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/spare_parts_checked"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                android:layout_weight="2"/>
+
+                            <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:text="@string/y_n"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:button="@null"
+                                android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                                android:layout_weight="1"
+                                android:id="@+id/cb_spare_part_checked"/>
+
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="10dp">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/operator_training_given"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                android:layout_weight="2"/>
+
+                            <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:text="@string/y_n"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:button="@null"
+                                android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                                android:layout_weight="1"
+                                android:id="@+id/cb_operator_training"/>
+
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="10dp">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/basic_maint_training_given"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                android:layout_weight="2"/>
+
+                            <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:text="@string/y_n"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:button="@null"
+                                android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                                android:layout_weight="1"
+                                android:id="@+id/cb_basic_maint"/>
+
+
+
+                        </LinearLayout>
+
+
+
+
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Comments"
+                            android:text="@string/comments"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -529,7 +815,7 @@
                             android:clickable="true"
                             android:ems="10"
                             android:gravity="top"
-                            android:hint="Comments"
+                            android:hint="@string/comments"
                             android:padding="10dp"
                             android:textColor="#000000"
                             android:textColorHint="#999"
@@ -543,14 +829,14 @@
                             android:gravity="center"
                             android:orientation="horizontal">
 
-                            <Button
-                                android:id="@+id/btn_update"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="5dp"
-                                android:background="@drawable/mybutton"
-                                android:text="Update"
-                                android:textColor="@color/white" />
+                            <!--<Button-->
+                                <!--android:id="@+id/btn_update"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_marginRight="5dp"-->
+                                <!--android:background="@drawable/mybutton"-->
+                                <!--android:text="Update"-->
+                                <!--android:textColor="@color/white" />-->
 
                             <Button
                                 android:id="@+id/btn_submit"
@@ -602,6 +888,5 @@
                 <!--android:textColor="@color/white"-->
                 <!--android:textSize="15sp" />-->
         <!--</LinearLayout>-->
-    </RelativeLayout>
 
 </LinearLayout>

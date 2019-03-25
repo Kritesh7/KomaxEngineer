@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -110,15 +111,16 @@ public class NewMachine extends AppCompatActivity {
 
     LinearLayout warranty_llout_hideShow, amc_llout_hideShow;
 
-    EditText txt_machine_serial, txt_sw_version, txt_product_key, txt_office_file_no, txt_amc_file_no, txt_comment;
+    EditText txt_machine_serial, txt_sw_version, txt_product_key, txt_office_file_no, txt_amc_file_no, txt_comment,txt_counter_reading,txt_voltage,txt_hardware_code;
 
     TextView txt_date_of_supply, txt_date_install, txt_warranty_s_date, txt_warranty_e_date, txt_amc_start_date,
             txt_amc_end_date;
 
-    Button btn_submit, btn_clear, btn_update;
+    Button btn_submit, btn_clear;
 
     String serialNo = "", SWVersion = "", productKey = "", fileNo = "", AMCFileNo = "", comments = "", dateOfSupply = "", dateOfInstallation = "",
-            warrantyStartDate = "", warrantyEndDate = "", AMCStartDate = "", AMCEndDate = "";
+            warrantyStartDate = "", warrantyEndDate = "", AMCStartDate = "", AMCEndDate = "",CounterReading = "",Voltage = "", HardwareCode = "";
+    String MachineLevelling,ServoStabilizerInstalled,AirDrierInstalled,OperatingManual,SparePartsChecking,OperatorTraining,MaintenanceTraining;
 
     long SelectedWarrantyAmc;
 
@@ -131,6 +133,8 @@ public class NewMachine extends AppCompatActivity {
     LinearLayout maincontainer;
 
     TextView tv_customer_name, tv_plant, tv_installation_region, tv_installation_area, tv_warrantyAMC, tv_machine_mode, tv_machine_serial;
+
+    CheckBox cb_leveling_of_machine,cb_servo_stablizer,cb_air_drier,cb_operating_manual,cb_spare_part_checked,cb_operator_training,cb_basic_maint;
 
     int mYear;
     int mMonth;
@@ -155,6 +159,18 @@ public class NewMachine extends AppCompatActivity {
         tv_warrantyAMC = findViewById(R.id.tv_warrantyAMC);
         tv_machine_mode = findViewById(R.id.tv_machine_mode);
         tv_machine_serial = findViewById(R.id.tv_machine_serial);
+        txt_counter_reading = findViewById(R.id.txt_counter_reading);
+        txt_voltage = findViewById(R.id.txt_voltage);
+        txt_hardware_code = findViewById(R.id.txt_hardware_code);
+
+        cb_leveling_of_machine = findViewById(R.id.cb_leveling_of_machine);
+        cb_servo_stablizer = findViewById(R.id.cb_servo_stablizer);
+        cb_air_drier = findViewById(R.id.cb_air_drier);
+        cb_operating_manual = findViewById(R.id.cb_operating_manual);
+        cb_spare_part_checked = findViewById(R.id.cb_spare_part_checked);
+        cb_operator_training = findViewById(R.id.cb_operator_training);
+        cb_basic_maint = findViewById(R.id.cb_basic_maint);
+
 
         SimpleSpanBuilder ssbCustomer = new SimpleSpanBuilder();
         ssbCustomer.appendWithSpace("Customer Name");
@@ -209,19 +225,18 @@ public class NewMachine extends AppCompatActivity {
 
         btn_submit = findViewById(R.id.btn_submit);
         btn_clear = findViewById(R.id.btn_clear);
-        btn_update = findViewById(R.id.btn_update);
+
 
         spinner_customer_name.requestFocus();
 
         warranty_llout_hideShow.setVisibility(View.GONE);
         amc_llout_hideShow.setVisibility(View.GONE);
 
-        btn_update.setVisibility(View.GONE);
 
         saleID = "00000000-0000-0000-0000-000000000000";
 
         Config_Engg.isOnline(NewMachine.this);
-        if (Config_Engg.internetStatus == true) {
+        if (Config_Engg.internetStatus) {
 
             new AddInitialData().execute();
 
@@ -240,8 +255,8 @@ public class NewMachine extends AppCompatActivity {
         }
 
         if (isEditDelete.compareTo("true") == 0) {
-            btn_submit.setVisibility(View.GONE);
-            btn_update.setVisibility(View.VISIBLE);
+
+              btn_submit.setText("Update");
 
             new FillMachineData().execute();
 
@@ -313,7 +328,7 @@ public class NewMachine extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 Config_Engg.isOnline(NewMachine.this);
-                if (Config_Engg.internetStatus == true) {
+                if (Config_Engg.internetStatus) {
 
                     long SelectedCustomer = parent.getSelectedItemId();
                     SelctedCustomerID = customerIDList.get((int) SelectedCustomer);
@@ -353,7 +368,7 @@ public class NewMachine extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 Config_Engg.isOnline(NewMachine.this);
-                if (Config_Engg.internetStatus == true) {
+                if (Config_Engg.internetStatus) {
 
                     long SelectedPrincipal = parent.getSelectedItemId();
                     SelctedPrincipalID = principalIDList.get((int) SelectedPrincipal);
@@ -392,7 +407,7 @@ public class NewMachine extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 Config_Engg.isOnline(NewMachine.this);
-                if (Config_Engg.internetStatus == true) {
+                if (Config_Engg.internetStatus) {
 
                     SelectedWarrantyAmc = parent.getSelectedItemId();
                     SelectedWarrantyAmcID = transactionIDList.get((int) SelectedWarrantyAmc);
@@ -445,7 +460,7 @@ public class NewMachine extends AppCompatActivity {
             public void onClick(View v) {
 
                 Config_Engg.isOnline(NewMachine.this);
-                if (Config_Engg.internetStatus == true) {
+                if (Config_Engg.internetStatus) {
 
                     int customerPos = spinner_customer_name.getSelectedItemPosition();
                     int plantPos = spinner_plant.getSelectedItemPosition();
@@ -534,113 +549,52 @@ public class NewMachine extends AppCompatActivity {
                         fileNo = txt_office_file_no.getText().toString();
                         AMCFileNo = txt_amc_file_no.getText().toString();
                         comments = txt_comment.getText().toString();
+                        CounterReading = txt_counter_reading.getText().toString();
+                        Voltage = txt_voltage.getText().toString();
+                        HardwareCode = txt_hardware_code.getText().toString();
 
-                        new AddMachine().execute();
-
-                    }
-
-                } else {
-                    Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", NewMachine.this);
-                }
-
-
-            }
-        });
-
-
-        btn_update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Config_Engg.isOnline(NewMachine.this);
-                if (Config_Engg.internetStatus == true) {
-
-                    int customerPos = spinner_customer_name.getSelectedItemPosition();
-                    int plantPos = spinner_plant.getSelectedItemPosition();
-                    int modelPos = spinner_machine_model.getSelectedItemPosition();
-                    int workAMCPos = spinner_warranty_amc.getSelectedItemPosition();
-
-                    if (transactionIDList.size() > 0) {
-
-                        if (SelectedWarrantyAmc == 1) {
-
-                            if (txt_amc_start_date.getText().toString().equalsIgnoreCase("")) {
-                                Config_Engg.alertBox("Please Enter Your AMC Start Date ",
-                                        NewMachine.this);
-                                txt_amc_start_date.requestFocus();
-                                //focusOnView();
-                            } else if (txt_amc_end_date.getText().toString().equalsIgnoreCase("")) {
-                                Config_Engg.alertBox("Please Select Your AMC End Date ", NewMachine.this);
-                                txt_amc_end_date.requestFocus();
-                            }
-
-                        } else if (SelectedWarrantyAmc == 2) {
-
-                            txt_amc_start_date.setText("");
-                            txt_amc_end_date.setText("");
-
-                            if (txt_warranty_s_date.getText().toString().equalsIgnoreCase("")) {
-                                Config_Engg.alertBox("Please Enter Your Warranty Start Date ",
-                                        NewMachine.this);
-                                txt_amc_start_date.requestFocus();
-                                //focusOnView();
-                            } else if (txt_warranty_e_date.getText().toString().equalsIgnoreCase("")) {
-                                Config_Engg.alertBox("Please Select Your Warranty End Date ", NewMachine.this);
-                                txt_amc_end_date.requestFocus();
-                            }
-
-                        } else {
-                            txt_warranty_s_date.setText("");
-                            txt_warranty_e_date.setText("");
-                            txt_amc_start_date.setText("");
-                            txt_amc_end_date.setText("");
+                        if (cb_leveling_of_machine.isChecked()){
+                            MachineLevelling = "true";
+                        }else {
+                            MachineLevelling = "false";
                         }
 
-                    }
+                        if (cb_servo_stablizer.isChecked()){
+                            ServoStabilizerInstalled = "true";
+                        }else {
+                            ServoStabilizerInstalled = "false";
+                        }
 
-                    if (customerPos == 0) {
-                        Config_Engg.alertBox("Please Select Your Customer Name ", NewMachine.this);
-                        spinner_customer_name.requestFocus();
-                    } else if (plantPos == 0) {
-                        Config_Engg.alertBox("Please Select Your Plant ",
-                                NewMachine.this);
-                        spinner_plant.requestFocus();
-                    }  else if (modelPos == 0) {
-                        Config_Engg.alertBox("Please Select YourModel ",
-                                NewMachine.this);
-                        spinner_machine_model.requestFocus();
-                    } else if (txt_machine_serial.getText().toString().equalsIgnoreCase("")) {
-                        Config_Engg.alertBox("Please Enter Your Machine Serial No. ",
-                                NewMachine.this);
-                        txt_machine_serial.requestFocus();
-                        //focusOnView();
-                    } else if (workAMCPos == 0) {
-                        Config_Engg.alertBox("Please Select Warranty/AMC ",
-                                NewMachine.this);
-                        spinner_warranty_amc.requestFocus();
-                    } else {
+                        if (cb_air_drier.isChecked()){
+                            AirDrierInstalled = "true";
+                        }else {
+                            AirDrierInstalled = "false";
+                        }
 
-                        long SelectedPlant = spinner_plant.getSelectedItemId();
-                        SelctedPlantID = plantID.get((int) SelectedPlant);
+                        if (cb_operating_manual.isChecked()){
+                            OperatingManual = "true";
+                        }else {
+                            OperatingManual = "false";
+                        }
 
-                        long SelectedModel = spinner_machine_model.getSelectedItemId();
-                        SelectedModelID = modelID.get((int) SelectedModel);
-
-                        long SelectedEnggS = spinner_secondary_respon.getSelectedItemId();
-                        SelectedEnggID = enggSecondaryID.get((int) SelectedEnggS);
+                        if (cb_spare_part_checked.isChecked()){
+                            SparePartsChecking = "true";
+                        }else {
+                            SparePartsChecking = "false";
+                        }
 
 
-                        dateOfSupply = txt_date_of_supply.getText().toString();
-                        dateOfInstallation = txt_date_install.getText().toString();
-                        warrantyStartDate = txt_warranty_s_date.getText().toString();
-                        warrantyEndDate = txt_warranty_e_date.getText().toString();
-                        AMCStartDate = txt_amc_start_date.getText().toString();
-                        AMCEndDate = txt_amc_end_date.getText().toString();
-                        serialNo = txt_machine_serial.getText().toString();
-                        SWVersion = txt_sw_version.getText().toString();
-                        productKey = txt_product_key.getText().toString();
-                        fileNo = txt_office_file_no.getText().toString();
-                        AMCFileNo = txt_amc_file_no.getText().toString();
-                        comments = txt_comment.getText().toString();
+                        if (cb_operator_training.isChecked()){
+                            OperatorTraining = "true";
+                        }else {
+                            OperatorTraining = "false";
+                        }
+
+                        if (cb_basic_maint.isChecked()){
+                            MaintenanceTraining = "true";
+                        }else {
+                            MaintenanceTraining = "false";
+                        }
 
                         new AddMachine().execute();
 
@@ -650,8 +604,115 @@ public class NewMachine extends AppCompatActivity {
                     Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", NewMachine.this);
                 }
 
+
             }
         });
+
+
+//        btn_update.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Config_Engg.isOnline(NewMachine.this);
+//                if (Config_Engg.internetStatus) {
+//
+//                    int customerPos = spinner_customer_name.getSelectedItemPosition();
+//                    int plantPos = spinner_plant.getSelectedItemPosition();
+//                    int modelPos = spinner_machine_model.getSelectedItemPosition();
+//                    int workAMCPos = spinner_warranty_amc.getSelectedItemPosition();
+//
+//                    if (transactionIDList.size() > 0) {
+//
+//                        if (SelectedWarrantyAmc == 1) {
+//
+//                            if (txt_amc_start_date.getText().toString().equalsIgnoreCase("")) {
+//                                Config_Engg.alertBox("Please Enter Your AMC Start Date ",
+//                                        NewMachine.this);
+//                                txt_amc_start_date.requestFocus();
+//                                //focusOnView();
+//                            } else if (txt_amc_end_date.getText().toString().equalsIgnoreCase("")) {
+//                                Config_Engg.alertBox("Please Select Your AMC End Date ", NewMachine.this);
+//                                txt_amc_end_date.requestFocus();
+//                            }
+//
+//                        } else if (SelectedWarrantyAmc == 2) {
+//
+//                            txt_amc_start_date.setText("");
+//                            txt_amc_end_date.setText("");
+//
+//                            if (txt_warranty_s_date.getText().toString().equalsIgnoreCase("")) {
+//                                Config_Engg.alertBox("Please Enter Your Warranty Start Date ",
+//                                        NewMachine.this);
+//                                txt_amc_start_date.requestFocus();
+//                                //focusOnView();
+//                            } else if (txt_warranty_e_date.getText().toString().equalsIgnoreCase("")) {
+//                                Config_Engg.alertBox("Please Select Your Warranty End Date ", NewMachine.this);
+//                                txt_amc_end_date.requestFocus();
+//                            }
+//
+//                        } else {
+//                            txt_warranty_s_date.setText("");
+//                            txt_warranty_e_date.setText("");
+//                            txt_amc_start_date.setText("");
+//                            txt_amc_end_date.setText("");
+//                        }
+//
+//                    }
+//
+//                    if (customerPos == 0) {
+//                        Config_Engg.alertBox("Please Select Your Customer Name ", NewMachine.this);
+//                        spinner_customer_name.requestFocus();
+//                    } else if (plantPos == 0) {
+//                        Config_Engg.alertBox("Please Select Your Plant ",
+//                                NewMachine.this);
+//                        spinner_plant.requestFocus();
+//                    }  else if (modelPos == 0) {
+//                        Config_Engg.alertBox("Please Select YourModel ",
+//                                NewMachine.this);
+//                        spinner_machine_model.requestFocus();
+//                    } else if (txt_machine_serial.getText().toString().equalsIgnoreCase("")) {
+//                        Config_Engg.alertBox("Please Enter Your Machine Serial No. ",
+//                                NewMachine.this);
+//                        txt_machine_serial.requestFocus();
+//                        //focusOnView();
+//                    } else if (workAMCPos == 0) {
+//                        Config_Engg.alertBox("Please Select Warranty/AMC ",
+//                                NewMachine.this);
+//                        spinner_warranty_amc.requestFocus();
+//                    } else {
+//
+//                        long SelectedPlant = spinner_plant.getSelectedItemId();
+//                        SelctedPlantID = plantID.get((int) SelectedPlant);
+//
+//                        long SelectedModel = spinner_machine_model.getSelectedItemId();
+//                        SelectedModelID = modelID.get((int) SelectedModel);
+//
+//                        long SelectedEnggS = spinner_secondary_respon.getSelectedItemId();
+//                        SelectedEnggID = enggSecondaryID.get((int) SelectedEnggS);
+//
+//
+//                        dateOfSupply = txt_date_of_supply.getText().toString();
+//                        dateOfInstallation = txt_date_install.getText().toString();
+//                        warrantyStartDate = txt_warranty_s_date.getText().toString();
+//                        warrantyEndDate = txt_warranty_e_date.getText().toString();
+//                        AMCStartDate = txt_amc_start_date.getText().toString();
+//                        AMCEndDate = txt_amc_end_date.getText().toString();
+//                        serialNo = txt_machine_serial.getText().toString();
+//                        SWVersion = txt_sw_version.getText().toString();
+//                        productKey = txt_product_key.getText().toString();
+//                        fileNo = txt_office_file_no.getText().toString();
+//                        AMCFileNo = txt_amc_file_no.getText().toString();
+//                        comments = txt_comment.getText().toString();
+//
+//                        new AddMachine().execute();
+//
+//                    }
+//
+//                } else {
+//                    Config_Engg.toastShow("No Internet Connection! Please Reconnect Your Internet", NewMachine.this);
+//                }
+//
+//            }
+//        });
 
         btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -676,6 +737,16 @@ public class NewMachine extends AppCompatActivity {
                 txt_amc_end_date.setText("");
                 txt_comment.setText("");
                 spinner_customer_name.requestFocus();
+                txt_counter_reading.setText("");
+                txt_voltage.setText("");
+                txt_hardware_code.setText("");
+                cb_leveling_of_machine.setChecked(false);
+                cb_servo_stablizer.setChecked(false);
+                cb_air_drier.setChecked(false);
+                cb_operating_manual.setChecked(false);
+                cb_spare_part_checked.setChecked(false);
+                cb_operator_training.setChecked(false);
+                cb_basic_maint.setChecked(false);
 
             }
         });
@@ -909,7 +980,6 @@ public class NewMachine extends AppCompatActivity {
                 } else if (flag == 5) {
 
                     ScanckBar();
-                    btn_update.setEnabled(false);
                     btn_submit.setEnabled(false);
                     btn_clear.setEnabled(false);
                     progressDialog.dismiss();
@@ -930,7 +1000,7 @@ public class NewMachine extends AppCompatActivity {
                     public void onClick(View view) {
 
                         Config_Engg.isOnline(NewMachine.this);
-                        if (Config_Engg.internetStatus == true) {
+                        if (Config_Engg.internetStatus) {
 
                             new AddInitialData().execute();
 
@@ -943,14 +1013,13 @@ public class NewMachine extends AppCompatActivity {
                         }
 
                         if (isEditDelete.compareTo("true") == 0) {
-                            btn_submit.setVisibility(View.GONE);
-                            btn_update.setVisibility(View.VISIBLE);
+
+                          btn_submit.setText("Update");
 
                             new FillMachineData().execute();
 
                         }
 
-                        btn_update.setEnabled(true);
                         btn_submit.setEnabled(true);
                         btn_clear.setEnabled(true);
 
@@ -1093,7 +1162,6 @@ public class NewMachine extends AppCompatActivity {
             } else if (flag == 5) {
 
                 ScanckBar();
-                btn_update.setEnabled(false);
                 btn_submit.setEnabled(false);
                 btn_clear.setEnabled(false);
                 progressDialog.dismiss();
@@ -1102,7 +1170,7 @@ public class NewMachine extends AppCompatActivity {
         }
     }
 
-    private class AddRegionPrincipalZoneAppStatus extends AsyncTask<String, String, String> {
+    private class AddRegionPrincipalZoneAppStatus extends AsyncTask<String, String, String>  {
 
         int flag;
         String msgstatus;
@@ -1217,10 +1285,8 @@ public class NewMachine extends AppCompatActivity {
                     //Log.e("Error is here", e.toString());
                 }
 
-                //  fillListDialog.dismiss();
             } else if (flag == 3) {
                 Config_Engg.toastShow("No Response", NewMachine.this);
-//                fillListDialog.dismiss();
                 finish();
             } else {
                 if (flag == 4) {
@@ -1232,7 +1298,6 @@ public class NewMachine extends AppCompatActivity {
                 } else if (flag == 5) {
 
                     ScanckBar();
-                    btn_update.setEnabled(false);
                     btn_submit.setEnabled(false);
                     btn_clear.setEnabled(false);
                 }
@@ -1242,7 +1307,6 @@ public class NewMachine extends AppCompatActivity {
 
         }
     }
-
 
     private class AddModel extends AsyncTask<String, String, String> {
 
@@ -1380,7 +1444,6 @@ public class NewMachine extends AppCompatActivity {
                 finish();
             } else if (flag == 5) {
                 ScanckBar();
-                btn_update.setEnabled(false);
                 btn_submit.setEnabled(false);
                 btn_clear.setEnabled(false);
             } else if (flag == 6){
@@ -1573,7 +1636,6 @@ public class NewMachine extends AppCompatActivity {
                 finish();
             } else if (flag == 5) {
                 ScanckBar();
-                btn_update.setEnabled(false);
                 btn_submit.setEnabled(false);
                 btn_clear.setEnabled(false);
             }
@@ -1621,6 +1683,16 @@ public class NewMachine extends AppCompatActivity {
             request.addProperty("KomaxFileNo", fileNo);
             request.addProperty("AMCFileNo", AMCFileNo);
             request.addProperty("SecondPersonID", SelectedEnggID);
+            request.addProperty("CounterReading", CounterReading);
+            request.addProperty("Voltage", Voltage);
+            request.addProperty("HardwareCode", HardwareCode);
+            request.addProperty("MachineLevelling", MachineLevelling);
+            request.addProperty("ServoStabilizerInstalled", ServoStabilizerInstalled);
+            request.addProperty("AirDrierInstalled", AirDrierInstalled);
+            request.addProperty("OperatingManual", OperatingManual);
+            request.addProperty("SparePartsChecking", SparePartsChecking);
+            request.addProperty("OperatorTraining", OperatorTraining);
+            request.addProperty("MaintenanceTraining", MaintenanceTraining);
             request.addProperty("EngineerID", EngineerID);
             request.addProperty("AuthCode", AuthCode);
 
@@ -1681,7 +1753,6 @@ public class NewMachine extends AppCompatActivity {
                     finish();
                 } else if (flag == 5) {
                     ScanckBar();
-                    btn_update.setEnabled(false);
                     btn_submit.setEnabled(false);
                     btn_clear.setEnabled(false);
                 }
@@ -1911,6 +1982,48 @@ public class NewMachine extends AppCompatActivity {
                     String AMCEndDate = jsonObject.getString("AMCEndDate").toString();
                     txt_amc_end_date.setText(AMCEndDate);
 
+                    String counterReading = jsonObject.getString("CounterReading").toString();
+                    txt_counter_reading.setText(counterReading);
+
+                    String voltage = jsonObject.getString("Voltage").toString();
+                    txt_voltage.setText(voltage);
+
+                    String hardwareCode = jsonObject.getString("HardwareCode").toString();
+                    txt_hardware_code.setText(hardwareCode);
+
+                    String MachineLevelling = jsonObject.getString("MachineLevelling").toString();
+                    if (MachineLevelling.equalsIgnoreCase("true")){
+                        cb_leveling_of_machine.setChecked(true);
+                    }
+
+                    String ServoStabilizerInstalled = jsonObject.getString("ServoStabilizerInstalled").toString();
+                    if (ServoStabilizerInstalled.equalsIgnoreCase("true")){
+                        cb_servo_stablizer.setChecked(true);
+                    }
+
+                    String AirDrierInstalled = jsonObject.getString("AirDrierInstalled").toString();
+                    if (AirDrierInstalled.equalsIgnoreCase("true")){
+                        cb_air_drier.setChecked(true);
+                    }
+
+                    String OperatingManual = jsonObject.getString("OperatingManual").toString();
+                    if (OperatingManual.equalsIgnoreCase("true")){
+                        cb_operating_manual.setChecked(true);
+                    }
+
+                    String SparePartsChecking = jsonObject.getString("SparePartsChecking").toString();
+                    if (SparePartsChecking.equalsIgnoreCase("true")){
+                        cb_spare_part_checked.setChecked(true);
+                    }
+                    String OperatorTraining = jsonObject.getString("OperatorTraining").toString();
+                    if (OperatorTraining.equalsIgnoreCase("true")){
+                        cb_operator_training.setChecked(true);
+                    }
+                    String MaintenanceTraining = jsonObject.getString("MaintenanceTraining").toString();
+                    if (MaintenanceTraining.equalsIgnoreCase("true")){
+                        cb_basic_maint.setChecked(true);
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1926,7 +2039,6 @@ public class NewMachine extends AppCompatActivity {
 
             } else if (flag == 5) {
                 ScanckBar();
-                btn_update.setEnabled(false);
                 btn_submit.setEnabled(false);
                 btn_clear.setEnabled(false);
             }
@@ -2018,5 +2130,4 @@ public class NewMachine extends AppCompatActivity {
         Intent i = new Intent(NewMachine.this, ManageMachines.class);
         startActivity(i);
     }
-
 }

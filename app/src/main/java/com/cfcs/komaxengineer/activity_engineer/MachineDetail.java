@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cfcs.komaxengineer.Config_engineer.Config_Engg;
-import com.cfcs.komaxengineer.LoginActivity;
 import com.cfcs.komaxengineer.R;
 
 import org.json.JSONArray;
@@ -40,9 +39,10 @@ public class MachineDetail extends AppCompatActivity {
 
     String saleID = "";
 
-    TextView txt_customer, txt_plant, txt_plant_address, txt_principal_name, txt_product_model, txt_product_sub_model, txt_product_serial_no, txt_sw_version,
+    TextView txt_customer, txt_plant_address, txt_principal_name, txt_product_model, txt_product_serial_no, txt_sw_version,
             txt_product_key, txt_date_of_supply, txt_date_install, txt_machine_status, txt_comment, txt_warranty_s_date, txt_warranty_e_date,
-            txt_amc_start_date, txt_amc_end_date, txt_approval_status, txt_approval_remark;
+            txt_amc_start_date, txt_amc_end_date, txt_approval_status, txt_approval_remark,txt_level_of_machine_done,txt_servo_stabilizer,txt_air_drier,txt_operating_manual,txt_spare_parts_checked,txt_operator_training,
+            txt_basic_maint,txt_counter_reading,txt_voltage,txt_hardware_code;
 
     LinearLayout maincontainer;
 
@@ -76,6 +76,17 @@ public class MachineDetail extends AppCompatActivity {
         txt_approval_status = findViewById(R.id.txt_approval_status);
         txt_approval_remark = findViewById(R.id.txt_approval_remark);
 
+        txt_level_of_machine_done = findViewById(R.id.txt_level_of_machine_done);
+        txt_servo_stabilizer = findViewById(R.id.txt_servo_stabilizer);
+        txt_air_drier = findViewById(R.id.txt_air_drier);
+        txt_operating_manual = findViewById(R.id.txt_operating_manual);
+        txt_spare_parts_checked = findViewById(R.id.txt_spare_parts_checked);
+        txt_operator_training = findViewById(R.id.txt_operator_training);
+        txt_basic_maint = findViewById(R.id.txt_basic_maint);
+        txt_counter_reading = findViewById(R.id.txt_counter_reading);
+        txt_voltage = findViewById(R.id.txt_voltage);
+        txt_hardware_code = findViewById(R.id.txt_hardware_code);
+
         maincontainer = findViewById(R.id.maincontainer);
 
         Bundle bundle = getIntent().getExtras();
@@ -85,7 +96,7 @@ public class MachineDetail extends AppCompatActivity {
         }
 
         Config_Engg.isOnline(MachineDetail.this);
-        if (Config_Engg.internetStatus == true) {
+        if (Config_Engg.internetStatus) {
 
             new MachineDetailAsy().execute();
 
@@ -101,10 +112,8 @@ public class MachineDetail extends AppCompatActivity {
         String machine_detail_value;
         ProgressDialog progressDialog;
         String MachineDetail;
-        JSONArray complainSub;
         String LoginStatus;
         String invalid = "LoginFailed";
-        TextView txt_sub_engineer_name;
         int count = 0;
 
         @Override
@@ -241,6 +250,61 @@ public class MachineDetail extends AppCompatActivity {
                     String ApproveStatusRemark = jsonObject.getString("ApproveStatusRemark").toString();
                     txt_approval_remark.setText(ApproveStatusRemark);
 
+                    String counterReading = jsonObject.getString("CounterReading").toString();
+                    txt_counter_reading.setText(counterReading);
+
+                    String voltage = jsonObject.getString("Voltage").toString();
+                    txt_voltage.setText(voltage);
+
+                    String hardwareCode = jsonObject.getString("HardwareCode").toString();
+                    txt_hardware_code.setText(hardwareCode);
+
+                    String MachineLevelling = jsonObject.getString("MachineLevelling").toString();
+                    if (MachineLevelling.equalsIgnoreCase("true")){
+                        txt_level_of_machine_done.setText("Yes");
+                    }else {
+                        txt_level_of_machine_done.setText("No");
+                    }
+
+                    String ServoStabilizerInstalled = jsonObject.getString("ServoStabilizerInstalled").toString();
+                    if (ServoStabilizerInstalled.equalsIgnoreCase("true")){
+                        txt_servo_stabilizer.setText("Yes");
+                    }else {
+                        txt_servo_stabilizer.setText("No");
+                    }
+
+                    String AirDrierInstalled = jsonObject.getString("AirDrierInstalled").toString();
+                    if (AirDrierInstalled.equalsIgnoreCase("true")){
+                        txt_air_drier.setText("Yes");
+                    }else {
+                        txt_air_drier.setText("No");
+                    }
+
+                    String OperatingManual = jsonObject.getString("OperatingManual").toString();
+                    if (OperatingManual.equalsIgnoreCase("true")){
+                        txt_operating_manual.setText("Yes");
+                    }else {
+                        txt_operating_manual.setText("No");
+                    }
+
+                    String SparePartsChecking = jsonObject.getString("SparePartsChecking").toString();
+                    if (SparePartsChecking.equalsIgnoreCase("true")){
+                        txt_spare_parts_checked.setText("Yes");
+                    }else {
+                        txt_spare_parts_checked.setText("No");
+                    }
+                    String OperatorTraining = jsonObject.getString("OperatorTraining").toString();
+                    if (OperatorTraining.equalsIgnoreCase("true")){
+                        txt_operator_training.setText("Yes");
+                    }else {
+                        txt_operator_training.setText("No");
+                    }
+                    String MaintenanceTraining = jsonObject.getString("MaintenanceTraining").toString();
+                    if (MaintenanceTraining.equalsIgnoreCase("true")){
+                        txt_basic_maint.setText("Yes");
+                    }else {
+                        txt_basic_maint.setText("No");
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -273,7 +337,7 @@ public class MachineDetail extends AppCompatActivity {
                 .setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (Config_Engg.internetStatus == true) {
+                        if (Config_Engg.internetStatus) {
 
                             new MachineDetailAsy().execute();
 
@@ -372,7 +436,6 @@ public class MachineDetail extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(MachineDetail.this, ManageMachines.class);
-        // intent.putExtra("status", status);
         startActivity(intent);
         finish();
         super.onBackPressed();

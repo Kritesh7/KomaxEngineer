@@ -263,7 +263,7 @@ public class NewContact extends AppCompatActivity {
             public void onClick(View v) {
 
                 Config_Engg.isOnline(NewContact.this);
-                if (Config_Engg.internetStatus == true) {
+                if (Config_Engg.internetStatus) {
 
                     int customerPos = spinner_customer_name.getSelectedItemPosition();
                     int plantPos = spinner_plant.getSelectedItemPosition();
@@ -745,7 +745,6 @@ public class NewContact extends AppCompatActivity {
                         }
 
                     }
-
 
                 } else {
                     JSONArray jsonArray = new JSONArray(initialData);

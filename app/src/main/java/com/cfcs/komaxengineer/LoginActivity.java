@@ -221,29 +221,22 @@ public class LoginActivity extends Activity {
                 .setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         btn_submit.setEnabled(true);
-
                     }
                 });
 
         // Changing message text color
         snackbar.setActionTextColor(Color.RED);
-
         snackbar.show();
 
     }
 
     private void login() {
-
         Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
         startActivity(intent);
         Config_Engg.toastShow("Login Success", LoginActivity.this);
-
         startService(new Intent(getBaseContext(), AutoNofity.class));
-
         finish();
-
     }
 
     @Override

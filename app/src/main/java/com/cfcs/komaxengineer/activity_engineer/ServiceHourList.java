@@ -64,7 +64,6 @@ public class ServiceHourList extends AppCompatActivity {
     private static String SOAP_ACTION2 = "http://cfcs.co.in/AppEngineerServiceHrInitialData";
     private static String METHOD_NAME2 = "AppEngineerServiceHrInitialData";
 
-
     RecyclerView recycler_view;
     CoordinatorLayout maincontainer;
     FloatingActionButton fab, fab1, fab2;
@@ -84,9 +83,7 @@ public class ServiceHourList extends AppCompatActivity {
     Button btn_search_find,btn_search_clear;
 
     ArrayList<String> todayStatusMasterIDList;
-
     ArrayList<String> todayStatusMasterNameList;
-
     ArrayAdapter<String> spinneradapterTodayStatusMaster;
 
     Calendar myCalendar1;
@@ -158,21 +155,18 @@ public class ServiceHourList extends AppCompatActivity {
                 }
             }
         });
-
         fabBGLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 closeFABMenu();
             }
         });
-
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showSearchPopByFab();
             }
         });
-
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,7 +174,6 @@ public class ServiceHourList extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
     }
 
     private void showFABMenu() {
@@ -195,7 +188,6 @@ public class ServiceHourList extends AppCompatActivity {
         fabLayout2.animate().translationY(-getResources().getDimension(R.dimen.standard_100));
 
     }
-
     private void closeFABMenu() {
         isFABOpen = false;
         fabBGLayout.setVisibility(View.GONE);
@@ -229,7 +221,6 @@ public class ServiceHourList extends AppCompatActivity {
             }
         });
     }
-
     private void showSearchPopByFab() {
 
 
@@ -414,8 +405,6 @@ public class ServiceHourList extends AppCompatActivity {
 
         dialog.show();
     }
-
-
     private class ServiceHoursListAsy extends AsyncTask<String,String,String>{
 
         ProgressDialog progressDialog;
@@ -558,7 +547,6 @@ public class ServiceHourList extends AppCompatActivity {
             progressDialog.dismiss();
         }
     }
-
     private class AddInitialData extends AsyncTask<String, String, String> {
 
         int flag;
@@ -691,7 +679,6 @@ public class ServiceHourList extends AppCompatActivity {
             progressDialog.dismiss();
         }
     }
-
     private void ScanckBar() {
 
         Snackbar snackbar = Snackbar
@@ -718,15 +705,12 @@ public class ServiceHourList extends AppCompatActivity {
         snackbar.setActionTextColor(Color.RED);
         snackbar.show();
     }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -798,7 +782,6 @@ public class ServiceHourList extends AppCompatActivity {
         }
         return (super.onOptionsItemSelected(item));
     }
-
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(ServiceHourList.this, DashboardActivity.class);

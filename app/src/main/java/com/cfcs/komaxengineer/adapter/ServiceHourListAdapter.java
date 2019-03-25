@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import com.cfcs.komaxengineer.Config_engineer.Config_Engg;
 import com.cfcs.komaxengineer.R;
 import com.cfcs.komaxengineer.activity_engineer.ManageContact;
 import com.cfcs.komaxengineer.activity_engineer.NewMachine;
+import com.cfcs.komaxengineer.activity_engineer.ServiceHourDetail;
 import com.cfcs.komaxengineer.activity_engineer.ServiceHourList;
 import com.cfcs.komaxengineer.activity_engineer.ServiceHours;
 import com.cfcs.komaxengineer.background.DeleteContact;
@@ -66,7 +68,18 @@ public class ServiceHourListAdapter extends RecyclerView.Adapter<ServiceHourList
         holder.action_dots.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopupMenu(holder.action_dots, position,currentListData.getServiceHrID());
+                showPopupMenu(holder.action_dots, position, currentListData.getServiceHrID());
+            }
+        });
+
+        holder.card_view_service_hour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(context, ServiceHourDetail.class);
+                intent.putExtra("ServiceHrID", currentListData.getServiceHrID());
+                context.startActivity(intent);
+                ((Activity) context).finish();
             }
         });
 
@@ -189,6 +202,7 @@ public class ServiceHourListAdapter extends RecyclerView.Adapter<ServiceHourList
 
         TextView txt_ServiceHrDate,txt_today_availability,txt_tomorrow_plan,txt_total_hours;
         ImageView action_dots;
+        LinearLayout card_view_service_hour;
 
 
         public MyViewHolder(View itemView) {
@@ -199,6 +213,7 @@ public class ServiceHourListAdapter extends RecyclerView.Adapter<ServiceHourList
             txt_tomorrow_plan = itemView.findViewById(R.id.txt_tomorrow_plan);
             txt_total_hours = itemView.findViewById(R.id.txt_total_hours);
             action_dots = itemView.findViewById(R.id.action_dots);
+            card_view_service_hour = itemView.findViewById(R.id.card_view_service_hour);
 
         }
     }
